@@ -17,14 +17,16 @@ protocol Coordinator {
 class MainCoordinator: Coordinator {
     var childCoordinators: [Coordinator]?
     var navigationController: UINavigationController
+    var navigationControllerDelegate: UINavigationControllerDelegate?
 
     init(navigationController: UINavigationController) {
         self.navigationController = navigationController
+        navigationControllerDelegate = NavigationTransitionDelegate()
+        navigationController.delegate = navigationControllerDelegate
     }
 
     func start() {
-//        if UserDefaults.standard.bool(forKey: "hasSeenIntro") {
-        if false {
+        if UserDefaults.standard.bool(forKey: "hasSeenIntro") {
             showWeather()
         } else {
             UserDefaults.standard.set(true, forKey: "hasSeenIntro")
@@ -49,8 +51,6 @@ extension MainCoordinator: IntroViewControllerDelegate {
         showWeather()
     }
 }
-
-//TODO: Amend this so that each time a VC is pushed onto the NC, the animation type can be specified.
 
 class NavigationTransitionDelegate: NSObject, UINavigationControllerDelegate {
     func navigationController(_ navigationController: UINavigationController, animationControllerFor operation: UINavigationController.Operation, from fromVC: UIViewController, to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
