@@ -21,5 +21,14 @@ class WeatherViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+
+        let service = WeatherService()
+        let req = WeatherRequest(latitude: "51.6365",
+                                 longitude: "0.6171",
+                                 units: "metric")
+
+        service.getWeatherResponse(for: req, onCompletion: { response in
+            print(response)
+        }, onFailure: nil)
     }
 }
