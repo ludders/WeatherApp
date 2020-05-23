@@ -27,6 +27,12 @@ public struct Theme {
         public static var primaryBlue: UIColor {
             return UIColor(hex: "#0082CA")
         }
+        public static var transparent: UIColor {
+            return UIColor(displayP3Red: 0, green: 0, blue: 0, alpha: 0)
+        }
+        public static var black: UIColor {
+            return UIColor(hex: "#000000")
+        }
     }
 
     public struct Fonts {

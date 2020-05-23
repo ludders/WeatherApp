@@ -19,9 +19,12 @@
 		9D11719924759109003949DB /* WeatherService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D11719824759109003949DB /* WeatherService.swift */; };
 		9D11719B24759264003949DB /* WeatherResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D11719A24759264003949DB /* WeatherResponse.swift */; };
 		9D11719D24769F85003949DB /* WeatherRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D11719C24769F85003949DB /* WeatherRequest.swift */; };
+		9D1177E32476F478003949DB /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1177E22476F478003949DB /* HeaderView.swift */; };
 		9D2BF7C0245B3F1500ED3207 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2BF7BF245B3F1500ED3207 /* MainCoordinator.swift */; };
 		9D7E10F72473291800B06C1C /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7E10F62473291800B06C1C /* WeatherAPI.swift */; };
 		9D7E10F92473297100B06C1C /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7E10F82473297100B06C1C /* API.swift */; };
+		9DBD7D7224782C6000763647 /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DBD7D6F247822F100763647 /* SnapKit.framework */; };
+		9DBD7D7324782C6000763647 /* SnapKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9DBD7D6F247822F100763647 /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9DC563F9245C734600A0C8CD /* WeatherViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC563F8245C734600A0C8CD /* WeatherViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -34,6 +37,20 @@
 			remoteInfo = WeatherApp;
 		};
 /* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		9DBD7D7424782C6000763647 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9DBD7D7324782C6000763647 /* SnapKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		9D0FCB22245318D70074D005 /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -52,9 +69,11 @@
 		9D11719824759109003949DB /* WeatherService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherService.swift; sourceTree = "<group>"; };
 		9D11719A24759264003949DB /* WeatherResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherResponse.swift; sourceTree = "<group>"; };
 		9D11719C24769F85003949DB /* WeatherRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRequest.swift; sourceTree = "<group>"; };
+		9D1177E22476F478003949DB /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
 		9D2BF7BF245B3F1500ED3207 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		9D7E10F62473291800B06C1C /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
 		9D7E10F82473297100B06C1C /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		9DBD7D6F247822F100763647 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
 		9DC563F8245C734600A0C8CD /* WeatherViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -63,6 +82,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9DBD7D7224782C6000763647 /* SnapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,6 +102,7 @@
 				9D0FCB24245318D70074D005 /* WeatherApp */,
 				9D0FCB3B245318D80074D005 /* WeatherAppTests */,
 				9D0FCB23245318D70074D005 /* Products */,
+				9DBD7D6E247822F100763647 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -141,6 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				9D0FCF12245322B50074D005 /* BBCLogoView.swift */,
+				9D1177E22476F478003949DB /* HeaderView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -174,6 +196,14 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		9DBD7D6E247822F100763647 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9DBD7D6F247822F100763647 /* SnapKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -184,6 +214,7 @@
 				9D0FCB1E245318D70074D005 /* Sources */,
 				9D0FCB1F245318D70074D005 /* Frameworks */,
 				9D0FCB20245318D70074D005 /* Resources */,
+				9DBD7D7424782C6000763647 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -287,6 +318,7 @@
 				9D0FCB28245318D70074D005 /* SceneDelegate.swift in Sources */,
 				9D11719D24769F85003949DB /* WeatherRequest.swift in Sources */,
 				9D0FCF13245322B50074D005 /* BBCLogoView.swift in Sources */,
+				9D1177E32476F478003949DB /* HeaderView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -440,6 +472,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8LH8BV5L45;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = WeatherApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -458,6 +494,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 8LH8BV5L45;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = WeatherApp/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",

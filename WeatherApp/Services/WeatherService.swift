@@ -43,4 +43,12 @@ class WeatherService {
         }
         dataTask.resume()
     }
+
+    func buildRequestURL(for request: WeatherRequest) -> URL? {
+        var urlComponents = weatherAPI.getURLComponents()
+        var queryItems = request.asURLQueryItems()
+        queryItems.append(URLQueryItem(name: "appid", value: WeatherAPI.key))
+        urlComponents.queryItems = queryItems
+        return urlComponents.url
+    }
 }
