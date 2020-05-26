@@ -38,7 +38,7 @@ class HeaderView: UIView {
         super.init(frame: CGRect.zero)
     }
 
-    func configure() {
+    func setupView() {
 
         addSubview(menuButton)
         addSubview(titleImage)
