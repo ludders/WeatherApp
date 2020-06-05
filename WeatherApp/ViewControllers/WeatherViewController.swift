@@ -12,10 +12,10 @@ import UIKit
 class WeatherViewController: UIViewController {
 
     var weatherView: WeatherView!
-    var colour: UIColor
+    var weatherViewModel: WeatherViewModel
 
-    init(colour: UIColor) {
-        self.colour = colour
+    init(weatherViewModel: WeatherViewModel) {
+        self.weatherViewModel = weatherViewModel
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -25,12 +25,19 @@ class WeatherViewController: UIViewController {
 
     override func loadView() {
         weatherView = WeatherView()
-        weatherView.backgroundColor = colour
+        weatherView.backgroundColor = Theme.Colours.black
         view = weatherView
     }
 
     override func viewDidLoad() {
-        print("it loaded!")
         weatherView.setupView()
+        let service = WeatherService()
+        let request = WeatherRequest(latitude: "51.637120",
+                                     longitude: "0.614980",
+                                     units: "metric")
+        service.getForecast(for: request, onCompletion: { forecast in
+            self.weatherViewModel.forecast = forecast
+            self.weatherView.configure(with: self.weatherViewModel)
+        }, onFailure: nil)
     }
 }

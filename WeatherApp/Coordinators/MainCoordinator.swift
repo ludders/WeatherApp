@@ -35,10 +35,11 @@ class MainCoordinator: Coordinator {
     }
 
     private func showWeather() {
-        let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
-        let vc1 = WeatherViewController(colour: Theme.Colours.black)
-        pageViewController.setViewControllers([vc1], direction: .forward, animated: true, completion: nil)
         //TODO: Set up data source / view controllers for this.
+        let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
+        let viewModel = WeatherViewModel()
+        let vc1 = WeatherViewController(weatherViewModel: viewModel)
+        pageViewController.setViewControllers([vc1], direction: .forward, animated: true, completion: nil)
         let weatherContainerViewController = WeatherContainerViewController(pageViewController: pageViewController)
         navigationController.pushViewController(weatherContainerViewController, animated: true)
     }

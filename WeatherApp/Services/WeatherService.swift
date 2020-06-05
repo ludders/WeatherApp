@@ -15,16 +15,17 @@ class WeatherService {
         self.weatherAPI = weatherAPI
     }
 
-    func getWeatherResponse(for weatherRequest: WeatherRequest,
+    func getWeatherResponse(for request: WeatherRequest,
                             onCompletion: ((WeatherResponse) -> ())?,
                             onFailure: (() -> ())?) {
 
-        guard let url = buildRequestURL(for: weatherRequest) else {
+        guard let url = buildRequestURL(for: request) else {
             onFailure?()
             return
         }
 
         let session = URLSession.shared
+        print(url)
 
         let dataTask = session.dataTask(with: url) { (data, response, error) in
             guard let response = response as? HTTPURLResponse,
@@ -37,11 +38,28 @@ class WeatherService {
                 onFailure?()
                 return
             }
-            if let jsonData = try? JSONDecoder().decode(WeatherResponse.self, from: data) {
-                onCompletion?(jsonData)
+            if let weatherResponse = try? JSONDecoder().decode(WeatherResponse.self, from: data) {
+                onCompletion?(weatherResponse)
             }
         }
         dataTask.resume()
+    }
+
+    func getForecast(for request: WeatherRequest,
+                     onCompletion: ((Forecast) -> ())?,
+                     onFailure: (() -> ())?) {
+        getWeatherResponse(for: request, onCompletion: { response in
+            let current = response.current
+            let forecast = Forecast(name: "Placeholder",
+                                    currentForecast: CurrentForecast(sunrise: current?.sunrise,
+                                                                     sunset: current?.sunset,
+                                                                     temperature: current?.temp,
+                                                                     windSpeed: current?.windSpeed,
+                                                                     windDegrees: current?.windDeg,
+                                                                     description: current?.weather?.first?.description,
+                                                                     iconCode: current?.weather?.first?.icon))
+            onCompletion?(forecast)
+        }, onFailure: nil)
     }
 
     func buildRequestURL(for request: WeatherRequest) -> URL? {
@@ -51,4 +69,5 @@ class WeatherService {
         urlComponents.queryItems = queryItems
         return urlComponents.url
     }
+
 }

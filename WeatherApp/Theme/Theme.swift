@@ -12,19 +12,22 @@ import UIKit
 public struct Theme {
 
     public struct Colours {
-        public static var primaryGrey: UIColor {
+        public static var bbcGrey: UIColor {
             return UIColor(hex: "#333E48")
         }
-        public static var primaryWhite: UIColor {
+        public static var silver: UIColor {
+            return UIColor(hex: "#C0C0C0")
+        }
+        public static var white: UIColor {
             return UIColor(hex: "#FFFFFF")
         }
-        public static var primaryRed: UIColor {
+        public static var bbcRed: UIColor {
             return UIColor(hex: "#E2231A")
         }
-        public static var primaryGreen: UIColor {
+        public static var bbcGreen: UIColor {
             return UIColor(hex: "#00AF41")
         }
-        public static var primaryBlue: UIColor {
+        public static var bbcBlue: UIColor {
             return UIColor(hex: "#0082CA")
         }
         public static var transparent: UIColor {

@@ -36,12 +36,12 @@ class WeatherContainerViewController: UIViewController {
         super.viewDidLoad()
         setupPageViewController()
         setupHeaderView()
-//        TEST_weatherCall()
     }
 
     private func setupHeaderView() {
         headerView = HeaderView()
-        headerView.tintColor = Theme.Colours.primaryWhite
+        headerView.delegate = self
+        headerView.tintColor = Theme.Colours.white
         containerView.addSubview(headerView)
         headerView.setupView()
     }
@@ -61,5 +61,15 @@ class WeatherContainerViewController: UIViewController {
         service.getWeatherResponse(for: req, onCompletion: { response in
             print(response)
         }, onFailure: nil)
+    }
+}
+
+extension WeatherContainerViewController: HeaderViewDelegate {
+    func searchTapped() {
+        //TODO: Implement search functionality
+    }
+
+    func shareTapped() {
+        //TODO: Implement share functionality
     }
 }

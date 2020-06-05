@@ -33,31 +33,31 @@ class BBCLogoView: UIView {
     func addSubLayers() {
         //Letter Boxes
         letterBoxesLayer = CAShapeLayer()
-        letterBoxesLayer.fillColor = Theme.Colours.primaryGrey.cgColor
+        letterBoxesLayer.fillColor = Theme.Colours.bbcGrey.cgColor
         letterBoxesLayer.path = letter_boxes_path
         layer.addSublayer(letterBoxesLayer)
 
         //Letters
         lettersLayer = CAShapeLayer()
-        lettersLayer.fillColor = Theme.Colours.primaryWhite.cgColor
+        lettersLayer.fillColor = Theme.Colours.white.cgColor
         lettersLayer.path = letters_path
         layer.addSublayer(lettersLayer)
 
         //Blue Bar
         blueBarlayer = CAShapeLayer()
-        blueBarlayer.fillColor = Theme.Colours.primaryBlue.cgColor
+        blueBarlayer.fillColor = Theme.Colours.bbcBlue.cgColor
         blueBarlayer.path = blue_bar_path
         layer.addSublayer(blueBarlayer)
 
         //Red Bar
         redBarLayer = CAShapeLayer()
-        redBarLayer.fillColor = Theme.Colours.primaryRed.cgColor
+        redBarLayer.fillColor = Theme.Colours.bbcRed.cgColor
         redBarLayer.path = red_bar_path
         layer.addSublayer(redBarLayer)
 
         //Green Bar
         greenBarLayer = CAShapeLayer()
-        greenBarLayer.fillColor = Theme.Colours.primaryGreen.cgColor
+        greenBarLayer.fillColor = Theme.Colours.bbcGreen.cgColor
         greenBarLayer.path = green_bar_path
         layer.addSublayer(greenBarLayer)
     }

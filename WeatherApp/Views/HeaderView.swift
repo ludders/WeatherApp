@@ -13,9 +13,11 @@ import SnapKit
 
 class HeaderView: UIView {
 
+    weak var delegate: HeaderViewDelegate?
+
     var menuButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setTitle("Menu", for: .normal)
+        button.setTitle(NSLocalizedString("Menu", comment: "Menu"), for: .normal)
         return button
     }()
     var titleImage: UIImageView = {
@@ -79,11 +81,15 @@ class HeaderView: UIView {
     }
 
     @objc func searchTapped() {
-
+        delegate?.searchTapped()
     }
 
     @objc func shareTapped() {
-
+        delegate?.shareTapped()
     }
+}
 
+protocol HeaderViewDelegate: AnyObject {
+    func searchTapped()
+    func shareTapped()
 }

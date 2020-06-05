@@ -1,0 +1,16 @@
+/* 
+  Localizable.strings
+  WeatherApp
+
+  Created by dludlow7 on 28/05/2020.
+  Copyright © 2020 David Ludlow. All rights reserved.
+*/
+"a moment ago" = "a moment ago";
+"%d minute ago" = "%d minute ago";
+"%d minutes ago" =  "%d minutes ago";
+"%d hour ago" = "%d hour ago";
+"%d hours ago" = "%d hours ago";
+"%d day ago" = "%d day ago";
+"%d days ago" = "%d days ago";
+"Next Hour" =  "Next Hour";
+"Menu" = "Menu";

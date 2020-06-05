@@ -35,4 +35,8 @@ class WeatherView: UIView {
             make.height.equalTo(safeAreaLayoutGuide).dividedBy(3)
         }
     }
+
+    func configure(with viewModel: WeatherViewModel) {
+        headingView.configure(with: viewModel)
+    }
 }
