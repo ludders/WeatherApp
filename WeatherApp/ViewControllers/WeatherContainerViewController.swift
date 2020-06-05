@@ -51,17 +51,6 @@ class WeatherContainerViewController: UIViewController {
         self.addChild(pageViewController)
         pageViewController.didMove(toParent: self)
     }
-
-    private func TEST_weatherCall() {
-        let service = WeatherService()
-        let req = WeatherRequest(latitude: "51.6365",
-                                 longitude: "0.6171",
-                                 units: "metric")
-
-        service.getWeatherResponse(for: req, onCompletion: { response in
-            print(response)
-        }, onFailure: nil)
-    }
 }
 
 extension WeatherContainerViewController: HeaderViewDelegate {

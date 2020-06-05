@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import CoreLocation
 
 class WeatherService {
     var weatherAPI: API
@@ -51,6 +52,7 @@ class WeatherService {
         getWeatherResponse(for: request, onCompletion: { response in
             let current = response.current
             let forecast = Forecast(name: "Placeholder",
+                                    coordinates: CLLocationCoordinate2D(latitude: response.lat ?? 0, longitude: response.lon ?? 0),
                                     currentForecast: CurrentForecast(sunrise: current?.sunrise,
                                                                      sunset: current?.sunset,
                                                                      temperature: current?.temp,

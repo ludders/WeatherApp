@@ -132,13 +132,13 @@ class WeatherHeadingView: UIView {
         })
     }
 
-    func configure(with viewModel: WeatherViewModel) {
+    func configure(with forecast: Forecast) {
         DispatchQueue.main.async {
-            let forecast = viewModel.forecast
-            self.refreshLabel.text = viewModel.lastUpdateDisplayText
+            let forecast = forecast
+            self.refreshLabel.text = forecast.lastUpdateDisplayText
             self.locationLabel.text = forecast.name
-            self.sunriseLabel.text = viewModel.sunriseDisplayText
-            self.sunsetLabel.text = viewModel.sunsetDisplayText
+            self.sunriseLabel.text = forecast.sunriseDisplayText
+            self.sunsetLabel.text = forecast.sunsetDisplayText
         }
     }
 }

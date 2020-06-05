@@ -36,7 +36,7 @@ class WeatherView: UIView {
         }
     }
 
-    func configure(with viewModel: WeatherViewModel) {
-        headingView.configure(with: viewModel)
+    func configure(with forecast: Forecast) {
+        headingView.configure(with: forecast)
     }
 }

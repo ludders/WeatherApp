@@ -31,13 +31,14 @@ class WeatherViewController: UIViewController {
 
     override func viewDidLoad() {
         weatherView.setupView()
-        let service = WeatherService()
-        let request = WeatherRequest(latitude: "51.637120",
-                                     longitude: "0.614980",
-                                     units: "metric")
-        service.getForecast(for: request, onCompletion: { forecast in
-            self.weatherViewModel.forecast = forecast
-            self.weatherView.configure(with: self.weatherViewModel)
-        }, onFailure: nil)
+        weatherViewModel.updateForecast()
+        weatherViewModel.forecast.bind { forecast in
+            self.weatherView.configure(with: forecast)
+        }
+        weatherView.headingView.refreshButton.addTarget(self, action: #selector(didTapRefresh), for: .touchUpInside)
+    }
+
+    @objc func didTapRefresh() {
+        weatherViewModel.updateForecast()
     }
 }
