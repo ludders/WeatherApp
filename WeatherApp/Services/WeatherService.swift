@@ -46,12 +46,12 @@ class WeatherService {
         dataTask.resume()
     }
 
-    func getForecast(for request: WeatherRequest,
-                     onCompletion: ((Forecast) -> ())?,
+    func getLocationForecast(for request: WeatherRequest,
+                     onCompletion: ((LocationForecast) -> ())?,
                      onFailure: (() -> ())?) {
         getWeatherResponse(for: request, onCompletion: { response in
-            let forecast = self.buildForecast(using: response)
-            onCompletion?(forecast)
+            let locationForecast = self.buildLocationForecast(using: response)
+            onCompletion?(locationForecast)
         }, onFailure: nil)
     }
 
@@ -63,9 +63,9 @@ class WeatherService {
         return urlComponents.url
     }
 
-    private func buildForecast(using response: WeatherResponse) -> Forecast {
+    private func buildLocationForecast(using response: WeatherResponse) -> LocationForecast {
         let current = response.current
-        var forecast = Forecast(name: "Placeholder",
+        var locationForecast = LocationForecast(name: "Placeholder",
                                 coordinates: CLLocationCoordinate2D(latitude: response.lat ?? 0, longitude: response.lon ?? 0),
                                 currentForecast: CurrentForecast(sunrise: current?.sunrise,
                                                                  sunset: current?.sunset,
@@ -109,7 +109,7 @@ class WeatherService {
             })
         }
 
-        forecast.dailyForecasts = buildDailyForecasts()
-        return forecast
+        locationForecast.dailyForecasts = buildDailyForecasts()
+        return locationForecast
     }
 }

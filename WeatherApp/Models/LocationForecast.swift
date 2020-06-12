@@ -1,5 +1,5 @@
 //
-//  WeatherModel.swift
+//  ForecastLocation.swift
 //  WeatherApp
 //
 //  Created by dludlow7 on 29/05/2020.
@@ -9,7 +9,7 @@
 import Foundation
 import CoreLocation
 
-struct Forecast {
+struct LocationForecast {
     public var lastUpdated: TimeInterval
     public var name: String?
     public var coordinates: CLLocationCoordinate2D
@@ -28,7 +28,7 @@ struct Forecast {
     }
 }
 
-extension Forecast {
+extension LocationForecast {
     var lastUpdateDisplayText: String {
         let seconds = Int(Date().timeIntervalSince1970 - self.lastUpdated)
         let days = seconds/86400

@@ -10,7 +10,7 @@ import Foundation
 import SnapKit
 import UIKit
 
-class HourlyView: UIView {
+class ForecastView: UIView {
 
     let collectionView: UICollectionView
 
@@ -26,7 +26,9 @@ class HourlyView: UIView {
     }
 
     private func setupCollectionView() {
-        collectionView.register(CurrentWeatherCollectionViewCell.self, forCellWithReuseIdentifier: "currentWeather")
+        collectionView.register(CurrentWeatherCollectionViewCell.self, forCellWithReuseIdentifier: "currentCell")
+        collectionView.register(DailyWeatherCollectionViewCell.self, forCellWithReuseIdentifier: "dayCell")
+        collectionView.register(HourlyWeatherCollectionViewCell.self, forCellWithReuseIdentifier: "hourCell")
     }
 
     private func setupConstraints() {

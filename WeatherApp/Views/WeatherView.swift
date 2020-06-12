@@ -12,7 +12,7 @@ import UIKit
 class WeatherView: UIView {
 
     var headingView = WeatherHeadingView()
-    var hourlyView = HourlyView()
+    lazy var hourlyView = ForecastView()
 //    var daysView = DaysView()
 
     init() {
@@ -43,7 +43,7 @@ class WeatherView: UIView {
         }
     }
 
-    func configure(with forecast: Forecast) {
-        headingView.configure(with: forecast)
+    func configure(with locationForecast: LocationForecast) {
+        headingView.configure(with: locationForecast)
     }
 }

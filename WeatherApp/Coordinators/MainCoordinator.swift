@@ -38,7 +38,8 @@ class MainCoordinator: Coordinator {
         //TODO: Set up data source / view controllers for this.
         let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
         let viewModel = WeatherViewModel()
-        let hourlyViewController = HourlyCollectionViewController()
+        let layout = UICollectionViewFlowLayout()
+        let hourlyViewController = ForecastCollectionViewController(viewModel: viewModel, layout: layout)
         let vc1 = WeatherViewController(weatherViewModel: viewModel,
                                         hourlyViewController: hourlyViewController)
         pageViewController.setViewControllers([vc1], direction: .forward, animated: true, completion: nil)
