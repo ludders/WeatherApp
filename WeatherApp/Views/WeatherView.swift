@@ -12,8 +12,8 @@ import UIKit
 class WeatherView: UIView {
 
     var headingView = WeatherHeadingView()
-    var currentDayCollectionView: UICollectionView!
-    var dayScrollView: UIScrollView!
+    var hourlyView = HourlyView()
+//    var daysView = DaysView()
 
     init() {
         super.init(frame: CGRect.zero)
@@ -25,14 +25,21 @@ class WeatherView: UIView {
 
     func setupView() {
         addSubview(headingView)
+        addSubview(hourlyView)
         headingView.setupView()
+        hourlyView.setupView()
         setupConstraints()
     }
 
-    func setupConstraints() {
+    private func setupConstraints() {
         headingView.snp.makeConstraints { make in
             make.top.leading.width.equalTo(safeAreaLayoutGuide)
             make.height.equalTo(safeAreaLayoutGuide).dividedBy(3)
+        }
+        hourlyView.snp.makeConstraints { make in
+            make.top.equalTo(headingView.snp.bottom)
+            make.leading.width.equalTo(safeAreaLayoutGuide)
+            make.height.equalTo(300)
         }
     }
 

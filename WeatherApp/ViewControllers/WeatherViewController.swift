@@ -13,9 +13,12 @@ class WeatherViewController: UIViewController {
 
     var weatherView: WeatherView!
     var weatherViewModel: WeatherViewModel
+    let hourlyViewController: HourlyCollectionViewController
 
-    init(weatherViewModel: WeatherViewModel) {
+    init(weatherViewModel: WeatherViewModel,
+         hourlyViewController: HourlyCollectionViewController) {
         self.weatherViewModel = weatherViewModel
+        self.hourlyViewController = hourlyViewController
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -30,12 +33,20 @@ class WeatherViewController: UIViewController {
     }
 
     override func viewDidLoad() {
+        addChildViewControllers()
         weatherView.setupView()
         weatherViewModel.updateForecast()
         weatherViewModel.forecast.bind { forecast in
             self.weatherView.configure(with: forecast)
         }
         weatherView.headingView.refreshButton.addTarget(self, action: #selector(didTapRefresh), for: .touchUpInside)
+    }
+
+    private func addChildViewControllers() {
+        addChild(hourlyViewController)
+        hourlyViewController.collectionView = weatherView.hourlyView.collectionView
+        hourlyViewController.collectionView.backgroundColor = .systemPink
+        hourlyViewController.didMove(toParent: self)
     }
 
     @objc func didTapRefresh() {

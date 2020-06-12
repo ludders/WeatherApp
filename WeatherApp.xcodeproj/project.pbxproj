@@ -22,12 +22,17 @@
 		9D11719B24759264003949DB /* WeatherResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D11719A24759264003949DB /* WeatherResponse.swift */; };
 		9D11719D24769F85003949DB /* WeatherRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D11719C24769F85003949DB /* WeatherRequest.swift */; };
 		9D1177E32476F478003949DB /* HeaderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1177E22476F478003949DB /* HeaderView.swift */; };
+		9D13A90D248ECB9000613184 /* DailyForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13A90C248ECB9000613184 /* DailyForecast.swift */; };
+		9D13A90F248EDA1C00613184 /* HourlyForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13A90E248EDA1C00613184 /* HourlyForecast.swift */; };
 		9D2BF7C0245B3F1500ED3207 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2BF7BF245B3F1500ED3207 /* MainCoordinator.swift */; };
 		9D3E7E62248A8C8C00A4A248 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3E7E61248A8C8C00A4A248 /* Observable.swift */; };
 		9D3E7E64248AA97400A4A248 /* CLLocationCoordinate2D+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3E7E63248AA97400A4A248 /* CLLocationCoordinate2D+Extensions.swift */; };
+		9D507794248D5420002E3217 /* HourlyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D507793248D5420002E3217 /* HourlyView.swift */; };
 		9D5241162486DB0E005A8F1A /* SnapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DBD7D6F247822F100763647 /* SnapKit.framework */; };
 		9D5241172486DB0E005A8F1A /* SnapKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9DBD7D6F247822F100763647 /* SnapKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9D5241562486ECF1005A8F1A /* WeatherViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5241552486ECF1005A8F1A /* WeatherViewModel.swift */; };
+		9D5951E3248D8A27002ADC25 /* HourlyCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5951E2248D8A27002ADC25 /* HourlyCollectionViewController.swift */; };
+		9D5951E5248D92EB002ADC25 /* CurrentWeatherCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D5951E4248D92EB002ADC25 /* CurrentWeatherCollectionViewCell.swift */; };
 		9D7E10F72473291800B06C1C /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7E10F62473291800B06C1C /* WeatherAPI.swift */; };
 		9D7E10F92473297100B06C1C /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7E10F82473297100B06C1C /* API.swift */; };
 		9D9DC64B247FF2370005E4CB /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9D9DC64A247FF2370005E4CB /* Localizable.strings */; };
@@ -82,10 +87,15 @@
 		9D11719A24759264003949DB /* WeatherResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherResponse.swift; sourceTree = "<group>"; };
 		9D11719C24769F85003949DB /* WeatherRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherRequest.swift; sourceTree = "<group>"; };
 		9D1177E22476F478003949DB /* HeaderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HeaderView.swift; sourceTree = "<group>"; };
+		9D13A90C248ECB9000613184 /* DailyForecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyForecast.swift; sourceTree = "<group>"; };
+		9D13A90E248EDA1C00613184 /* HourlyForecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyForecast.swift; sourceTree = "<group>"; };
 		9D2BF7BF245B3F1500ED3207 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		9D3E7E61248A8C8C00A4A248 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		9D3E7E63248AA97400A4A248 /* CLLocationCoordinate2D+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D+Extensions.swift"; sourceTree = "<group>"; };
+		9D507793248D5420002E3217 /* HourlyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyView.swift; sourceTree = "<group>"; };
 		9D5241552486ECF1005A8F1A /* WeatherViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherViewModel.swift; sourceTree = "<group>"; };
+		9D5951E2248D8A27002ADC25 /* HourlyCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyCollectionViewController.swift; sourceTree = "<group>"; };
+		9D5951E4248D92EB002ADC25 /* CurrentWeatherCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentWeatherCollectionViewCell.swift; sourceTree = "<group>"; };
 		9D7E10F62473291800B06C1C /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
 		9D7E10F82473297100B06C1C /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		9D9DC64A247FF2370005E4CB /* Localizable.strings */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; path = Localizable.strings; sourceTree = "<group>"; };
@@ -190,6 +200,8 @@
 				9D0871B1247BF24500DA520C /* WeatherView.swift */,
 				9D0871B3247BF54200DA520C /* WeatherHeadingView.swift */,
 				9D1177E22476F478003949DB /* HeaderView.swift */,
+				9D507793248D5420002E3217 /* HourlyView.swift */,
+				9D5951E4248D92EB002ADC25 /* CurrentWeatherCollectionViewCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -200,6 +212,7 @@
 				9D0FCB29245318D70074D005 /* IntroViewController.swift */,
 				9DC563F8245C734600A0C8CD /* WeatherContainerViewController.swift */,
 				9DAB019C2479A8BF005ED04C /* WeatherViewController.swift */,
+				9D5951E2248D8A27002ADC25 /* HourlyCollectionViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -245,6 +258,8 @@
 			children = (
 				9DF6984A248169FB00C9BEC8 /* Forecast.swift */,
 				9DF69C1924817A9700C9BEC8 /* CurrentForecast.swift */,
+				9D13A90C248ECB9000613184 /* DailyForecast.swift */,
+				9D13A90E248EDA1C00613184 /* HourlyForecast.swift */,
 				9D3E7E61248A8C8C00A4A248 /* Observable.swift */,
 			);
 			path = Models;
@@ -355,6 +370,7 @@
 			files = (
 				9D7E10F72473291800B06C1C /* WeatherAPI.swift in Sources */,
 				9DAB019D2479A8BF005ED04C /* WeatherViewController.swift in Sources */,
+				9D13A90D248ECB9000613184 /* DailyForecast.swift in Sources */,
 				9D0FCB2A245318D70074D005 /* IntroViewController.swift in Sources */,
 				9D3E7E64248AA97400A4A248 /* CLLocationCoordinate2D+Extensions.swift in Sources */,
 				9D2BF7C0245B3F1500ED3207 /* MainCoordinator.swift in Sources */,
@@ -365,6 +381,8 @@
 				9D11719B24759264003949DB /* WeatherResponse.swift in Sources */,
 				9DF69C1A24817A9700C9BEC8 /* CurrentForecast.swift in Sources */,
 				9D3E7E62248A8C8C00A4A248 /* Observable.swift in Sources */,
+				9D507794248D5420002E3217 /* HourlyView.swift in Sources */,
+				9D13A90F248EDA1C00613184 /* HourlyForecast.swift in Sources */,
 				9D0871B2247BF24500DA520C /* WeatherView.swift in Sources */,
 				9D7E10F92473297100B06C1C /* API.swift in Sources */,
 				9D0FCB26245318D70074D005 /* AppDelegate.swift in Sources */,
@@ -372,7 +390,9 @@
 				9DC563F9245C734600A0C8CD /* WeatherContainerViewController.swift in Sources */,
 				9D0871B4247BF54200DA520C /* WeatherHeadingView.swift in Sources */,
 				9D0FCB28245318D70074D005 /* SceneDelegate.swift in Sources */,
+				9D5951E5248D92EB002ADC25 /* CurrentWeatherCollectionViewCell.swift in Sources */,
 				9D11719D24769F85003949DB /* WeatherRequest.swift in Sources */,
+				9D5951E3248D8A27002ADC25 /* HourlyCollectionViewController.swift in Sources */,
 				9D0FCF13245322B50074D005 /* BBCLogoView.swift in Sources */,
 				9D1177E32476F478003949DB /* HeaderView.swift in Sources */,
 			);

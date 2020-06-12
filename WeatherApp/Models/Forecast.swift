@@ -9,20 +9,21 @@
 import Foundation
 import CoreLocation
 
-class Forecast {
+struct Forecast {
     public var lastUpdated: TimeInterval
     public var name: String?
     public var coordinates: CLLocationCoordinate2D
     public var currentForecast: CurrentForecast?
-//    public var dailyForecasts: [DailyForecast]
-    //TODO: Add daily weather data
-
+    public var dailyForecasts: [DailyForecast]?
+    
     public init(name: String?,
                 coordinates: CLLocationCoordinate2D,
-                currentForecast: CurrentForecast?) {
+                currentForecast: CurrentForecast?,
+                dailyForecasts: [DailyForecast]?) {
         self.name = name
         self.coordinates = coordinates
         self.currentForecast = currentForecast
+        self.dailyForecasts = dailyForecasts
         lastUpdated = Date().timeIntervalSince1970
     }
 }

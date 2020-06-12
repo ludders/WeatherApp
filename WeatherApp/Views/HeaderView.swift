@@ -72,8 +72,6 @@ class HeaderView: UIView {
             make.height.trailing.top.bottom.equalToSuperview().labeled("toolbarEdges")
             make.leading.equalTo(titleImage.snp.trailing).labeled("toolbarLeading")
         }
-
-        print(toolbar.frame)
     }
 
     required init?(coder: NSCoder) {

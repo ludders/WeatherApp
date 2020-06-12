@@ -26,14 +26,4 @@ class Observable<T> {
         closure(value)
         listener = closure
     }
-
-    func blah() {
-        let stringy = Observable<String>("Blah")
-        stringy.bind { string in
-            print("Stringy updated to value: \"\(stringy)\"")
-        }
-
-        stringy.value = "Blah2"
-        stringy.value = "Blah3"
-    }
 }

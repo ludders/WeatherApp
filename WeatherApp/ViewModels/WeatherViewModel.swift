@@ -13,7 +13,10 @@ class WeatherViewModel {
 
     var forecast: Observable<Forecast>
     //TODO: Remove the default forecast when no longer needed
-    public init(forecast: Forecast = Forecast(name: nil, coordinates: CLLocationCoordinate2D.nullIsland, currentForecast: nil)) {
+    public init(forecast: Forecast = Forecast(name: nil,
+                                              coordinates: CLLocationCoordinate2D.nullIsland,
+                                              currentForecast: nil,
+                                              dailyForecasts: nil)) {
         self.forecast = Observable<Forecast>(forecast)
     }
 

@@ -56,10 +56,6 @@ class IntroViewController: UIViewController {
         NSLayoutConstraint.activate(weatherConstraints)
 
         super.viewDidLoad()
-
-        for familyName in UIFont.familyNames {
-            print(UIFont.fontNames(forFamilyName: familyName))
-        }
     }
 
     override func viewDidAppear(_ animated: Bool) {

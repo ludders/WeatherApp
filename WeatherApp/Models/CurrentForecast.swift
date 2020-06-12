@@ -16,20 +16,4 @@ struct CurrentForecast {
     var windDegrees: Int?
     var description: String?
     var iconCode: String?
-
-    public init(sunrise: Int?,
-                sunset: Int?,
-                temperature: Double?,
-                windSpeed: Double?,
-                windDegrees: Int?,
-                description: String?,
-                iconCode: String?) {
-        self.sunrise = sunrise
-        self.sunset = sunset
-        self.temperature = temperature
-        self.windSpeed = windSpeed
-        self.windDegrees = windDegrees
-        self.description = description
-        self.iconCode = iconCode
-    }
 }
