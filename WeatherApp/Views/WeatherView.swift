@@ -12,7 +12,7 @@ import UIKit
 class WeatherView: UIView {
 
     var headingView = WeatherHeadingView()
-    lazy var hourlyView = ForecastView()
+    var forecastCollectionView = ForecastCollectionView()
 //    var daysView = DaysView()
 
     init() {
@@ -25,9 +25,9 @@ class WeatherView: UIView {
 
     func setupView() {
         addSubview(headingView)
-        addSubview(hourlyView)
+        addSubview(forecastCollectionView)
         headingView.setupView()
-        hourlyView.setupView()
+        forecastCollectionView.setup()
         setupConstraints()
     }
 
@@ -36,7 +36,7 @@ class WeatherView: UIView {
             make.top.leading.width.equalTo(safeAreaLayoutGuide)
             make.height.equalTo(safeAreaLayoutGuide).dividedBy(3)
         }
-        hourlyView.snp.makeConstraints { make in
+        forecastCollectionView.snp.makeConstraints { make in
             make.top.equalTo(headingView.snp.bottom)
             make.leading.width.equalTo(safeAreaLayoutGuide)
             make.height.equalTo(300)

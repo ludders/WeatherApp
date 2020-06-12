@@ -19,7 +19,8 @@ class ForecastCollectionViewDataSource: NSObject, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         //TODO: Move this out of WeatherViewModel -> Seperate Hourly ViewModel??
-        viewModel.forecastItems
+//        viewModel.forecastItems
+        return 1
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

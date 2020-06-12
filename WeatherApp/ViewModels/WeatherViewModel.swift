@@ -29,5 +29,5 @@ class WeatherViewModel {
         }, onFailure: nil)
     }
 
-    var forecastItems: [ForecastDataItem]
+//    var forecastItems: [ForecastDataItem]
 }

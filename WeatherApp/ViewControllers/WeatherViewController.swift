@@ -13,12 +13,10 @@ class WeatherViewController: UIViewController {
 
     var weatherView: WeatherView!
     var weatherViewModel: WeatherViewModel
-    let forecastCollectionViewController: ForecastCollectionViewController
+    let forecastCollectionViewController: UICollectionViewController = UICollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
 
-    init(weatherViewModel: WeatherViewModel,
-         hourlyViewController: ForecastCollectionViewController) {
+    init(weatherViewModel: WeatherViewModel) {
         self.weatherViewModel = weatherViewModel
-        self.forecastCollectionViewController = hourlyViewController
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -44,8 +42,7 @@ class WeatherViewController: UIViewController {
 
     private func addChildViewControllers() {
         addChild(forecastCollectionViewController)
-        forecastCollectionViewController.collectionView = weatherView.hourlyView.collectionView
-        forecastCollectionViewController.collectionView.backgroundColor = .systemPink
+        forecastCollectionViewController.collectionView = weatherView.forecastCollectionView
         forecastCollectionViewController.didMove(toParent: self)
     }
 
