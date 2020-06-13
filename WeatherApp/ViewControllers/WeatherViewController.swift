@@ -9,16 +9,18 @@
 import Foundation
 import UIKit
 
-class WeatherViewController: UIViewController, UICollectionViewDelegateFlowLayout {
+class WeatherViewController: UIViewController {
 
     var weatherView: WeatherView!
     var weatherViewModel: WeatherViewModel
-    let forecastCollectionViewController: UICollectionViewController = UICollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
+    let forecastCollectionViewController: UICollectionViewController
     let forecastCollectionViewDataSource: ForecastCollectionViewDataSource
+    let forecastCollectionViewFlowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
 
     init(weatherViewModel: WeatherViewModel,
          forecastCollectionViewDataSource: ForecastCollectionViewDataSource) {
         self.weatherViewModel = weatherViewModel
+        self.forecastCollectionViewController = UICollectionViewController(collectionViewLayout: forecastCollectionViewFlowLayout)
         self.forecastCollectionViewDataSource = forecastCollectionViewDataSource
         super.init(nibName: nil, bundle: nil)
     }
@@ -28,8 +30,7 @@ class WeatherViewController: UIViewController, UICollectionViewDelegateFlowLayou
     }
 
     override func loadView() {
-        weatherView = WeatherView()
-        setupForecastCollectionView()
+        weatherView = WeatherView(flowLayout: forecastCollectionViewFlowLayout)
         weatherView.backgroundColor = Theme.Colours.black
         view = weatherView
     }
@@ -37,6 +38,7 @@ class WeatherViewController: UIViewController, UICollectionViewDelegateFlowLayou
     override func viewDidLoad() {
         addChildViewControllers()
         weatherView.setupView()
+        configureCollectionView()
         weatherViewModel.updateForecast()
         weatherViewModel.locationForecast.bind { locationForecast in
             self.weatherView.configure(with: locationForecast)
@@ -50,15 +52,40 @@ class WeatherViewController: UIViewController, UICollectionViewDelegateFlowLayou
         forecastCollectionViewController.didMove(toParent: self)
     }
 
-    private func setupForecastCollectionView() {
-        weatherView.forecastCollectionView.register(TestCell.self, forCellWithReuseIdentifier: "testCell")
-        weatherView.forecastCollectionView.register(CurrentWeatherCollectionViewCell.self, forCellWithReuseIdentifier: "currentCell")
-        weatherView.forecastCollectionView.register(DailyWeatherCollectionViewCell.self, forCellWithReuseIdentifier: "dayCell")
-        weatherView.forecastCollectionView.register(HourlyWeatherCollectionViewCell.self, forCellWithReuseIdentifier: "hourCell")
+    private func configureCollectionView() {
+        weatherView.forecastCollectionView.delegate = self
         weatherView.forecastCollectionView.dataSource = forecastCollectionViewDataSource
     }
 
     @objc func didTapRefresh() {
         weatherViewModel.updateForecast()
+    }
+}
+// MARK: Forecast Collection View Delegate Functions
+
+extension WeatherViewController: UICollectionViewDelegate {
+
+}
+
+// MARK: Forecast Collection View Delegate Flow Layout Functions
+
+extension WeatherViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        if indexPath.item == 0 {
+            //Day/Current cell
+            return collectionView.visibleSize
+        } else {
+            let width = collectionView.visibleSize.width/5
+            let height = collectionView.visibleSize.height
+            return CGSize(width: width, height: height)
+        }
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
+    }
+
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
+        return 0
     }
 }

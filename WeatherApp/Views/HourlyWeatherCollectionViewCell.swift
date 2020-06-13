@@ -11,6 +11,6 @@ import UIKit
 
 class HourlyWeatherCollectionViewCell: UICollectionViewCell {
     func setup() {
-        contentView.backgroundColor = .blue
+        contentView.backgroundColor = UIColor(white: CGFloat.random(in: 0.1...0.7), alpha: 1)
     }
 }

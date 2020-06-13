@@ -10,12 +10,14 @@ import Foundation
 import UIKit
 
 class WeatherView: UIView {
-
-    var headingView = WeatherHeadingView()
-    var forecastCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    let headingView = WeatherHeadingView()
+    let forecastCollectionView: UICollectionView
+    let flowLayout: UICollectionViewFlowLayout
 //    var daysView = DaysView()
 
-    init() {
+    init(flowLayout: UICollectionViewFlowLayout) {
+        self.flowLayout = flowLayout
+        self.forecastCollectionView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
         super.init(frame: CGRect.zero)
     }
 
@@ -27,7 +29,20 @@ class WeatherView: UIView {
         addSubview(headingView)
         addSubview(forecastCollectionView)
         headingView.setupView()
+        setupForecastCollectionView()
         setupConstraints()
+    }
+
+    //MARK: Forecast Collection View & Layout Setup
+
+    private func setupForecastCollectionView() {
+        forecastCollectionView.register(TestCell.self, forCellWithReuseIdentifier: "testCell")
+        forecastCollectionView.register(CurrentWeatherCollectionViewCell.self, forCellWithReuseIdentifier: "currentCell")
+        forecastCollectionView.register(DailyWeatherCollectionViewCell.self, forCellWithReuseIdentifier: "dayCell")
+        forecastCollectionView.register(HourlyWeatherCollectionViewCell.self, forCellWithReuseIdentifier: "hourCell")
+
+        flowLayout.scrollDirection = .horizontal
+        forecastCollectionView.isPagingEnabled = true
     }
 
     private func setupConstraints() {
