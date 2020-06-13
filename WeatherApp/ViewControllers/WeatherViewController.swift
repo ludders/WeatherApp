@@ -9,14 +9,17 @@
 import Foundation
 import UIKit
 
-class WeatherViewController: UIViewController {
+class WeatherViewController: UIViewController, UICollectionViewDelegateFlowLayout {
 
     var weatherView: WeatherView!
     var weatherViewModel: WeatherViewModel
     let forecastCollectionViewController: UICollectionViewController = UICollectionViewController(collectionViewLayout: UICollectionViewFlowLayout())
+    let forecastCollectionViewDataSource: ForecastCollectionViewDataSource
 
-    init(weatherViewModel: WeatherViewModel) {
+    init(weatherViewModel: WeatherViewModel,
+         forecastCollectionViewDataSource: ForecastCollectionViewDataSource) {
         self.weatherViewModel = weatherViewModel
+        self.forecastCollectionViewDataSource = forecastCollectionViewDataSource
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -26,6 +29,7 @@ class WeatherViewController: UIViewController {
 
     override func loadView() {
         weatherView = WeatherView()
+        setupForecastCollectionView()
         weatherView.backgroundColor = Theme.Colours.black
         view = weatherView
     }
@@ -44,6 +48,14 @@ class WeatherViewController: UIViewController {
         addChild(forecastCollectionViewController)
         forecastCollectionViewController.collectionView = weatherView.forecastCollectionView
         forecastCollectionViewController.didMove(toParent: self)
+    }
+
+    private func setupForecastCollectionView() {
+        weatherView.forecastCollectionView.register(TestCell.self, forCellWithReuseIdentifier: "testCell")
+        weatherView.forecastCollectionView.register(CurrentWeatherCollectionViewCell.self, forCellWithReuseIdentifier: "currentCell")
+        weatherView.forecastCollectionView.register(DailyWeatherCollectionViewCell.self, forCellWithReuseIdentifier: "dayCell")
+        weatherView.forecastCollectionView.register(HourlyWeatherCollectionViewCell.self, forCellWithReuseIdentifier: "hourCell")
+        weatherView.forecastCollectionView.dataSource = forecastCollectionViewDataSource
     }
 
     @objc func didTapRefresh() {

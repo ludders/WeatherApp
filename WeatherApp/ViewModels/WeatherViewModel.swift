@@ -29,5 +29,8 @@ class WeatherViewModel {
         }, onFailure: nil)
     }
 
-//    var forecastItems: [ForecastDataItem]
+    var selectedDayIndex = 1
+    var numberOfForecastItems: Int {
+        return 1 + (locationForecast.value.dailyForecasts?[selectedDayIndex].hourlyForecasts?.count ?? 0)
+    }
 }

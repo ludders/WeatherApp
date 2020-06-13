@@ -10,5 +10,7 @@ import Foundation
 import UIKit
 
 class HourlyWeatherCollectionViewCell: UICollectionViewCell {
-    
+    func setup() {
+        contentView.backgroundColor = .blue
+    }
 }

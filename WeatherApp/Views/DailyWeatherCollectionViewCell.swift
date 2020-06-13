@@ -8,7 +8,10 @@
 
 import Foundation
 import UIKit
+import SnapKit
 
 class DailyWeatherCollectionViewCell: UICollectionViewCell {
-    
+    func setup() {
+        contentView.backgroundColor = .red
+    }
 }

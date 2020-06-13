@@ -18,7 +18,7 @@ class WeatherHeadingView: UIView {
         button.setImage(UIImage(systemName: "arrow.clockwise.circle"), for: .normal)
         button.imageView?.preferredSymbolConfiguration = UIImage.SymbolConfiguration(textStyle: .footnote)
         button.tintColor = Theme.Colours.silver
-//        button.addTarget(self, action: #selector(didTapRefresh), for: .touchUpInside)
+        //        button.addTarget(self, action: #selector(didTapRefresh), for: .touchUpInside)
         return button
     }()
     var refreshLabel: UILabel = {

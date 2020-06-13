@@ -28,6 +28,8 @@ struct LocationForecast {
     }
 }
 
+// MARK: Header View Display Formatting
+
 extension LocationForecast {
     var lastUpdateDisplayText: String {
         let seconds = Int(Date().timeIntervalSince1970 - self.lastUpdated)

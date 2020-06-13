@@ -12,7 +12,7 @@ import UIKit
 class WeatherView: UIView {
 
     var headingView = WeatherHeadingView()
-    var forecastCollectionView = ForecastCollectionView()
+    var forecastCollectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
 //    var daysView = DaysView()
 
     init() {
@@ -27,7 +27,6 @@ class WeatherView: UIView {
         addSubview(headingView)
         addSubview(forecastCollectionView)
         headingView.setupView()
-        forecastCollectionView.setup()
         setupConstraints()
     }
 
@@ -44,6 +43,9 @@ class WeatherView: UIView {
     }
 
     func configure(with locationForecast: LocationForecast) {
-        headingView.configure(with: locationForecast)
+        self.headingView.configure(with: locationForecast)
+        DispatchQueue.main.async {
+            self.forecastCollectionView.reloadData()
+        }
     }
 }
