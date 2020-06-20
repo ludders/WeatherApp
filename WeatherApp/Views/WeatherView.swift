@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class WeatherView: UIView {
+final class WeatherView: UIView {
     let headingView = WeatherHeadingView()
     let forecastCollectionView: UICollectionView
     let flowLayout: UICollectionViewFlowLayout
@@ -53,7 +53,7 @@ class WeatherView: UIView {
         forecastCollectionView.snp.makeConstraints { make in
             make.top.equalTo(headingView.snp.bottom)
             make.leading.width.equalTo(safeAreaLayoutGuide)
-            make.height.equalTo(300)
+            make.height.equalToSuperview().multipliedBy(0.45)
         }
     }
 

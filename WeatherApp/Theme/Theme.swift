@@ -41,10 +41,19 @@ public struct Theme {
     public struct Fonts {
         public struct BBC {
             private static var boldItalic = "HelveticaNeue-BoldItalic"
+            private static var bold = "HelveticaNeue-Bold"
             private static var italic = "HelveticaNeue-Italic"
             private static var regular = "HelveticaNeue"
-            public static var largeTitle: UIFont {
+            public static var largeTitle50: UIFont {
                 let size = CGFloat(50)
+                return UIFont(name: boldItalic, size: size) ?? UIFont.systemFont(ofSize: size)
+            }
+            public static var largeTitle36: UIFont {
+                let size = CGFloat(36)
+                return UIFont(name: bold, size: size) ?? UIFont.systemFont(ofSize: size)
+            }
+            public static var largeTitle30: UIFont {
+                let size = CGFloat(30)
                 return UIFont(name: boldItalic, size: size) ?? UIFont.systemFont(ofSize: size)
             }
             public static var largeSubTitle: UIFont {

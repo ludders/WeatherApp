@@ -16,7 +16,7 @@ class WeatherService {
         self.weatherAPI = weatherAPI
     }
 
-    func getWeatherResponse(for request: WeatherRequest,
+    private func getWeatherResponse(for request: WeatherRequest,
                             onCompletion: ((WeatherResponse) -> ())?,
                             onFailure: (() -> ())?) {
 
@@ -55,7 +55,7 @@ class WeatherService {
         }, onFailure: nil)
     }
 
-    func buildRequestURL(for request: WeatherRequest) -> URL? {
+    private func buildRequestURL(for request: WeatherRequest) -> URL? {
         var urlComponents = weatherAPI.getURLComponents()
         var queryItems = request.asURLQueryItems()
         queryItems.append(URLQueryItem(name: "appid", value: WeatherAPI.key))
@@ -76,35 +76,36 @@ class WeatherService {
                                                                  iconCode: current?.weather?.first?.icon), dailyForecasts: nil)
 
         func buildDailyForecasts() -> [DailyForecast]? {
-            return response.daily?.map({ daily -> DailyForecast in
+            return response.daily?.map({ day -> DailyForecast in
                 let hourlyForecasts = response.hourly?.filter({ hourly -> Bool in
                     let calendar = Calendar(identifier: .gregorian)
                     let dailyDate = Date(timeIntervalSince1970: TimeInterval(hourly.dt ?? 0))
-                    let hourlyDate = Date(timeIntervalSince1970: TimeInterval(daily.dt ?? 1))
+                    let hourlyDate = Date(timeIntervalSince1970: TimeInterval(day.dt ?? 1))
                     return calendar.compare(dailyDate, to: hourlyDate, toGranularity: .day) == .orderedSame })
-                    .map({ hourlyResponse -> HourlyForecast in
-                        return HourlyForecast(time: TimeInterval(hourlyResponse.dt ?? 0),
-                                              iconCode: hourlyResponse.weather?.first?.icon,
-                                              temp: hourlyResponse.temp,
-                                              windDeg: hourlyResponse.windDeg,
-                                              windSpeed: hourlyResponse.windSpeed,
-                                              description: hourlyResponse.weather?.first?.description,
-                                              humidity: hourlyResponse.humidity,
-                                              pressure: hourlyResponse.pressure,
-                                              feelsLike: hourlyResponse.feelsLike,
-                                              clouds: hourlyResponse.clouds)
+                    .map({ hour -> HourlyForecast in
+                        return HourlyForecast(time: TimeInterval(hour.dt ?? 0),
+                                              symbol: SymbolString.from(code: hour.weather?.first?.icon ?? ""),
+                                              temp: hour.temp,
+                                              windDeg: hour.windDeg,
+                                              windSpeed: hour.windSpeed,
+                                              description: hour.weather?.first?.description,
+                                              humidity: hour.humidity,
+                                              pressure: hour.pressure,
+                                              feelsLike: hour.feelsLike,
+                                              clouds: hour.clouds)
                     })
 
-                return DailyForecast(time: TimeInterval(daily.dt ?? 0),
-                                     iconCode: daily.weather?.first?.icon,
-                                     temp: daily.temp,
-                                     windDeg: daily.windDeg,
-                                     windSpeed: daily.windSpeed,
-                                     description: daily.weather?.first?.description,
-                                     humidity: daily.humidity,
-                                     pressure: daily.pressure,
-                                     feelsLike: daily.feelsLike,
-                                     clouds: daily.clouds,
+                return DailyForecast(time: TimeInterval(day.dt ?? 0),
+                                     symbol: SymbolString.from(code: day.weather?.first?.icon ?? ""),
+                                     maxTemp: day.temp?.max,
+                                     minTemp: day.temp?.min,
+                                     windDeg: day.windDeg,
+                                     windSpeed: day.windSpeed,
+                                     description: day.weather?.first?.description,
+                                     humidity: day.humidity,
+                                     pressure: day.pressure,
+                                     feelsLike: day.feelsLike,
+                                     clouds: day.clouds,
                                      hourlyForecasts: hourlyForecasts)
             })
         }

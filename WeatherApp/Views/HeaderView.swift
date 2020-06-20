@@ -15,18 +15,18 @@ class HeaderView: UIView {
 
     weak var delegate: HeaderViewDelegate?
 
-    var menuButton: UIButton = {
+    private var menuButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle(NSLocalizedString("Menu", comment: "Menu"), for: .normal)
         return button
     }()
-    var titleImage: UIImageView = {
+    private var titleImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "bbcWeatherLogo")
         imageView.contentMode = .scaleAspectFill
         return imageView
     }()
-    var toolbar: UIToolbar = {
+    private var toolbar: UIToolbar = {
         let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         toolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
         let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchTapped))
@@ -51,7 +51,7 @@ class HeaderView: UIView {
         menuButton.tintColor = tintColor
     }
 
-    func applyConstraints() {
+    private func applyConstraints() {
         snp.makeConstraints { make in
             if let superView = self.superview {
                 make.leading.trailing.top.equalTo(superView.safeAreaLayoutGuide)
@@ -78,11 +78,11 @@ class HeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc func searchTapped() {
+    @objc private func searchTapped() {
         delegate?.searchTapped()
     }
 
-    @objc func shareTapped() {
+    @objc private func shareTapped() {
         delegate?.shareTapped()
     }
 }

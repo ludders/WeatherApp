@@ -19,6 +19,8 @@ class WeatherViewModel {
         self.locationForecast = Observable<LocationForecast>(model)
     }
 
+    var forecastDataItems: [[ForecastDataItem]] = [[]]
+
     public func updateForecast() {
         let service = WeatherService()
         let request = WeatherRequest(latitude: String(locationForecast.value.coordinates.latitude),
@@ -26,11 +28,14 @@ class WeatherViewModel {
                                      units: "metric")
         service.getLocationForecast(for: request, onCompletion: { locationForecast in
             self.locationForecast.value = locationForecast
+            self.forecastDataItems = locationForecast.asDataItems
         }, onFailure: nil)
     }
 
-    var selectedDayIndex = 1
-    var numberOfForecastItems: Int {
-        return 1 + (locationForecast.value.dailyForecasts?[selectedDayIndex].hourlyForecasts?.count ?? 0)
-    }
+    var selectedDayIndex = 0
+}
+
+enum ForecastDataItem {
+    case day(DailyForecast)
+    case hourly(HourlyForecast)
 }

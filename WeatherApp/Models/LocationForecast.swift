@@ -65,3 +65,17 @@ extension LocationForecast {
         return DateFormatter.localizedString(from: Date(timeIntervalSince1970: Double(sunset)), dateStyle: .none, timeStyle: .short)
     }
 }
+
+//MARK: Data Items for collection view
+
+extension LocationForecast {
+    var asDataItems: [[ForecastDataItem]] {
+        return dailyForecasts?.map({ daily -> [ForecastDataItem] in
+            var items = [ForecastDataItem.day(daily)]
+            items.append(contentsOf: daily.hourlyForecasts?.map({ hourly -> ForecastDataItem in
+                return ForecastDataItem.hourly(hourly)
+            }) ?? [])
+            return items
+        }) ?? []
+    }
+}

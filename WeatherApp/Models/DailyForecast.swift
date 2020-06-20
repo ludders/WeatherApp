@@ -10,8 +10,9 @@ import Foundation
 
 struct DailyForecast {
     var time: TimeInterval
-    var iconCode: String?
-    var temp: Temp?
+    var symbol: String?
+    var maxTemp: Double?
+    var minTemp: Double?
     var windDeg: Int?
     var windSpeed: Double?
 

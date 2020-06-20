@@ -10,7 +10,7 @@ import Foundation
 
 struct HourlyForecast {
     var time: TimeInterval
-    var iconCode: String?
+    var symbol: String?
     var temp: Double?
     var windDeg: Int?
     var windSpeed: Double?

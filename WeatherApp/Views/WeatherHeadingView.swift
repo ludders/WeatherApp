@@ -32,7 +32,7 @@ class WeatherHeadingView: UIView {
     var locationLabel: UILabel = {
         let label = UILabel()
         label.text = "London"
-        label.font = Theme.Fonts.BBC.largeTitle
+        label.font = Theme.Fonts.BBC.largeTitle50
         label.textColor = Theme.Colours.white
         label.adjustsFontSizeToFitWidth = true
         label.numberOfLines = 1
@@ -102,18 +102,15 @@ class WeatherHeadingView: UIView {
             make.top.equalTo(safeAreaLayoutGuide).inset(48+8)
             make.leading.equalTo(layoutMarginsGuide)
         }
-
         refreshLabel.snp.makeConstraints { make in
             make.top.equalTo(safeAreaLayoutGuide).inset(48+8)
             make.leading.equalTo(refreshButton.snp.trailing).offset(8)
             make.centerY.equalTo(refreshButton)
         }
-
         locationLabel.snp.makeConstraints { make in
             make.top.equalTo(refreshButton.snp.bottom).offset(16)
             make.leading.equalTo(layoutMarginsGuide)
         }
-
         addLocationButton.snp.makeConstraints { make in
             make.leading.equalTo(locationLabel.snp.trailing).offset(8)
             make.trailing.lessThanOrEqualTo(layoutMarginsGuide)
@@ -125,7 +122,6 @@ class WeatherHeadingView: UIView {
             make.leading.equalTo(layoutMarginsGuide)
             make.top.equalTo(locationLabel.snp.bottom).offset(16)
         }
-
         sunTimesView?.snp.makeConstraints({ make in
             make.trailing.equalTo(layoutMarginsGuide)
             make.bottom.equalTo(subtitleLabel)
