@@ -66,16 +66,6 @@ final class HourlyWeatherCollectionViewCell: UICollectionViewCell {
         view.tintColor = Theme.Colours.white
         return view
     }()
-    private var windSpeedLabel: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.adjustsFontSizeToFitWidth = true
-        label.minimumScaleFactor = 0.5
-        label.baselineAdjustment = .alignCenters
-        label.font = Theme.Fonts.BBC.largeTitle36
-        label.textColor = Theme.Colours.black
-        label.textAlignment = .center
-        return label
-    }()
 
     func configure(with forecast: HourlyForecast) {
         let format = DateFormatter.dateFormat(fromTemplate: "HH:mm", options: 0, locale: Locale.current)
@@ -89,14 +79,13 @@ final class HourlyWeatherCollectionViewCell: UICollectionViewCell {
         cloudStackView.addArrangedSubview(cloudSymbolView)
         cloudStackView.addArrangedSubview(cloudPercentageLabel)
         windView.degrees = forecast.windDeg ?? 0
-        windSpeedLabel.text = String(Int(forecast.windSpeed ?? 0))
+        windView.label.text = String(Int(forecast.windSpeed ?? 0))
 
         contentView.addSubview(timeView)
         contentView.addSubview(symbolView)
         contentView.addSubview(temperatureLabel)
         contentView.addSubview(cloudStackView)
         contentView.addSubview(windView)
-        contentView.addSubview(windSpeedLabel)
         contentView.addSubview(verticalSeparatorView)
 
         setupConstraints()

@@ -13,17 +13,17 @@ final class WindIconView: UIView {
 
     public var degrees: Int = 0 {
         didSet {
-            rotateIcon(by: oldValue)
+            rotateIcon(by: degrees)
         }
     }
     private var iconCircleView = WindIconCircleView()
     private var iconArrowView = WindIconArrowView()
     private var iconView = UIView()
+    public var label = UILabel()
 
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    init() {
+        super.init(frame: .zero)
         setupView()
-        setupConstraints()
     }
 
     fileprivate func setupView() {
@@ -35,6 +35,15 @@ final class WindIconView: UIView {
 
         iconArrowView.backgroundColor = Theme.Colours.transparent
         iconView.addSubview(iconArrowView)
+
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.1
+        label.font = Theme.Fonts.BBC.largeTitle50
+        label.textAlignment = .center
+        label.numberOfLines = 0
+        addSubview(label)
+
+        setupConstraints()
     }
 
     fileprivate func setupConstraints() {
@@ -54,10 +63,16 @@ final class WindIconView: UIView {
             make.top.equalToSuperview()
             make.width.equalTo(iconCircleView).multipliedBy(0.9)
         }
+        label.snp.makeConstraints { make in
+            make.centerX.centerY.equalTo(iconCircleView)
+            make.height.width.equalTo(iconCircleView).multipliedBy(0.8)
+        }
     }
 
     fileprivate func rotateIcon(by degrees: Int) {
-        iconView.transform = CGAffineTransform(rotationAngle: CGFloat(integerLiteral: degrees) * (CGFloat.pi / 180))
+        DispatchQueue.main.async {
+            self.iconView.transform = CGAffineTransform(rotationAngle: CGFloat(integerLiteral: degrees) * (CGFloat.pi / 180))
+        }
     }
 
     //TODO: Set up rotating the arrowview based on degrees given. Hint: CGAffineTransform & anchorPoint (Default 0.5, 0.5) (Need 0, 0.5)?

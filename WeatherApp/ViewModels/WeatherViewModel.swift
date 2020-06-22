@@ -32,7 +32,7 @@ class WeatherViewModel {
         }, onFailure: nil)
     }
 
-    var selectedDayIndex = 0
+    var selectedDayIndex = 1
 }
 
 enum ForecastDataItem {

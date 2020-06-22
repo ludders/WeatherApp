@@ -18,7 +18,11 @@ class ForecastCollectionViewDataSource: NSObject, UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.forecastDataItems[0].count
+        if viewModel.forecastDataItems.count > 1 {
+            return viewModel.forecastDataItems[viewModel.selectedDayIndex].count
+        } else {
+            return 0
+        }
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {

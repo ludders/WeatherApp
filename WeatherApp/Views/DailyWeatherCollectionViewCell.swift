@@ -53,32 +53,19 @@ final class DailyWeatherCollectionViewCell: UICollectionViewCell {
         return view
     }()
 
-    private var windSpeedLabel: UILabel = {
-        let label = UILabel(frame: .zero)
-        label.adjustsFontSizeToFitWidth = true
-        label.minimumScaleFactor = 0.5
-        label.baselineAdjustment = .alignCenters
-        label.font = Theme.Fonts.BBC.largeTitle36
-        label.textColor = Theme.Colours.black
-        label.textAlignment = .center
-        return label
-    }()
-
     func configure(with forecast: DailyForecast) {
         //TODO: All this formatting stuff can probably go in a Cell View Model (Look into this)
         symbolView.image = UIImage(systemName: forecast.symbol ?? "")
         maxTempLabel.text = String(Int(forecast.maxTemp?.rounded() ?? 0)) + "°"
         minTempLabel.text = String(Int(forecast.minTemp?.rounded() ?? 0)) + "°"
         descriptionLabel.text = forecast.description?.localizedCapitalized
-        windSpeedLabel.text = String(Int(forecast.windSpeed ?? 0))
-        windView.degrees = forecast.windDeg ?? 0
-
+        windView.label.text = String(Int(forecast.windSpeed ?? 0))
+        self.windView.degrees = forecast.windDeg ?? 0
         contentView.addSubview(symbolView)
         contentView.addSubview(descriptionLabel)
         contentView.addSubview(maxTempLabel)
         contentView.addSubview(minTempLabel)
         contentView.addSubview(windView)
-        contentView.addSubview(windSpeedLabel)
 
         setupConstraints()
     }
@@ -107,10 +94,6 @@ final class DailyWeatherCollectionViewCell: UICollectionViewCell {
             make.top.equalTo(minTempLabel.snp.bottom).offset(20)
             make.height.equalTo(80)
             make.centerX.equalTo(maxTempLabel)
-        }
-        windSpeedLabel.snp.makeConstraints { make in
-            make.center.equalTo(windView)
-            make.height.width.equalTo(30)
         }
         descriptionLabel.snp.makeConstraints { make in
             make.top.equalTo(symbolView.snp.bottom)
