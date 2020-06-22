@@ -71,8 +71,7 @@ final class HourlyWeatherCollectionViewCell: UICollectionViewCell {
         let format = DateFormatter.dateFormat(fromTemplate: "HH:mm", options: 0, locale: Locale.current)
         let hhMMFormatter = DateFormatter()
         hhMMFormatter.setLocalizedDateFormatFromTemplate(format ?? "HH:mm")
-        let date = Date(timeIntervalSince1970: forecast.time)
-        timeView.text = hhMMFormatter.string(from: date)
+        timeView.text = hhMMFormatter.string(from: forecast.date)
         symbolView.image = UIImage(systemName: forecast.symbol ?? "")
         temperatureLabel.text = String(Int(forecast.temp?.rounded() ?? 0)) + "°"
         cloudPercentageLabel.text = String(forecast.clouds ?? 0) + "%"

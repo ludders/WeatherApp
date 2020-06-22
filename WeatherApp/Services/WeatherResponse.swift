@@ -26,7 +26,7 @@ struct WeatherResponse: Codable {
 
 // MARK: - Current
 struct CurrentWeatherResponse: Codable {
-    let dt, sunrise, sunset: Int?
+    let dt, sunrise, sunset: Date?
     let temp, feelsLike: Double?
     let pressure, humidity: Int?
     let dewPoint, uvi: Double?
@@ -57,7 +57,7 @@ struct Weather: Codable {
 
 // MARK: - Daily
 struct DailyWeatherResponse: Codable {
-    let dt, sunrise, sunset: Int?
+    let dt, sunrise, sunset: Date?
     let temp: Temp?
     let feelsLike: FeelsLike?
     let pressure, humidity: Int?
@@ -92,7 +92,7 @@ struct Temp: Codable {
 
 // MARK: - Hourly
 struct HourlyWeatherResponse: Codable {
-    let dt: Int?
+    let dt: Date?
     let temp, feelsLike: Double?
     let pressure, humidity: Int?
     let dewPoint: Double?

@@ -9,7 +9,7 @@
 import Foundation
 
 struct DailyForecast {
-    var time: TimeInterval
+    var time: Date
     var symbol: String?
     var maxTemp: Double?
     var minTemp: Double?

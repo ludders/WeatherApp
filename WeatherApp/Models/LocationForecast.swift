@@ -55,14 +55,14 @@ extension LocationForecast {
         guard let sunrise = self.currentForecast?.sunrise else {
             return "--:--"
         }
-        return DateFormatter.localizedString(from: Date(timeIntervalSince1970: Double(sunrise)), dateStyle: .none, timeStyle: .short)
+        return DateFormatter.localizedString(from: sunrise, dateStyle: .none, timeStyle: .short)
     }
 
     var sunsetDisplayText: String {
         guard let sunset = self.currentForecast?.sunset else {
             return "--:--"
         }
-        return DateFormatter.localizedString(from: Date(timeIntervalSince1970: Double(sunset)), dateStyle: .none, timeStyle: .short)
+        return DateFormatter.localizedString(from: sunset, dateStyle: .none, timeStyle: .short)
     }
 }
 

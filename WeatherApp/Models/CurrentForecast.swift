@@ -9,8 +9,8 @@
 import Foundation
 
 struct CurrentForecast {
-    var sunrise: Int?
-    var sunset: Int?
+    var sunrise: Date?
+    var sunset: Date?
     var temperature: Double?
     var windSpeed: Double?
     var windDegrees: Int?

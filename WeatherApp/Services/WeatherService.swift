@@ -39,7 +39,9 @@ class WeatherService {
                 onFailure?()
                 return
             }
-            if let weatherResponse = try? JSONDecoder().decode(WeatherResponse.self, from: data) {
+            let decoder = JSONDecoder()
+            decoder.dateDecodingStrategy = .secondsSince1970
+            if let weatherResponse = try? decoder.decode(WeatherResponse.self, from: data) {
                 onCompletion?(weatherResponse)
             }
         }
@@ -77,13 +79,21 @@ class WeatherService {
 
         func buildDailyForecasts() -> [DailyForecast]? {
             return response.daily?.map({ day -> DailyForecast in
-                let hourlyForecasts = response.hourly?.filter({ hourly -> Bool in
-                    let calendar = Calendar(identifier: .gregorian)
-                    let dailyDate = Date(timeIntervalSince1970: TimeInterval(hourly.dt ?? 0))
-                    let hourlyDate = Date(timeIntervalSince1970: TimeInterval(day.dt ?? 1))
-                    return calendar.compare(dailyDate, to: hourlyDate, toGranularity: .day) == .orderedSame })
+                let hourlyForecasts = response.hourly?.filter({ hour -> Bool in
+                    //Include hourly forecasts from 0600 each day, till 0500 the next day.
+                    guard let dayDate = day.dt,
+                        let hourDate = hour.dt else { return false }
+
+                    let calendar = Calendar.current
+                    let lowerLimitDate = calendar.date(bySettingHour: 6, minute: 0, second: 0, of: dayDate)
+                    var upperLimitDate = calendar.date(byAdding: .day, value: 1, to: dayDate)
+                    upperLimitDate = calendar.date(bySetting: .hour, value: 5, of: dayDate)
+
+                    guard let lower = lowerLimitDate, let upper = upperLimitDate else { return false }
+
+                    return hourDate >= lower && hourDate <= upper })
                     .map({ hour -> HourlyForecast in
-                        return HourlyForecast(time: TimeInterval(hour.dt ?? 0),
+                        return HourlyForecast(date: hour.dt ?? Date(timeIntervalSince1970: 0),
                                               symbol: SymbolString.from(code: hour.weather?.first?.icon ?? ""),
                                               temp: hour.temp,
                                               windDeg: hour.windDeg,
@@ -95,7 +105,7 @@ class WeatherService {
                                               clouds: hour.clouds)
                     })
 
-                return DailyForecast(time: TimeInterval(day.dt ?? 0),
+                return DailyForecast(time: day.dt ?? Date(timeIntervalSince1970: 0),
                                      symbol: SymbolString.from(code: day.weather?.first?.icon ?? ""),
                                      maxTemp: day.temp?.max,
                                      minTemp: day.temp?.min,
