@@ -25,6 +25,16 @@ final class HourlyWeatherCollectionViewCell: UICollectionViewCell {
         label.textAlignment = .center
         return label
     }()
+    private var showDayLabel: Bool = false
+    private lazy var dayLabel: UILabel = {
+        let label = UILabel(frame: .zero)
+        label.adjustsFontSizeToFitWidth = true
+        label.minimumScaleFactor = 0.1
+        label.font = Theme.Fonts.BBC.subhead
+        label.textColor = Theme.Colours.silver
+        label.textAlignment = .center
+        return label
+    }()
     private var symbolView: UIImageView = {
         let view = UIImageView(frame: .zero)
         view.contentMode = .scaleAspectFit
@@ -72,25 +82,37 @@ final class HourlyWeatherCollectionViewCell: UICollectionViewCell {
         let hhMMFormatter = DateFormatter()
         hhMMFormatter.setLocalizedDateFormatFromTemplate(format ?? "HH:mm")
         timeView.text = hhMMFormatter.string(from: forecast.date)
+        contentView.addSubview(timeView)
+
+
+        if forecast.date.isAtExactly(hour: 0),
+            let dayName = forecast.date.nextDayAsEEE?.localizedUppercase {
+            dayLabel.text = dayName
+            contentView.addSubview(dayLabel)
+            showDayLabel = true
+        }
+
         symbolView.image = UIImage(systemName: forecast.symbol ?? "")
+        contentView.addSubview(symbolView)
+
         temperatureLabel.text = String(Int(forecast.temp?.rounded() ?? 0)) + "°"
+        contentView.addSubview(temperatureLabel)
+
         cloudPercentageLabel.text = String(forecast.clouds ?? 0) + "%"
         cloudStackView.addArrangedSubview(cloudSymbolView)
         cloudStackView.addArrangedSubview(cloudPercentageLabel)
+        contentView.addSubview(cloudStackView)
+
         windView.degrees = forecast.windDeg ?? 0
         windView.label.text = String(Int(forecast.windSpeed ?? 0))
-
-        contentView.addSubview(timeView)
-        contentView.addSubview(symbolView)
-        contentView.addSubview(temperatureLabel)
-        contentView.addSubview(cloudStackView)
         contentView.addSubview(windView)
+
         contentView.addSubview(verticalSeparatorView)
 
         setupConstraints()
     }
 
-    func setupConstraints() {
+    fileprivate func setupConstraints() {
 
         contentView.layoutMargins = UIEdgeInsets(top: 0, left: 15, bottom: 15, right: 15)
 
@@ -121,5 +143,35 @@ final class HourlyWeatherCollectionViewCell: UICollectionViewCell {
             make.top.bottom.leading.equalTo(contentView)
             make.trailing.equalTo(verticalSeparatorView.snp.leading).offset(1)
         }
+
+        if showDayLabel {
+            dayLabel.snp.makeConstraints { make in
+                make.bottom.centerX.equalTo(timeView)
+                make.top.greaterThanOrEqualTo(timeView.snp.firstBaseline).offset(10)
+            }
+        }
+    }
+
+    override func prepareForReuse() {
+        showDayLabel = false
+        dayLabel.removeFromSuperview()
+        super.prepareForReuse()
+    }
+}
+
+extension Date {
+    func isAtExactly(hour: Int) -> Bool {
+        let calendar = Calendar(identifier: .gregorian)
+        var hourComponent = DateComponents()
+        hourComponent.hour = hour
+        return calendar.date(self, matchesComponents: hourComponent)
+    }
+
+    var nextDayAsEEE: String? {
+        let calendar = Calendar(identifier: .gregorian)
+        guard let nextDaysDate = calendar.date(byAdding: .day, value: 1, to: self) else { return nil }
+        let formatter = DateFormatter()
+        formatter.setLocalizedDateFormatFromTemplate("EEE")
+        return formatter.string(from: nextDaysDate)
     }
 }
