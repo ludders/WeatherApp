@@ -9,6 +9,13 @@
 import Foundation
 import CoreLocation
 
+typealias LocationForecastCompletion = Result<LocationForecast, NetworkError>
+typealias WeatherResponseCompletion = Result<WeatherResponse, NetworkError>
+
+enum NetworkError: Error {
+    case error
+}
+
 class WeatherService {
     var weatherAPI: API
 
@@ -16,12 +23,10 @@ class WeatherService {
         self.weatherAPI = weatherAPI
     }
 
-    private func getWeatherResponse(for request: WeatherRequest,
-                            onCompletion: ((WeatherResponse) -> ())?,
-                            onFailure: (() -> ())?) {
+    private func getWeatherResponse(for request: WeatherRequest, onCompletion: @escaping (WeatherResponseCompletion) -> ()) {
 
         guard let url = buildRequestURL(for: request) else {
-            onFailure?()
+            onCompletion(.failure(.error))
             return
         }
 
@@ -32,29 +37,32 @@ class WeatherService {
             guard let response = response as? HTTPURLResponse,
                 response.mimeType == "application/json",
                 (200...299).contains(response.statusCode) else {
-                    onFailure?()
+                    onCompletion(.failure(.error))
                     return
             }
             guard let data = data else {
-                onFailure?()
+                onCompletion(.failure(.error))
                 return
             }
             let decoder = JSONDecoder()
             decoder.dateDecodingStrategy = .secondsSince1970
             if let weatherResponse = try? decoder.decode(WeatherResponse.self, from: data) {
-                onCompletion?(weatherResponse)
+                onCompletion(.success(weatherResponse))
             }
         }
         dataTask.resume()
     }
 
-    func getLocationForecast(for request: WeatherRequest,
-                     onCompletion: ((LocationForecast) -> ())?,
-                     onFailure: (() -> ())?) {
-        getWeatherResponse(for: request, onCompletion: { response in
-            let locationForecast = self.buildLocationForecast(using: response)
-            onCompletion?(locationForecast)
-        }, onFailure: nil)
+    func getLocationForecast(for request: WeatherRequest, onCompletion: @escaping (LocationForecastCompletion) -> ()) {
+        getWeatherResponse(for: request, onCompletion: { result in
+            switch result {
+            case .success(let response):
+                let locationForecast = self.buildLocationForecast(using: response)
+                onCompletion(.success(locationForecast))
+            case .failure(let error):
+                print(error)
+            }
+        })
     }
 
     private func buildRequestURL(for request: WeatherRequest) -> URL? {

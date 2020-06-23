@@ -26,10 +26,16 @@ class WeatherViewModel {
         let request = WeatherRequest(latitude: String(locationForecast.value.coordinates.latitude),
                                      longitude: String(locationForecast.value.coordinates.longitude),
                                      units: "metric")
-        service.getLocationForecast(for: request, onCompletion: { locationForecast in
-            self.locationForecast.value = locationForecast
-            self.forecastDataItems = locationForecast.asDataItems
-        }, onFailure: nil)
+
+        service.getLocationForecast(for: request) { result in
+            switch result {
+            case .success(let forecast):
+                self.locationForecast.value = forecast
+                self.forecastDataItems = forecast.asDataItems
+            case .failure(let error):
+                print("Error")
+            }
+        }
     }
 
     var selectedDayIndex = 0
