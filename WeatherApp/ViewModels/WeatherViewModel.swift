@@ -10,7 +10,7 @@ import Foundation
 import CoreLocation
 
 class WeatherViewModel {
-    var locationForecast: Observable<LocationForecast>
+    private(set) var locationForecast: Observable<LocationForecast>
     //TODO: Remove the default forecast when no longer needed
     public init(model: LocationForecast = LocationForecast(name: nil,
                                               coordinates: CLLocationCoordinate2D.nullIsland,

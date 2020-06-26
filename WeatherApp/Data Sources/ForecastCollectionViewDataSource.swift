@@ -30,11 +30,15 @@ class ForecastCollectionViewDataSource: NSObject, UICollectionViewDataSource {
         let item = viewModel.forecastDataItems[viewModel.selectedDayIndex][indexPath.item]
         switch item {
         case .day(let dailyForecast):
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dayCell", for: indexPath) as! DailyWeatherCollectionViewCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dayCell", for: indexPath) as? DailyForecastCollectionViewCell else {
+                fatalError("Failed to dequeue DailyWeatherCollectionViewCell")
+            }
             cell.configure(with: dailyForecast)
             return cell
         case .hourly(let hourlyForecast):
-            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "hourCell", for: indexPath) as! HourlyWeatherCollectionViewCell
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "hourCell", for: indexPath) as? HourlyForecastCollectionViewCell else {
+                fatalError("Failed to dequeue HourlyWeatherCollectionViewCell")
+            }
             cell.configure(with: hourlyForecast)
             return cell
         }

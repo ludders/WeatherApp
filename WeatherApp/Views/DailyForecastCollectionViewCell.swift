@@ -1,5 +1,5 @@
 //
-//  DailyWeatherCollectionViewCell.swift
+//  DailyForecastCollectionViewCell.swift
 //  WeatherApp
 //
 //  Created by dludlow7 on 12/06/2020.
@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-final class DailyWeatherCollectionViewCell: UICollectionViewCell {
+final class DailyForecastCollectionViewCell: UICollectionViewCell {
 
     private var symbolView: UIImageView = {
         let imageView = UIImageView()
@@ -50,14 +50,15 @@ final class DailyWeatherCollectionViewCell: UICollectionViewCell {
     private var windView: WindIconView = {
         let view = WindIconView()
         view.tintColor = Theme.Colours.white
+        view.label.textColor = Theme.Colours.black
         return view
     }()
 
     func configure(with forecast: DailyForecast) {
         //TODO: All this formatting stuff can probably go in a Cell View Model (Look into this)
         symbolView.image = UIImage(systemName: forecast.symbol ?? "")
-        maxTempLabel.text = String(Int(forecast.maxTemp?.rounded() ?? 0)) + "°"
-        minTempLabel.text = String(Int(forecast.minTemp?.rounded() ?? 0)) + "°"
+        maxTempLabel.text = forecast.maxTemp?.asTemperatureString
+        minTempLabel.text = forecast.minTemp?.asTemperatureString
         descriptionLabel.text = forecast.description?.localizedCapitalized
         windView.label.text = String(Int(forecast.windSpeed ?? 0))
         self.windView.degrees = forecast.windDeg ?? 0

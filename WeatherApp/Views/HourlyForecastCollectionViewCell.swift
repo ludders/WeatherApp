@@ -1,5 +1,5 @@
 //
-//  HourlyWeatherCollectionViewCell.swift
+//  HourlyForecastCollectionViewCell.swift
 //  WeatherApp
 //
 //  Created by dludlow7 on 12/06/2020.
@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 import SnapKit
 
-final class HourlyWeatherCollectionViewCell: UICollectionViewCell {
+final class HourlyForecastCollectionViewCell: UICollectionViewCell {
     private var verticalSeparatorView: UIView = {
         let view = UIView(frame: .zero)
         view.backgroundColor = Theme.Colours.white
@@ -74,6 +74,7 @@ final class HourlyWeatherCollectionViewCell: UICollectionViewCell {
         let view = WindIconView()
         view.contentMode = .scaleAspectFit
         view.tintColor = Theme.Colours.white
+        view.label.textColor = Theme.Colours.black
         return view
     }()
 
@@ -95,7 +96,7 @@ final class HourlyWeatherCollectionViewCell: UICollectionViewCell {
         symbolView.image = UIImage(systemName: forecast.symbol ?? "")
         contentView.addSubview(symbolView)
 
-        temperatureLabel.text = String(Int(forecast.temp?.rounded() ?? 0)) + "°"
+        temperatureLabel.text = forecast.temp?.asTemperatureString
         contentView.addSubview(temperatureLabel)
 
         cloudPercentageLabel.text = String(forecast.clouds ?? 0) + "%"
@@ -173,5 +174,12 @@ extension Date {
         let formatter = DateFormatter()
         formatter.setLocalizedDateFormatFromTemplate("EEE")
         return formatter.string(from: nextDaysDate)
+    }
+
+    func formattedAs(_ template: String) -> String {
+        let format = DateFormatter.dateFormat(fromTemplate: template, options: 0, locale: Locale.current)
+        let customFormatter = DateFormatter()
+        customFormatter.dateFormat = format
+        return customFormatter.string(from: self)
     }
 }

@@ -13,15 +13,25 @@ class WeatherViewController: UIViewController {
 
     var weatherView: WeatherView!
     var weatherViewModel: WeatherViewModel
+
     let forecastCollectionViewController: UICollectionViewController
     let forecastCollectionViewDataSource: ForecastCollectionViewDataSource
-    let forecastCollectionViewFlowLayout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
+    let forecastFlowLayout = UICollectionViewFlowLayout()
+    let forecastCollectionViewDelegateFlowLayout = ForecastCollectionViewDelegateFlowLayout()
+
+    let dayCollectionViewController: UICollectionViewController
+    let dayCollectionViewDataSource: DayCollectionViewDataSource
+    let dayFlowLayout = UICollectionViewFlowLayout()
+    let dayCollectionViewDelegateFlowLayout = DayCollectionViewDelegateFlowLayout()
 
     init(weatherViewModel: WeatherViewModel,
-         forecastCollectionViewDataSource: ForecastCollectionViewDataSource) {
+         forecastCollectionViewDataSource: ForecastCollectionViewDataSource,
+        dayCollectionViewDataSource: DayCollectionViewDataSource) {
         self.weatherViewModel = weatherViewModel
-        self.forecastCollectionViewController = UICollectionViewController(collectionViewLayout: forecastCollectionViewFlowLayout)
+        self.forecastCollectionViewController = UICollectionViewController(collectionViewLayout: forecastFlowLayout)
         self.forecastCollectionViewDataSource = forecastCollectionViewDataSource
+        self.dayCollectionViewController = UICollectionViewController(collectionViewLayout: dayFlowLayout)
+        self.dayCollectionViewDataSource = dayCollectionViewDataSource
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -30,7 +40,7 @@ class WeatherViewController: UIViewController {
     }
 
     override func loadView() {
-        weatherView = WeatherView(flowLayout: forecastCollectionViewFlowLayout)
+        weatherView = WeatherView(forecastFlowLayout: forecastFlowLayout, dayFlowLayout: dayFlowLayout)
         weatherView.backgroundColor = Theme.Colours.black
         view = weatherView
     }
@@ -38,7 +48,8 @@ class WeatherViewController: UIViewController {
     override func viewDidLoad() {
         addChildViewControllers()
         weatherView.setupView()
-        configureCollectionView()
+        configureForecastCollectionView()
+        configureDayCollectionView()
         weatherViewModel.updateForecast()
         weatherViewModel.locationForecast.bind { locationForecast in
             self.weatherView.configure(with: locationForecast)
@@ -50,42 +61,23 @@ class WeatherViewController: UIViewController {
         addChild(forecastCollectionViewController)
         forecastCollectionViewController.collectionView = weatherView.forecastCollectionView
         forecastCollectionViewController.didMove(toParent: self)
+
+        addChild(dayCollectionViewController)
+        dayCollectionViewController.collectionView = weatherView.dayCollectionView
+        dayCollectionViewController.didMove(toParent: self)
     }
 
-    private func configureCollectionView() {
-        weatherView.forecastCollectionView.delegate = self
+    private func configureForecastCollectionView() {
+        weatherView.forecastCollectionView.delegate = forecastCollectionViewDelegateFlowLayout
         weatherView.forecastCollectionView.dataSource = forecastCollectionViewDataSource
+    }
+
+    private func configureDayCollectionView() {
+        weatherView.dayCollectionView.delegate = dayCollectionViewDelegateFlowLayout
+        weatherView.dayCollectionView.dataSource = dayCollectionViewDataSource
     }
 
     @objc func didTapRefresh() {
         weatherViewModel.updateForecast()
-    }
-}
-// MARK: Forecast Collection View Delegate Functions
-
-extension WeatherViewController: UICollectionViewDelegate {
-
-}
-
-// MARK: Forecast Collection View Delegate Flow Layout Functions
-
-extension WeatherViewController: UICollectionViewDelegateFlowLayout {
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if indexPath.item == 0 {
-            //Day/Current cell
-            return collectionView.visibleSize
-        } else {
-            let width = collectionView.visibleSize.width/5
-            let height = collectionView.visibleSize.height
-            return CGSize(width: width, height: height)
-        }
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 0
     }
 }
