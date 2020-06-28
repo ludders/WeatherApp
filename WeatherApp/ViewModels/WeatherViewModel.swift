@@ -11,12 +11,14 @@ import CoreLocation
 
 class WeatherViewModel {
     private(set) var locationForecast: Observable<LocationForecast>
+    var selectedDayIndex: Observable<Int>
     //TODO: Remove the default forecast when no longer needed
     public init(model: LocationForecast = LocationForecast(name: nil,
                                               coordinates: CLLocationCoordinate2D.nullIsland,
                                               currentForecast: nil,
                                               dailyForecasts: nil)) {
         self.locationForecast = Observable<LocationForecast>(model)
+        self.selectedDayIndex = Observable<Int>(0)
     }
 
     var forecastDataItems: [[ForecastDataItem]] = [[]]
@@ -37,8 +39,6 @@ class WeatherViewModel {
             }
         }
     }
-
-    var selectedDayIndex = 0
 }
 
 enum ForecastDataItem {

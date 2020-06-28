@@ -19,7 +19,7 @@ class ForecastCollectionViewDataSource: NSObject, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         if viewModel.forecastDataItems.count > 1 {
-            return viewModel.forecastDataItems[viewModel.selectedDayIndex].count
+            return viewModel.forecastDataItems[viewModel.selectedDayIndex.value].count
         } else {
             return 0
         }
@@ -27,7 +27,7 @@ class ForecastCollectionViewDataSource: NSObject, UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        let item = viewModel.forecastDataItems[viewModel.selectedDayIndex][indexPath.item]
+        let item = viewModel.forecastDataItems[viewModel.selectedDayIndex.value][indexPath.item]
         switch item {
         case .day(let dailyForecast):
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dayCell", for: indexPath) as? DailyForecastCollectionViewCell else {

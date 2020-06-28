@@ -53,11 +53,20 @@ class WeatherViewController: UIViewController {
         weatherView.setupView()
         configureForecastCollectionView()
         configureDayCollectionView()
+        setupBindings()
+        weatherView.headingView.refreshButton.addTarget(self, action: #selector(didTapRefresh), for: .touchUpInside)
         viewModel.updateForecast()
-        viewModel.locationForecast.bind { locationForecast in
+    }
+
+    private func setupBindings() {
+        viewModel.locationForecast.bindOnNext { locationForecast in
             self.weatherView.configure(with: locationForecast)
         }
-        weatherView.headingView.refreshButton.addTarget(self, action: #selector(didTapRefresh), for: .touchUpInside)
+        viewModel.selectedDayIndex.bindOnNext { _ in
+            DispatchQueue.main.async {
+                self.weatherView.forecastCollectionView.reloadData()
+            }
+        }
     }
 
     private func addChildViewControllers() {
@@ -117,11 +126,11 @@ class DayCollectionViewDelegate: NSObject, UICollectionViewDelegate, UICollectio
 
     //MARK: Delegate Functions
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let currentSelectionIndexPath = IndexPath(item: viewModel.selectedDayIndex, section: 0)
+        let currentSelectionIndexPath = IndexPath(item: viewModel.selectedDayIndex.value, section: 0)
         let newSelectionIndexPath = indexPath
 
         if newSelectionIndexPath != currentSelectionIndexPath {
-            viewModel.selectedDayIndex = newSelectionIndexPath.item
+            viewModel.selectedDayIndex.value = newSelectionIndexPath.item
             DispatchQueue.main.async {
                 collectionView.reloadItems(at: [currentSelectionIndexPath, newSelectionIndexPath])
             }
