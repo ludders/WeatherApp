@@ -18,7 +18,6 @@ enum DayCellStyle {
 }
 
 class DayCollectionViewCell: UICollectionViewCell {
-
     let dayLabel: UILabel = {
         let label = UILabel()
         label.font = Theme.Fonts.BBC.body
@@ -43,7 +42,8 @@ class DayCollectionViewCell: UICollectionViewCell {
         label.textColor = Theme.Colours.silver
         return label
     }()
-    let bottomBar = UIView()
+    var topBar = UIView()
+    var bottomBar = UIView()
     let leftCornerMask = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMinXMaxYCorner)
     let rightCornerMask = CACornerMask(arrayLiteral: .layerMaxXMinYCorner, .layerMaxXMaxYCorner)
 
@@ -57,9 +57,21 @@ class DayCollectionViewCell: UICollectionViewCell {
         contentView.addSubview(maxTempLabel)
         minTempLabel.text = forecast.minTemp?.asTemperatureString
         contentView.addSubview(minTempLabel)
-        bottomBar.backgroundColor = Theme.Colours.bbcGreen
+        bottomBar.backgroundColor = Theme.Colours.bbcRed
         contentView.addSubview(bottomBar)
 
+        configureCornerStyling(with: style)
+
+        if isSelected {
+            configureBottomBar()
+        } else {
+            configureTopBar()
+        }
+        
+        setupConstraints()
+    }
+
+    private func configureCornerStyling(with style: DayCellStyle) {
         contentView.layer.masksToBounds = true
         switch style {
         case .frontCell:
@@ -71,8 +83,24 @@ class DayCollectionViewCell: UICollectionViewCell {
         default:
             break
         }
-        
-        setupConstraints()
+    }
+
+    private func configureBottomBar() {
+        bottomBar.backgroundColor = Theme.Colours.bbcGreen
+        contentView.addSubview(bottomBar)
+        bottomBar.snp.makeConstraints { make in
+            make.height.equalTo(5)
+            make.bottom.leading.trailing.equalTo(contentView)
+        }
+    }
+
+    private func configureTopBar() {
+        topBar.backgroundColor = Theme.Colours.bbcRed
+        contentView.addSubview(topBar)
+        topBar.snp.makeConstraints { make in
+            make.height.equalTo(5)
+            make.top.leading.trailing.equalTo(contentView)
+        }
     }
 
     func setupConstraints() {
@@ -96,13 +124,12 @@ class DayCollectionViewCell: UICollectionViewCell {
             make.top.equalTo(maxTempLabel.snp.bottom).offset(5)
             make.trailing.equalTo(contentView.layoutMargins)
         }
-        bottomBar.snp.makeConstraints { make in
-            make.height.equalTo(5)
-            make.top.leading.trailing.equalTo(contentView)
-        }
+
     }
 
     override func prepareForReuse() {
         contentView.layer.maskedCorners = []
+        topBar.removeFromSuperview()
+        bottomBar.removeFromSuperview()
     }
 }

@@ -41,6 +41,7 @@ class DayCollectionViewDataSource: NSObject, UICollectionViewDataSource {
             }
         }
 
+        cell.isSelected = viewModel.selectedDayIndex == indexPath.item
         cell.configure(with: dailyForecasts[indexPath.row], style: style)
         return cell
     }
