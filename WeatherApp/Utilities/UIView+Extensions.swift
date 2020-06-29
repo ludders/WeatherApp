@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import SnapKit
 import UIKit
 
 extension UIView {
@@ -27,5 +28,29 @@ extension UIView {
 
         layer.position = position
         layer.anchorPoint = point
+    }
+
+    func displayLoadingView() {
+        let loadingView = RGBLoadingView()
+        guard let window = UIApplication.shared.keyWindow else { return }
+        window.addSubview(loadingView)
+        loadingView.snp.makeConstraints { make in
+            make.edges.equalTo(window)
+        }
+        loadingView.startAnimation()
+    }
+
+    func hideLoadingView() {
+        guard let window = UIApplication.shared.keyWindow else { return }
+        window.subviews.filter { $0.isKind(of: RGBLoadingView.self) }
+            .forEach { $0.fadeOutAndRemoveFromSuperview() }
+    }
+
+    func fadeOutAndRemoveFromSuperview() {
+        UIView.animate(withDuration: 0.2, delay: 0, options: .curveEaseIn, animations: {
+            self.alpha = 0
+        }) { _ in
+            self.removeFromSuperview()
+        }
     }
 }

@@ -31,7 +31,6 @@ class WeatherHeadingView: UIView {
     }()
     var locationLabel: UILabel = {
         let label = UILabel()
-        label.text = "London"
         label.font = Theme.Fonts.BBC.largeTitle50
         label.textColor = Theme.Colours.white
         label.adjustsFontSizeToFitWidth = true
@@ -55,14 +54,12 @@ class WeatherHeadingView: UIView {
     }()
     var sunriseLabel: UILabel = {
         let label = UILabel()
-        label.text = "07:30"
         label.font = Theme.Fonts.BBC.body
         label.textColor = Theme.Colours.white
         return label
     }()
     var sunsetLabel: UILabel = {
         let label = UILabel()
-        label.text = "22:30"
         label.font = Theme.Fonts.BBC.body
         label.textColor = Theme.Colours.silver
         return label

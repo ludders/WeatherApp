@@ -55,7 +55,16 @@ class WeatherViewController: UIViewController {
         configureDayCollectionView()
         setupBindings()
         weatherView.headingView.refreshButton.addTarget(self, action: #selector(didTapRefresh), for: .touchUpInside)
-        viewModel.updateForecast()
+
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        view.displayLoadingView()
+        viewModel.updateForecast { result in
+            DispatchQueue.main.async {
+                self.view.hideLoadingView()
+            }
+        }
     }
 
     private func setupBindings() {
@@ -64,6 +73,7 @@ class WeatherViewController: UIViewController {
         }
         viewModel.selectedDayIndex.bindOnNext { _ in
             DispatchQueue.main.async {
+                self.weatherView.forecastCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredHorizontally, animated: false)
                 self.weatherView.forecastCollectionView.reloadData()
             }
         }
@@ -90,7 +100,12 @@ class WeatherViewController: UIViewController {
     }
 
     @objc func didTapRefresh() {
-        viewModel.updateForecast()
+        view.displayLoadingView()
+        viewModel.updateForecast { result in
+            DispatchQueue.main.async {
+                self.view.hideLoadingView()
+            }
+        }
     }
 }
 

@@ -11,6 +11,8 @@ import UIKit
 
 final class BBCLogoView: UIView {
 
+    //TODO: Animate this as per original 90s BBC intro animation
+
     fileprivate var letterBoxesLayer: CAShapeLayer!
     fileprivate var lettersLayer: CAShapeLayer!
     fileprivate var blueBarlayer: CAShapeLayer!

@@ -9,6 +9,8 @@
 import Foundation
 import CoreLocation
 
+typealias UpdateForecastCompletion = Result<Bool, NetworkError>
+
 class WeatherViewModel {
     private(set) var locationForecast: Observable<LocationForecast>
     var selectedDayIndex: Observable<Int>
@@ -23,7 +25,7 @@ class WeatherViewModel {
 
     var forecastDataItems: [[ForecastDataItem]] = [[]]
 
-    public func updateForecast() {
+    public func updateForecast(onCompletion: @escaping (UpdateForecastCompletion) -> ()) {
         let service = WeatherService()
         let request = WeatherRequest(latitude: String(locationForecast.value.coordinates.latitude),
                                      longitude: String(locationForecast.value.coordinates.longitude),
@@ -32,10 +34,13 @@ class WeatherViewModel {
         service.getLocationForecast(for: request) { result in
             switch result {
             case .success(let forecast):
+                sleep(1)
                 self.locationForecast.value = forecast
                 self.forecastDataItems = forecast.asDataItems
+                onCompletion(.success(true))
             case .failure(let error):
-                print("Error")
+                print(error)
+                onCompletion(.failure(error))
             }
         }
     }
