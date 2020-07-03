@@ -20,6 +20,7 @@ public struct Theme {
         }
         public static var white: UIColor {
             return UIColor(hex: "#FFFFFF")
+//            return UIColor(hex: "#000000")
         }
         public static var bbcRed: UIColor {
             return UIColor(hex: "#E2231A")
@@ -35,6 +36,11 @@ public struct Theme {
         }
         public static var black: UIColor {
             return UIColor(hex: "#000000")
+//            return UIColor(hex: "#FFFFFF")
+        }
+        public static var blackTranslucent: UIColor {
+            return UIColor(hex: "#000000E6")
+//            return UIColor(hex: "#FFFFFFE6")
         }
     }
 

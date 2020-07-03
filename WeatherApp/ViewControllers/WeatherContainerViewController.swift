@@ -11,16 +11,26 @@ import UIKit
 
 import SnapKit
 
+
+protocol WeatherContainerViewControllerDelegate: AnyObject {
+    func didTapSearch()
+}
+
 //Will manage header view & act as parent for weather page view controller
 class WeatherContainerViewController: UIViewController {
 
     var containerView: UIView!
     var headerView: HeaderView!
     var pageViewController: UIPageViewController
+    weak var delegate: WeatherContainerViewControllerDelegate?
 
     init(pageViewController: UIPageViewController) {
         self.pageViewController = pageViewController
         super.init(nibName: nil, bundle: nil)
+    }
+
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
 
     required init?(coder: NSCoder) {
@@ -54,11 +64,11 @@ class WeatherContainerViewController: UIViewController {
 }
 
 extension WeatherContainerViewController: HeaderViewDelegate {
-    func searchTapped() {
-        //TODO: Implement search functionality
+    func didTapSearch() {
+        delegate?.didTapSearch()
     }
 
-    func shareTapped() {
-        //TODO: Implement share functionality
+    func didTapShare() {
+        //TODO: Implement Share functionality?
     }
 }

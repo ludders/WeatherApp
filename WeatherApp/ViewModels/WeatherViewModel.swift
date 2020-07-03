@@ -34,7 +34,6 @@ class WeatherViewModel {
         service.getLocationForecast(for: request) { result in
             switch result {
             case .success(let forecast):
-                sleep(1)
                 self.locationForecast.value = forecast
                 self.forecastDataItems = forecast.asDataItems
                 onCompletion(.success(true))

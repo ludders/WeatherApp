@@ -29,8 +29,8 @@ class HeaderView: UIView {
     private var toolbar: UIToolbar = {
         let toolbar = UIToolbar(frame: CGRect(x: 0, y: 0, width: 50, height: 50))
         toolbar.setBackgroundImage(UIImage(), forToolbarPosition: .any, barMetrics: .default)
-        let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(searchTapped))
-        let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareTapped))
+        let searchButton = UIBarButtonItem(barButtonSystemItem: .search, target: self, action: #selector(didTapSearch))
+        let shareButton = UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(didTapShare))
         let flexible = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
         toolbar.setItems([flexible, searchButton, shareButton], animated: true)
         return toolbar
@@ -78,16 +78,16 @@ class HeaderView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    @objc private func searchTapped() {
-        delegate?.searchTapped()
+    @objc private func didTapSearch() {
+        delegate?.didTapSearch()
     }
 
-    @objc private func shareTapped() {
-        delegate?.shareTapped()
+    @objc private func didTapShare() {
+        delegate?.didTapShare()
     }
 }
 
 protocol HeaderViewDelegate: AnyObject {
-    func searchTapped()
-    func shareTapped()
+    func didTapSearch()
+    func didTapShare()
 }

@@ -60,21 +60,19 @@ final class RGBSpinnerView: UIView {
     }
 
     fileprivate func addSubLayers() {
-        //Blue Bar
         blueBarlayer = CAShapeLayer()
-        blueBarlayer.fillColor = UIColor.blue.cgColor
+        blueBarlayer.fillColor = Theme.Colours.bbcBlue.cgColor
         blueBarlayer.path = blue_bar_path
         layer.addSublayer(blueBarlayer)
 
-        //Red Bar
         redBarLayer = CAShapeLayer()
-        redBarLayer.fillColor = UIColor.red.cgColor
+        redBarLayer.fillColor = Theme.Colours.bbcRed.cgColor
         redBarLayer.path = red_bar_path
         layer.addSublayer(redBarLayer)
 
-        //Green Bar
         greenBarLayer = CAShapeLayer()
-        greenBarLayer.fillColor = UIColor.green.cgColor
+        greenBarLayer.fillColor = Theme.Colours.bbcGreen.cgColor
+
         greenBarLayer.path = green_bar_path
         layer.addSublayer(greenBarLayer)
     }

@@ -75,6 +75,9 @@ class WeatherViewController: UIViewController {
             DispatchQueue.main.async {
                 self.weatherView.forecastCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredHorizontally, animated: false)
                 self.weatherView.forecastCollectionView.reloadData()
+                //TODO: Bind header view stuff to update
+                    // Subtitle
+                    // Sunrise/Sunset times
             }
         }
     }

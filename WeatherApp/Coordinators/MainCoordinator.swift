@@ -15,6 +15,7 @@ protocol Coordinator {
 }
 
 class MainCoordinator: Coordinator {
+    
     var childCoordinators: [Coordinator]?
     var navigationController: UINavigationController
     var navigationControllerDelegate: UINavigationControllerDelegate?
@@ -27,14 +28,14 @@ class MainCoordinator: Coordinator {
 
     func start() {
         if UserDefaults.standard.bool(forKey: "hasSeenIntro") {
-            showWeather()
+            startWeatherFlow()
         } else {
             UserDefaults.standard.set(true, forKey: "hasSeenIntro")
-            showIntro()
+            startIntroFlow()
         }
     }
 
-    private func showWeather() {
+    func startWeatherFlow() {
         //TODO: Set up data source / view controllers for this.
         let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
         let viewModel = WeatherViewModel()
@@ -45,19 +46,40 @@ class MainCoordinator: Coordinator {
                                         dayCollectionViewDataSource: dayCollectionViewDataSource)
         pageViewController.setViewControllers([vc1], direction: .forward, animated: true, completion: nil)
         let weatherContainerViewController = WeatherContainerViewController(pageViewController: pageViewController)
+        weatherContainerViewController.delegate = self
         navigationController.pushViewController(weatherContainerViewController, animated: true)
     }
 
-    private func showIntro() {
+    private func startIntroFlow() {
         let introViewController = IntroViewController()
         introViewController.delegate = self
         navigationController.pushViewController(introViewController, animated: true)
     }
+
+    private func startSearchFlow() {
+        let searchViewController = SearchViewController()
+        searchViewController.delegate = self
+        navigationController.present(searchViewController, animated: true) {
+            //TODO: Handle search selection
+        }
+    }
 }
 
 extension MainCoordinator: IntroViewControllerDelegate {
-    func animationDidFInish() {
-        showWeather()
+    func introDidFinish() {
+        startWeatherFlow()
+    }
+}
+
+extension MainCoordinator: WeatherContainerViewControllerDelegate {
+    func didTapSearch() {
+        startSearchFlow()
+    }
+}
+
+extension MainCoordinator: SearchViewControllerDelegate {
+    func didTapClose() {
+        navigationController.dismiss(animated: true, completion: nil)
     }
 }
 

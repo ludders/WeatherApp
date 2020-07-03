@@ -44,6 +44,7 @@
 		9DAE20572493E19900B2C284 /* DailyForecastCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE20562493E19900B2C284 /* DailyForecastCollectionViewCell.swift */; };
 		9DAE20592493E1BB00B2C284 /* HourlyForecastCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE20582493E1BB00B2C284 /* HourlyForecastCollectionViewCell.swift */; };
 		9DAE205D2493FAD400B2C284 /* DayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE205C2493FAD400B2C284 /* DayCollectionViewCell.swift */; };
+		9DAEA0EF24AD165D00409D9F /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAEA0EE24AD165D00409D9F /* SearchViewController.swift */; };
 		9DC563F9245C734600A0C8CD /* WeatherContainerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC563F8245C734600A0C8CD /* WeatherContainerViewController.swift */; };
 		9DF6984B248169FB00C9BEC8 /* LocationForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF6984A248169FB00C9BEC8 /* LocationForecast.swift */; };
 		9DF69C18248175C200C9BEC8 /* ExampleWeatherCall.json in Resources */ = {isa = PBXBuildFile; fileRef = 9DF69C17248175C200C9BEC8 /* ExampleWeatherCall.json */; };
@@ -117,6 +118,7 @@
 		9DAE20562493E19900B2C284 /* DailyForecastCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DailyForecastCollectionViewCell.swift; sourceTree = "<group>"; };
 		9DAE20582493E1BB00B2C284 /* HourlyForecastCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyForecastCollectionViewCell.swift; sourceTree = "<group>"; };
 		9DAE205C2493FAD400B2C284 /* DayCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DayCollectionViewCell.swift; sourceTree = "<group>"; };
+		9DAEA0EE24AD165D00409D9F /* SearchViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewController.swift; sourceTree = "<group>"; };
 		9DBD7D6F247822F100763647 /* SnapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SnapKit.framework; path = Carthage/Build/iOS/SnapKit.framework; sourceTree = "<group>"; };
 		9DC563F8245C734600A0C8CD /* WeatherContainerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherContainerViewController.swift; sourceTree = "<group>"; };
 		9DF6984A248169FB00C9BEC8 /* LocationForecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationForecast.swift; sourceTree = "<group>"; };
@@ -237,6 +239,7 @@
 				9D0FCB29245318D70074D005 /* IntroViewController.swift */,
 				9DC563F8245C734600A0C8CD /* WeatherContainerViewController.swift */,
 				9DAB019C2479A8BF005ED04C /* WeatherViewController.swift */,
+				9DAEA0EE24AD165D00409D9F /* SearchViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -418,6 +421,7 @@
 				9D5241562486ECF1005A8F1A /* WeatherViewModel.swift in Sources */,
 				9DAE205D2493FAD400B2C284 /* DayCollectionViewCell.swift in Sources */,
 				9D0FCF15245329A20074D005 /* UIColor+Extensions.swift in Sources */,
+				9DAEA0EF24AD165D00409D9F /* SearchViewController.swift in Sources */,
 				9D11719924759109003949DB /* WeatherService.swift in Sources */,
 				9D11719B24759264003949DB /* WeatherResponse.swift in Sources */,
 				9DF69C1A24817A9700C9BEC8 /* CurrentForecast.swift in Sources */,
