@@ -173,15 +173,12 @@
 			children = (
 				9D0FCB25245318D70074D005 /* AppDelegate.swift */,
 				9D0FCB27245318D70074D005 /* SceneDelegate.swift */,
-				9DF69849248169E300C9BEC8 /* Models */,
-				9D7E10F5247328F800B06C1C /* Services */,
-				9D2BF7BE245B3EF300ED3207 /* Coordinators */,
-				9D0FCF19245331E20074D005 /* Utilities */,
+				9D2BF7BE245B3EF300ED3207 /* Core */,
+				9D9C1FFF24B505110013AD72 /* Extensions */,
+				9D9C1FF724B502310013AD72 /* Forecast */,
+				9D9C1FFD24B504540013AD72 /* Search */,
 				9D0FCF18245331D10074D005 /* Theme */,
-				9D5241542486ECCD005A8F1A /* ViewModels */,
-				9D7D39C824952F060026F1A5 /* Data Sources */,
-				9D2BF7BD245B3DE000ED3207 /* ViewControllers */,
-				9D2BF7BC245B3DD000ED3207 /* Views */,
+				9D0FCF19245331E20074D005 /* Utilities */,
 				9D0FCB2E245318D80074D005 /* Assets.xcassets */,
 				9D0FCB30245318D80074D005 /* LaunchScreen.storyboard */,
 				9D0FCB33245318D80074D005 /* Info.plist */,
@@ -201,6 +198,8 @@
 		9D0FCF18245331D10074D005 /* Theme */ = {
 			isa = PBXGroup;
 			children = (
+				9D0FCF12245322B50074D005 /* BBCLogoView.swift */,
+				9D657A5924AA14CC0041D0A1 /* RGBLoadingView.swift */,
 				9D0FCF1624532ED10074D005 /* Theme.swift */,
 			);
 			path = Theme;
@@ -209,64 +208,19 @@
 		9D0FCF19245331E20074D005 /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
-				9D0FCF14245329A20074D005 /* UIColor+Extensions.swift */,
-				9D3E7E63248AA97400A4A248 /* CLLocationCoordinate2D+Extensions.swift */,
-				9D0888BB249CF13F00E619FD /* UIView+Extensions.swift */,
-				9D1D910F24A5F84000AB3E46 /* Double+Extensions.swift */,
+				9D3E7E61248A8C8C00A4A248 /* Observable.swift */,
+				9D11FD0C2498F943002C2387 /* SymbolString.swift */,
 			);
 			path = Utilities;
 			sourceTree = "<group>";
 		};
-		9D2BF7BC245B3DD000ED3207 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				9D0FCF12245322B50074D005 /* BBCLogoView.swift */,
-				9D657A5924AA14CC0041D0A1 /* RGBLoadingView.swift */,
-				9D0871B1247BF24500DA520C /* WeatherView.swift */,
-				9D0871B3247BF54200DA520C /* WeatherHeadingView.swift */,
-				9D1177E22476F478003949DB /* HeaderView.swift */,
-				9DAE205C2493FAD400B2C284 /* DayCollectionViewCell.swift */,
-				9DAE20562493E19900B2C284 /* DailyForecastCollectionViewCell.swift */,
-				9DAE20582493E1BB00B2C284 /* HourlyForecastCollectionViewCell.swift */,
-				9D186912249AC61000D8978B /* WeatherIconView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
-		9D2BF7BD245B3DE000ED3207 /* ViewControllers */ = {
+		9D2BF7BE245B3EF300ED3207 /* Core */ = {
 			isa = PBXGroup;
 			children = (
 				9D0FCB29245318D70074D005 /* IntroViewController.swift */,
-				9DC563F8245C734600A0C8CD /* WeatherContainerViewController.swift */,
-				9DAB019C2479A8BF005ED04C /* WeatherViewController.swift */,
-				9DAEA0EE24AD165D00409D9F /* SearchViewController.swift */,
-			);
-			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		9D2BF7BE245B3EF300ED3207 /* Coordinators */ = {
-			isa = PBXGroup;
-			children = (
 				9D2BF7BF245B3F1500ED3207 /* MainCoordinator.swift */,
 			);
-			path = Coordinators;
-			sourceTree = "<group>";
-		};
-		9D5241542486ECCD005A8F1A /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				9D5241552486ECF1005A8F1A /* WeatherViewModel.swift */,
-			);
-			path = ViewModels;
-			sourceTree = "<group>";
-		};
-		9D7D39C824952F060026F1A5 /* Data Sources */ = {
-			isa = PBXGroup;
-			children = (
-				9DAE20172493DA9600B2C284 /* ForecastCollectionViewDataSource.swift */,
-				9DAABF6B24A3E82500AC17E6 /* DayCollectionViewDataSource.swift */,
-			);
-			path = "Data Sources";
+			path = Core;
 			sourceTree = "<group>";
 		};
 		9D7E10F5247328F800B06C1C /* Services */ = {
@@ -281,6 +235,97 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
+		9D9C1FF724B502310013AD72 /* Forecast */ = {
+			isa = PBXGroup;
+			children = (
+				9D9C1FF824B5030E0013AD72 /* Views */,
+				9D9C1FF924B5032E0013AD72 /* ViewControllers */,
+				9D9C1FFC24B5038F0013AD72 /* Data Sources */,
+				9D9C1FFB24B5035A0013AD72 /* ViewModels */,
+				9D9C1FFA24B5034A0013AD72 /* Models */,
+				9D7E10F5247328F800B06C1C /* Services */,
+			);
+			path = Forecast;
+			sourceTree = "<group>";
+		};
+		9D9C1FF824B5030E0013AD72 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				9D1177E22476F478003949DB /* HeaderView.swift */,
+				9D0871B1247BF24500DA520C /* WeatherView.swift */,
+				9D0871B3247BF54200DA520C /* WeatherHeadingView.swift */,
+				9D186912249AC61000D8978B /* WeatherIconView.swift */,
+				9DAE205C2493FAD400B2C284 /* DayCollectionViewCell.swift */,
+				9DAE20562493E19900B2C284 /* DailyForecastCollectionViewCell.swift */,
+				9DAE20582493E1BB00B2C284 /* HourlyForecastCollectionViewCell.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		9D9C1FF924B5032E0013AD72 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				9DC563F8245C734600A0C8CD /* WeatherContainerViewController.swift */,
+				9DAB019C2479A8BF005ED04C /* WeatherViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		9D9C1FFA24B5034A0013AD72 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				9DF6984A248169FB00C9BEC8 /* LocationForecast.swift */,
+				9DF69C1924817A9700C9BEC8 /* CurrentForecast.swift */,
+				9D13A90C248ECB9000613184 /* DailyForecast.swift */,
+				9D13A90E248EDA1C00613184 /* HourlyForecast.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		9D9C1FFB24B5035A0013AD72 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				9D5241552486ECF1005A8F1A /* WeatherViewModel.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		9D9C1FFC24B5038F0013AD72 /* Data Sources */ = {
+			isa = PBXGroup;
+			children = (
+				9DAE20172493DA9600B2C284 /* ForecastCollectionViewDataSource.swift */,
+				9DAABF6B24A3E82500AC17E6 /* DayCollectionViewDataSource.swift */,
+			);
+			path = "Data Sources";
+			sourceTree = "<group>";
+		};
+		9D9C1FFD24B504540013AD72 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				9D9C1FFE24B504E00013AD72 /* ViewControllers */,
+			);
+			path = Search;
+			sourceTree = "<group>";
+		};
+		9D9C1FFE24B504E00013AD72 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				9DAEA0EE24AD165D00409D9F /* SearchViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		9D9C1FFF24B505110013AD72 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				9D0FCF14245329A20074D005 /* UIColor+Extensions.swift */,
+				9D3E7E63248AA97400A4A248 /* CLLocationCoordinate2D+Extensions.swift */,
+				9D0888BB249CF13F00E619FD /* UIView+Extensions.swift */,
+				9D1D910F24A5F84000AB3E46 /* Double+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
 		9DBD7D6E247822F100763647 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
@@ -288,19 +333,6 @@
 				9DBD7D6F247822F100763647 /* SnapKit.framework */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		9DF69849248169E300C9BEC8 /* Models */ = {
-			isa = PBXGroup;
-			children = (
-				9DF6984A248169FB00C9BEC8 /* LocationForecast.swift */,
-				9DF69C1924817A9700C9BEC8 /* CurrentForecast.swift */,
-				9D13A90C248ECB9000613184 /* DailyForecast.swift */,
-				9D13A90E248EDA1C00613184 /* HourlyForecast.swift */,
-				9D11FD0C2498F943002C2387 /* SymbolString.swift */,
-				9D3E7E61248A8C8C00A4A248 /* Observable.swift */,
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
