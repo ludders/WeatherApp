@@ -10,6 +10,8 @@ import Foundation
 
 struct DailyForecast {
     var time: Date
+    var sunrise: Date?
+    var sunset: Date?
     var symbol: String?
     var maxTemp: Double?
     var minTemp: Double?
@@ -22,4 +24,20 @@ struct DailyForecast {
     var feelsLike: FeelsLike?
     var clouds: Int?
     var hourlyForecasts: [HourlyForecast]?
+}
+
+extension DailyForecast {
+    var sunriseDisplayText: String {
+        guard let sunrise = sunrise else {
+            return "--:--"
+        }
+        return DateFormatter.localizedString(from: sunrise, dateStyle: .none, timeStyle: .short)
+    }
+
+    var sunsetDisplayText: String {
+        guard let sunset = sunset else {
+            return "--:--"
+        }
+        return DateFormatter.localizedString(from: sunset, dateStyle: .none, timeStyle: .short)
+    }
 }

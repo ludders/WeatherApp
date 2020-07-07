@@ -71,13 +71,15 @@ class WeatherViewController: UIViewController {
         viewModel.locationForecast.bindOnNext { locationForecast in
             self.weatherView.configure(with: locationForecast)
         }
-        viewModel.selectedDayIndex.bindOnNext { _ in
+        viewModel.selectedDayObs.bind { dailyForecast in
+            guard let selectedDay = dailyForecast else { return }
             DispatchQueue.main.async {
+                //TODO update header view subtitle/sunrise/sunset with dailyForecasts[selectedIndex][0] etc....
+                self.weatherView.headingView.subtitleLabel.text = "Missing"
+                self.weatherView.headingView.sunriseLabel.text = selectedDay.sunriseDisplayText
+                self.weatherView.headingView.sunsetLabel.text = selectedDay.sunriseDisplayText
                 self.weatherView.forecastCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredHorizontally, animated: false)
                 self.weatherView.forecastCollectionView.reloadData()
-                //TODO: Bind header view stuff to update
-                    // Subtitle
-                    // Sunrise/Sunset times
             }
         }
     }

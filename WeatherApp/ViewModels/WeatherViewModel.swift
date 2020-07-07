@@ -13,14 +13,17 @@ typealias UpdateForecastCompletion = Result<Bool, NetworkError>
 
 class WeatherViewModel {
     private(set) var locationForecast: Observable<LocationForecast>
-    var selectedDayIndex: Observable<Int>
+    var selectedDayIndex = Observable<Int>(0)
+    var selectedDayObs = Observable<DailyForecast?>(nil)
     //TODO: Remove the default forecast when no longer needed
     public init(model: LocationForecast = LocationForecast(name: nil,
                                               coordinates: CLLocationCoordinate2D.nullIsland,
                                               currentForecast: nil,
                                               dailyForecasts: nil)) {
         self.locationForecast = Observable<LocationForecast>(model)
-        self.selectedDayIndex = Observable<Int>(0)
+        self.selectedDayIndex.bind { index in
+            self.selectedDayObs.value = self.dailyForecast(for: index)
+        }
     }
 
     var forecastDataItems: [[ForecastDataItem]] = [[]]
@@ -36,12 +39,23 @@ class WeatherViewModel {
             case .success(let forecast):
                 self.locationForecast.value = forecast
                 self.forecastDataItems = forecast.asDataItems
+                self.selectedDayObs.value = self.dailyForecast(for: self.selectedDayIndex.value)
                 onCompletion(.success(true))
             case .failure(let error):
                 print(error)
                 onCompletion(.failure(error))
             }
         }
+    }
+
+    private func dailyForecast(for index: Int) -> DailyForecast? {
+        guard !forecastDataItems[selectedDayIndex.value].isEmpty else { return nil }
+        switch forecastDataItems[selectedDayIndex.value][0] {
+            case .day(let dailyForecast):
+                return dailyForecast
+            default:
+                return nil
+            }
     }
 }
 

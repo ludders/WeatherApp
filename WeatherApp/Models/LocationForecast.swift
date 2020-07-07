@@ -50,20 +50,6 @@ extension LocationForecast {
             return NSLocalizedString("a moment ago", comment: "a moment ago")
         }
     }
-
-    var sunriseDisplayText: String {
-        guard let sunrise = self.currentForecast?.sunrise else {
-            return "--:--"
-        }
-        return DateFormatter.localizedString(from: sunrise, dateStyle: .none, timeStyle: .short)
-    }
-
-    var sunsetDisplayText: String {
-        guard let sunset = self.currentForecast?.sunset else {
-            return "--:--"
-        }
-        return DateFormatter.localizedString(from: sunset, dateStyle: .none, timeStyle: .short)
-    }
 }
 
 //MARK: Data Items for collection view

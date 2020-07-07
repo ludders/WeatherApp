@@ -57,6 +57,7 @@ class WeatherService {
         getWeatherResponse(for: request, onCompletion: { result in
             switch result {
             case .success(let response):
+                sleep(1)
                 let locationForecast = self.buildLocationForecast(using: response)
                 onCompletion(.success(locationForecast))
             case .failure(let error):
@@ -114,6 +115,8 @@ class WeatherService {
                     })
 
                 return DailyForecast(time: day.dt ?? Date(timeIntervalSince1970: 0),
+                                     sunrise: day.sunrise,
+                                     sunset: day.sunset,
                                      symbol: SymbolString.from(code: day.weather?.first?.icon ?? ""),
                                      maxTemp: day.temp?.max,
                                      minTemp: day.temp?.min,

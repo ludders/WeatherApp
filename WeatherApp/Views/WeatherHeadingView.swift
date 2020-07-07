@@ -130,8 +130,6 @@ class WeatherHeadingView: UIView {
             let locationForecast = locationForecast
             self.refreshLabel.text = locationForecast.lastUpdateDisplayText
             self.locationLabel.text = locationForecast.name
-            self.sunriseLabel.text = locationForecast.sunriseDisplayText
-            self.sunsetLabel.text = locationForecast.sunsetDisplayText
         }
     }
 }
