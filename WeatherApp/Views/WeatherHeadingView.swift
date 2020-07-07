@@ -54,13 +54,13 @@ class WeatherHeadingView: UIView {
     }()
     var sunriseLabel: UILabel = {
         let label = UILabel()
-        label.font = Theme.Fonts.BBC.body
+        label.font = Theme.Fonts.BBC.footnote
         label.textColor = Theme.Colours.white
         return label
     }()
     var sunsetLabel: UILabel = {
         let label = UILabel()
-        label.font = Theme.Fonts.BBC.body
+        label.font = Theme.Fonts.BBC.footnote
         label.textColor = Theme.Colours.silver
         return label
     }()
@@ -84,7 +84,7 @@ class WeatherHeadingView: UIView {
 
     func setupSunTimesView() {
         sunTimesView = UIStackView(arrangedSubviews: [sunriseImageView, sunriseLabel, sunsetLabel])
-        sunTimesView?.alignment = .fill
+        sunTimesView?.alignment = .firstBaseline
         sunTimesView?.distribution = .fillProportionally
         sunTimesView?.axis = .horizontal
         sunTimesView?.spacing = 10
@@ -121,7 +121,7 @@ class WeatherHeadingView: UIView {
         }
         sunTimesView?.snp.makeConstraints({ make in
             make.trailing.equalTo(layoutMarginsGuide)
-            make.bottom.equalTo(subtitleLabel)
+            make.firstBaseline.equalTo(subtitleLabel.snp.firstBaseline)
         })
     }
 

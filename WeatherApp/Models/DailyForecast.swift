@@ -40,4 +40,13 @@ extension DailyForecast {
         }
         return DateFormatter.localizedString(from: sunset, dateStyle: .none, timeStyle: .short)
     }
+
+    var subtitleDisplayText: String {
+        let calendar = Calendar(identifier: .gregorian)
+        if calendar.compare(time, to: Date(), toGranularity: .day) == .orderedSame {
+            return NSLocalizedString("Next Hour", comment: "Next Hour")
+        } else {
+            return time.formattedAs("EEEE")
+        }
+    }
 }

@@ -75,7 +75,7 @@ class WeatherViewController: UIViewController {
             guard let selectedDay = dailyForecast else { return }
             DispatchQueue.main.async {
                 //TODO update header view subtitle/sunrise/sunset with dailyForecasts[selectedIndex][0] etc....
-                self.weatherView.headingView.subtitleLabel.text = "Missing"
+                self.weatherView.headingView.subtitleLabel.text = selectedDay.subtitleDisplayText
                 self.weatherView.headingView.sunriseLabel.text = selectedDay.sunriseDisplayText
                 self.weatherView.headingView.sunsetLabel.text = selectedDay.sunriseDisplayText
                 self.weatherView.forecastCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredHorizontally, animated: false)

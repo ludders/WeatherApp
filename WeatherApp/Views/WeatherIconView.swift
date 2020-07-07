@@ -75,7 +75,6 @@ final class WindIconView: UIView {
         }
     }
 
-    //TODO: Set up rotating the arrowview based on degrees given. Hint: CGAffineTransform & anchorPoint (Default 0.5, 0.5) (Need 0, 0.5)?
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
