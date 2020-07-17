@@ -35,6 +35,14 @@ class MainCoordinator: Coordinator {
         }
     }
 
+    private func startIntroFlow() {
+        let introViewController = IntroViewController()
+        introViewController.coordinatorDelegate = self
+        navigationController.pushViewController(introViewController, animated: true)
+    }
+}
+
+extension MainCoordinator: IntroViewControllerDelegate {
     func startWeatherFlow() {
         //TODO: Set up data source / view controllers for this.
         let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
@@ -46,37 +54,21 @@ class MainCoordinator: Coordinator {
                                         dayCollectionViewDataSource: dayCollectionViewDataSource)
         pageViewController.setViewControllers([vc1], direction: .forward, animated: true, completion: nil)
         let weatherContainerViewController = WeatherContainerViewController(pageViewController: pageViewController)
-        weatherContainerViewController.delegate = self
+        weatherContainerViewController.coordinatorDelegate = self
         navigationController.pushViewController(weatherContainerViewController, animated: true)
-    }
-
-    private func startIntroFlow() {
-        let introViewController = IntroViewController()
-        introViewController.delegate = self
-        navigationController.pushViewController(introViewController, animated: true)
-    }
-
-    private func startSearchFlow() {
-        let suggestionsAPI = SuggestionsAPI()
-        let suggestionsService = SuggestionsService(suggestionsAPI: suggestionsAPI)
-        let viewModel = SearchViewModel(suggestionsService: suggestionsService)
-        let searchViewController = SearchViewController(viewModel: viewModel)
-        searchViewController.delegate = self
-        navigationController.present(searchViewController, animated: true) {
-            //TODO: Handle search selection
-        }
-    }
-}
-
-extension MainCoordinator: IntroViewControllerDelegate {
-    func introDidFinish() {
-        startWeatherFlow()
     }
 }
 
 extension MainCoordinator: WeatherContainerViewControllerDelegate {
-    func didTapSearch() {
-        startSearchFlow()
+    func startSearchFlow() {
+        let suggestionsAPI = SuggestionsAPI()
+        let suggestionsService = SuggestionsService(suggestionsAPI: suggestionsAPI)
+        let viewModel = SearchViewModel(suggestionsService: suggestionsService)
+        let searchViewController = SearchViewController(viewModel: viewModel)
+        searchViewController.coordinatorDelegate = self
+        navigationController.present(searchViewController, animated: true) {
+            //TODO: Handle search selection
+        }
     }
 }
 

@@ -19,7 +19,7 @@ class SearchViewController: UIViewController {
     private let viewModel: SearchViewModel
 
     private let titleLabel = UILabel()
-    private var cancelButton = UIButton()
+    private var closeButton = UIButton()
     private let searchIconView = UIImageView()
     private let clearIconButton = UIButton()
     private let textField = PaddableTextField()
@@ -27,7 +27,7 @@ class SearchViewController: UIViewController {
     private let tableView = UITableView()
     private let tableViewController = UITableViewController()
 
-    weak var delegate: SearchViewControllerDelegate?
+    weak var coordinatorDelegate: SearchViewControllerDelegate?
 
     init(viewModel: SearchViewModel) {
         self.viewModel = viewModel
@@ -40,12 +40,11 @@ class SearchViewController: UIViewController {
 
     override func viewDidLoad() {
         setupViews()
+        setupActions()
         setupTableView()
         setupConstraints()
         viewModel.suggestionsModel.bind { suggestions in
-            guard let suggestions = suggestions else {
-                return
-            }
+            guard suggestions != nil else { return }
             DispatchQueue.main.async {
                 self.tableView.reloadData()
             }
@@ -64,11 +63,10 @@ class SearchViewController: UIViewController {
         titleLabel.baselineAdjustment = .alignCenters
         view.addSubview(titleLabel)
 
-        cancelButton = UIButton(type: .system)
-        cancelButton.setTitle(NSLocalizedString("Close", comment: "Close"), for: .normal)
-        cancelButton.tintColor = Theme.Colours.silver
-        cancelButton.addTarget(self, action: #selector(didTapClose), for: .touchUpInside)
-        view.addSubview(cancelButton)
+        closeButton = UIButton(type: .system)
+        closeButton.setTitle(NSLocalizedString("Close", comment: "Close"), for: .normal)
+        closeButton.tintColor = Theme.Colours.silver
+        view.addSubview(closeButton)
 
         textField.delegate = self
         textField.layer.cornerRadius = 5
@@ -76,6 +74,8 @@ class SearchViewController: UIViewController {
         textField.textColor = Theme.Colours.white
         textField.overlayViewsEdgeInsets = UIEdgeInsets(top: 7.5, left: 5, bottom: 5, right: 5)
         textField.font = Theme.Fonts.BBC.body
+        textField.attributedPlaceholder = NSAttributedString(string: NSLocalizedString("Enter a location", comment: "Enter a location"),
+                                                             attributes: [NSAttributedString.Key.foregroundColor: Theme.Colours.silver])
 
         searchIconView.image = UIImage(systemName: "magnifyingglass")
         searchIconView.frame = CGRect(x: 0, y: 0, width: 25, height: 25)
@@ -93,7 +93,13 @@ class SearchViewController: UIViewController {
         textField.rightViewMode = .whileEditing
         view.addSubview(textField)
 
+        tableView.backgroundColor = Theme.Colours.black
         view.addSubview(tableView)
+    }
+
+    func setupActions() {
+        closeButton.addTarget(self, action: #selector(didTapClose), for: .touchUpInside)
+        clearIconButton.addTarget(self, action: #selector(didTapClear), for: .touchUpInside)
     }
 
     func setupTableView() {
@@ -106,11 +112,11 @@ class SearchViewController: UIViewController {
 
         titleLabel.snp.makeConstraints { make in
             make.top.leading.equalTo(view.safeAreaLayoutGuide).inset(10)
-            make.trailing.equalTo(cancelButton.snp.leading).offset(-10)
+            make.trailing.equalTo(closeButton.snp.leading).offset(-10)
         }
 
-        cancelButton.setContentCompressionResistancePriority(.required, for: .horizontal)
-        cancelButton.snp.makeConstraints { make in
+        closeButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+        closeButton.snp.makeConstraints { make in
             make.top.trailing.equalTo(view.safeAreaLayoutGuide).inset(10)
         }
         textField.snp.makeConstraints { make in
@@ -126,7 +132,12 @@ class SearchViewController: UIViewController {
     }
 
     @objc func didTapClose() {
-        delegate?.didTapClose()
+        coordinatorDelegate?.didTapClose()
+    }
+
+    @objc func didTapClear() {
+        textField.text = ""
+        viewModel.clearSuggestions()
     }
 }
 
@@ -161,9 +172,7 @@ extension SearchViewController: UITextFieldDelegate {
         guard let text = textField.text,
             let textRange = Range(range, in: text) else { return true }
         let searchText = text.replacingCharacters(in: textRange, with: string)
-        if searchText.count >= 3 {
-            viewModel.searchTextDidChange(to: searchText)
-        }
+        viewModel.searchTextDidChange(to: searchText)
         return true
     }
 }
@@ -181,7 +190,6 @@ extension SearchViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        print("numberOfRowsInSection \(viewModel.numberOfSuggestions)")
         return viewModel.numberOfSuggestions
     }
 
@@ -191,6 +199,8 @@ extension SearchViewController: UITableViewDataSource {
             fatalError("No suggestion found at given IndexPath")
         }
         cell.textLabel?.text = suggestion.displayName
+        cell.contentView.backgroundColor = Theme.Colours.black
+        cell.textLabel?.textColor = Theme.Colours.white
         return cell
     }
 }

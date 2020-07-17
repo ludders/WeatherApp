@@ -9,7 +9,7 @@
 import UIKit
 
 protocol IntroViewControllerDelegate: AnyObject {
-    func introDidFinish()
+    func startWeatherFlow()
 }
 
 class IntroViewController: UIViewController {
@@ -17,7 +17,7 @@ class IntroViewController: UIViewController {
     var containerView: UIView!
     var logoView: BBCLogoView!
     var weatherLabel: UILabel!
-    weak var delegate: IntroViewControllerDelegate?
+    weak var coordinatorDelegate: IntroViewControllerDelegate?
 
     override func loadView() {
         containerView = UIView(frame: UIScreen.main.bounds)
@@ -71,7 +71,7 @@ class IntroViewController: UIViewController {
 
 extension IntroViewController: CAAnimationDelegate {
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-        delegate?.introDidFinish()
+        coordinatorDelegate?.startWeatherFlow()
     }
 }
 

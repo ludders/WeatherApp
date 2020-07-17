@@ -13,7 +13,7 @@ import SnapKit
 
 
 protocol WeatherContainerViewControllerDelegate: AnyObject {
-    func didTapSearch()
+    func startSearchFlow()
 }
 
 //Will manage header view & act as parent for weather page view controller
@@ -22,7 +22,7 @@ class WeatherContainerViewController: UIViewController {
     var containerView: UIView!
     var headerView: HeaderView!
     var pageViewController: UIPageViewController
-    weak var delegate: WeatherContainerViewControllerDelegate?
+    weak var coordinatorDelegate: WeatherContainerViewControllerDelegate?
 
     init(pageViewController: UIPageViewController) {
         self.pageViewController = pageViewController
@@ -65,7 +65,7 @@ class WeatherContainerViewController: UIViewController {
 
 extension WeatherContainerViewController: HeaderViewDelegate {
     func didTapSearch() {
-        delegate?.didTapSearch()
+        coordinatorDelegate?.startSearchFlow()
     }
 
     func didTapShare() {

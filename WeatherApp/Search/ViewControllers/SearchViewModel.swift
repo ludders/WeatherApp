@@ -23,16 +23,25 @@ class SearchViewModel {
 
     func searchTextDidChange(to text: String) {
         timer?.invalidate()
-        timer = Timer(timeInterval: 0.2, repeats: false, block: { _ in
-            self.suggestionsService.getSuggestions(searchString: text) { result in
-                switch result {
-                case .success(let suggestions):
-                    self.suggestionsModel.value = suggestions
-                case.failure(let error):
-                    break
+
+        if text.count >= 3 {
+            timer = Timer(timeInterval: 0.2, repeats: false, block: { _ in
+                self.suggestionsService.getSuggestions(searchString: text) { result in
+                    switch result {
+                    case .success(let suggestions):
+                        self.suggestionsModel.value = suggestions
+                    case.failure(let error):
+                        break
+                    }
                 }
-            }
-        })
-        RunLoop.current.add(timer!, forMode: .default)
+            })
+            RunLoop.current.add(timer!, forMode: .default)
+        } else {
+            clearSuggestions()
+        }
+    }
+
+    func clearSuggestions() {
+        suggestionsModel.value = []
     }
 }
