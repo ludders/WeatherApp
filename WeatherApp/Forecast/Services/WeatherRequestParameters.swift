@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct WeatherRequest {
+struct WeatherRequestParameters {
     var latitude: String?
     var longitude: String?
     var units: String?

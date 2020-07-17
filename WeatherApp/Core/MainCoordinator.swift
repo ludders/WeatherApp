@@ -57,7 +57,10 @@ class MainCoordinator: Coordinator {
     }
 
     private func startSearchFlow() {
-        let searchViewController = SearchViewController()
+        let suggestionsAPI = SuggestionsAPI()
+        let suggestionsService = SuggestionsService(suggestionsAPI: suggestionsAPI)
+        let viewModel = SearchViewModel(suggestionsService: suggestionsService)
+        let searchViewController = SearchViewController(viewModel: viewModel)
         searchViewController.delegate = self
         navigationController.present(searchViewController, animated: true) {
             //TODO: Handle search selection

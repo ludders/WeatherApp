@@ -1,0 +1,209 @@
+[{
+    "place_id": "235428134",
+    "licence": "https:\/\/locationiq.com\/attribution",
+    "osm_type": "node",
+    "osm_id": "107775",
+    "boundingbox": ["51.3473219", "51.6673219", "-0.2876474", "0.0323526"],
+    "lat": "51.5073219",
+    "lon": "-0.1276474",
+    "display_name": "London, Greater London, England, SW1A 2DX, United Kingdom",
+    "class": "place",
+    "type": "city",
+    "importance": 0.94078276162373,
+    "icon": "https:\/\/locationiq.org\/static\/images\/mapicons\/poi_place_city.p.20.png",
+    "address": {
+        "city": "London",
+        "state_district": "Greater London",
+        "state": "England",
+        "postcode": "SW1A 2DX",
+        "country": "United Kingdom",
+        "country_code": "gb"
+    }
+}, {
+    "place_id": "236130971",
+    "licence": "https:\/\/locationiq.com\/attribution",
+    "osm_type": "relation",
+    "osm_id": "65606",
+    "boundingbox": ["51.2867601", "51.6918741", "-0.5103751", "0.3340155"],
+    "lat": "51.4893335",
+    "lon": "-0.144055084527687",
+    "display_name": "London, Greater London, England, United Kingdom",
+    "class": "place",
+    "type": "city",
+    "importance": 0.94078276162373,
+    "icon": "https:\/\/locationiq.org\/static\/images\/mapicons\/poi_place_city.p.20.png",
+    "address": {
+        "county": "London",
+        "state_district": "Greater London",
+        "state": "England",
+        "country": "United Kingdom",
+        "country_code": "gb"
+    }
+}, {
+    "place_id": "236013696",
+    "licence": "https:\/\/locationiq.com\/attribution",
+    "osm_type": "relation",
+    "osm_id": "51800",
+    "boundingbox": ["51.5068696", "51.5233213", "-0.1138211", "-0.0727261"],
+    "lat": "51.514947",
+    "lon": "-0.0930460965094679",
+    "display_name": "City of London, Greater London, England, United Kingdom",
+    "class": "boundary",
+    "type": "administrative",
+    "importance": 0.68651115475168,
+    "icon": "https:\/\/locationiq.org\/static\/images\/mapicons\/poi_boundary_administrative.p.20.png",
+    "address": {
+        "county": "City of London",
+        "state_district": "Greater London",
+        "state": "England",
+        "country": "United Kingdom",
+        "country_code": "gb"
+    }
+}, {
+    "place_id": "4468785",
+    "licence": "https:\/\/locationiq.com\/attribution",
+    "osm_type": "node",
+    "osm_id": "485248691",
+    "boundingbox": ["42.8236747", "43.1436747", "-81.4096068", "-81.0896068"],
+    "lat": "42.9836747",
+    "lon": "-81.2496068",
+    "display_name": "London, Southwestern Ontario, Ontario, Canada",
+    "class": "place",
+    "type": "city",
+    "importance": 0.67591772866561,
+    "icon": "https:\/\/locationiq.org\/static\/images\/mapicons\/poi_place_city.p.20.png",
+    "address": {
+        "city": "London",
+        "state_district": "Southwestern Ontario",
+        "state": "Ontario",
+        "postcode": "N6A 3C8",
+        "country": "Canada",
+        "country_code": "ca"
+    }
+}, {
+    "place_id": "236940683",
+    "licence": "https:\/\/locationiq.com\/attribution",
+    "osm_type": "relation",
+    "osm_id": "7485368",
+    "boundingbox": ["42.824599", "43.0730461", "-81.3906556", "-81.1070784"],
+    "lat": "42.9537654",
+    "lon": "-81.2291529",
+    "display_name": "London, Southwestern Ontario, Ontario, Canada",
+    "class": "place",
+    "type": "city",
+    "importance": 0.67591772866561,
+    "icon": "https:\/\/locationiq.org\/static\/images\/mapicons\/poi_place_city.p.20.png",
+    "address": {
+        "county": "London",
+        "state_district": "Southwestern Ontario",
+        "state": "Ontario",
+        "postcode": "N6C 5T3",
+        "country": "Canada",
+        "country_code": "ca"
+    }
+}, {
+    "place_id": "273221897",
+    "licence": "https:\/\/locationiq.com\/attribution",
+    "osm_type": "node",
+    "osm_id": "154363264",
+    "boundingbox": ["36.9689771", "37.2889771", "-84.2432646", "-83.9232646"],
+    "lat": "37.1289771",
+    "lon": "-84.0832646",
+    "display_name": "London, Laurel County, Kentucky, USA",
+    "class": "place",
+    "type": "city",
+    "importance": 0.55129224493719,
+    "icon": "https:\/\/locationiq.org\/static\/images\/mapicons\/poi_place_city.p.20.png",
+    "address": {
+        "city": "London",
+        "county": "Laurel County",
+        "state": "Kentucky",
+        "postcode": "40741",
+        "country": "United States of America",
+        "country_code": "us"
+    }
+}, {
+    "place_id": "236285891",
+    "licence": "https:\/\/locationiq.com\/attribution",
+    "osm_type": "relation",
+    "osm_id": "130591",
+    "boundingbox": ["37.079759", "37.15226", "-84.126262", "-84.035957"],
+    "lat": "37.1289771",
+    "lon": "-84.0832646",
+    "display_name": "London, Laurel County, Kentucky, USA",
+    "class": "place",
+    "type": "city",
+    "importance": 0.55129224493719,
+    "icon": "https:\/\/locationiq.org\/static\/images\/mapicons\/poi_place_city.p.20.png",
+    "address": {
+        "city": "London",
+        "county": "Laurel County",
+        "state": "Kentucky",
+        "postcode": "40741",
+        "country": "United States of America",
+        "country_code": "us"
+    }
+}, {
+    "place_id": "236185315",
+    "licence": "https:\/\/locationiq.com\/attribution",
+    "osm_type": "relation",
+    "osm_id": "182481",
+    "boundingbox": ["39.85928", "39.921786", "-83.478923", "-83.389997"],
+    "lat": "39.8864493",
+    "lon": "-83.448253",
+    "display_name": "London, Madison County, Ohio, USA",
+    "class": "place",
+    "type": "city",
+    "importance": 0.51506554246012,
+    "icon": "https:\/\/locationiq.org\/static\/images\/mapicons\/poi_place_city.p.20.png",
+    "address": {
+        "city": "London",
+        "county": "Madison County",
+        "state": "Ohio",
+        "postcode": "43140",
+        "country": "United States of America",
+        "country_code": "us"
+    }
+}, {
+    "place_id": "230798252",
+    "licence": "https:\/\/locationiq.com\/attribution",
+    "osm_type": "relation",
+    "osm_id": "111457",
+    "boundingbox": ["35.3169503", "35.3389327", "-93.2716305", "-93.1874567"],
+    "lat": "35.328973",
+    "lon": "-93.2529553",
+    "display_name": "London, Pope County, Arkansas, USA",
+    "class": "place",
+    "type": "city",
+    "importance": 0.50823578717763,
+    "icon": "https:\/\/locationiq.org\/static\/images\/mapicons\/poi_place_city.p.20.png",
+    "address": {
+        "city": "London",
+        "county": "Pope County",
+        "state": "Arkansas",
+        "postcode": "72847",
+        "country": "United States of America",
+        "country_code": "us"
+    }
+}, {
+    "place_id": "236571040",
+    "licence": "https:\/\/locationiq.com\/attribution",
+    "osm_type": "relation",
+    "osm_id": "2730965",
+    "boundingbox": ["36.4734452", "36.4884367", "-119.4497699", "-119.4385395"],
+    "lat": "36.4760619",
+    "lon": "-119.4431785",
+    "display_name": "London, Tulare County, California, 93618, USA",
+    "class": "place",
+    "type": "village",
+    "importance": 0.48680090174386,
+    "icon": "https:\/\/locationiq.org\/static\/images\/mapicons\/poi_place_village.p.20.png",
+    "address": {
+        "village": "London",
+        "county": "Tulare County",
+        "state": "California",
+        "postcode": "93618",
+        "country": "United States of America",
+        "country_code": "us"
+    }
+}]

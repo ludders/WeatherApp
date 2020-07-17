@@ -29,12 +29,12 @@ class WeatherContainerViewController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
 
-    override var preferredStatusBarStyle: UIStatusBarStyle {
-        return .lightContent
+    required init?(coder: NSCoder) {
+        fatalError("No storyboards!")
     }
 
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
 
     override func loadView() {

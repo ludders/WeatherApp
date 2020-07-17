@@ -9,9 +9,18 @@
 import Foundation
 
 protocol API {
-    var scheme: String { get }
-    var domainName: String { get }
-    var path: String { get }
-
+    var scheme: String { get } //e.g. "https"
+    var host: String { get } //e.g. "google.com"
+    var path: String { get } //e.g. "/v2/search.php"
     func getURLComponents() -> URLComponents
+}
+
+extension API {
+    func getURLComponents() -> URLComponents {
+        var urlComponents = URLComponents()
+        urlComponents.scheme = scheme
+        urlComponents.host = host
+        urlComponents.path = path
+        return urlComponents
+    }
 }

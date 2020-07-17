@@ -10,68 +10,28 @@ import Foundation
 import CoreLocation
 
 typealias LocationForecastCompletion = Result<LocationForecast, NetworkError>
-typealias WeatherResponseCompletion = Result<WeatherResponse, NetworkError>
 
 enum NetworkError: Error {
     case error
 }
 
 class WeatherService {
-    var weatherAPI: API
+    var weatherAPI: WeatherAPI
 
-    init(weatherAPI: API = WeatherAPI()) {
+    init(weatherAPI: WeatherAPI = WeatherAPI()) {
         self.weatherAPI = weatherAPI
     }
 
-    private func getWeatherResponse(for request: WeatherRequest, onCompletion: @escaping (WeatherResponseCompletion) -> ()) {
-
-        guard let url = buildRequestURL(for: request) else {
-            onCompletion(.failure(.error))
-            return
-        }
-
-        let session = URLSession.shared
-        print(url)
-
-        let dataTask = session.dataTask(with: url) { (data, response, error) in
-            guard let response = response as? HTTPURLResponse,
-                response.mimeType == "application/json",
-                (200...299).contains(response.statusCode) else {
-                    onCompletion(.failure(.error))
-                    return
-            }
-            guard let data = data else {
-                onCompletion(.failure(.error))
-                return
-            }
-            let decoder = JSONDecoder()
-            decoder.dateDecodingStrategy = .secondsSince1970
-            if let weatherResponse = try? decoder.decode(WeatherResponse.self, from: data) {
-                onCompletion(.success(weatherResponse))
-            }
-        }
-        dataTask.resume()
-    }
-
-    func getLocationForecast(for request: WeatherRequest, onCompletion: @escaping (LocationForecastCompletion) -> ()) {
-        getWeatherResponse(for: request, onCompletion: { result in
+    func getLocationForecast(at coordinates: CLLocationCoordinate2D, onCompletion: @escaping (LocationForecastCompletion) -> ()) {
+        weatherAPI.getWeatherResponse(for: coordinates, onCompletion: { result in
             switch result {
             case .success(let response):
-                sleep(1)
                 let locationForecast = self.buildLocationForecast(using: response)
                 onCompletion(.success(locationForecast))
             case .failure(let error):
                 print(error)
             }
         })
-    }
-
-    private func buildRequestURL(for request: WeatherRequest) -> URL? {
-        var urlComponents = weatherAPI.getURLComponents()
-        var queryItems = request.asURLQueryItems()
-        queryItems.append(URLQueryItem(name: "appid", value: WeatherAPI.key))
-        urlComponents.queryItems = queryItems
-        return urlComponents.url
     }
 
     private func buildLocationForecast(using response: WeatherResponse) -> LocationForecast {

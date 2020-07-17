@@ -26,6 +26,10 @@ final class WindIconView: UIView {
         setupView()
     }
 
+    required init?(coder: NSCoder) {
+        fatalError("No storyboards!")
+    }
+
     fileprivate func setupView() {
         iconView.backgroundColor = Theme.Colours.transparent
         addSubview(iconView)
@@ -73,10 +77,6 @@ final class WindIconView: UIView {
         DispatchQueue.main.async {
             self.iconView.transform = CGAffineTransform(rotationAngle: CGFloat(integerLiteral: degrees) * (CGFloat.pi / 180))
         }
-    }
-
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
     }
 }
 
