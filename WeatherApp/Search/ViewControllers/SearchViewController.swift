@@ -190,17 +190,43 @@ extension SearchViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.numberOfSuggestions
+        guard let suggestionsModel = viewModel.suggestionsModel.value else {
+            return 0
+        }
+        switch suggestionsModel.state {
+        case .hasLoaded:
+            return viewModel.numberOfSuggestions
+        case .isLoading, .hasError(_):
+            return 1
+        }
     }
+
+//    Use UITableViewHeaderFooterView objects to define the appearance of your headers and footers.
+//    Register your UITableViewHeaderFooterView objects with your table view.
+//    Implement the tableView(_:viewForHeaderInSection:) and tableView(_:viewForFooterInSection:) methods in your table view delegate object to create and configure your views.
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "suggestionCell", for: indexPath)
-        guard let suggestion = viewModel.suggestionsModel.value?[indexPath.row] else {
+        guard let suggestionsModel = viewModel.suggestionsModel.value else {
             fatalError("No suggestion found at given IndexPath")
         }
-        cell.textLabel?.text = suggestion.displayName
+
         cell.contentView.backgroundColor = Theme.Colours.black
         cell.textLabel?.textColor = Theme.Colours.white
+
+        switch suggestionsModel.state {
+        case .hasLoaded:
+            let suggestion = suggestionsModel.suggestions[indexPath.row]
+            cell.textLabel?.text = suggestion.displayName
+            return cell
+        case .hasError(_):
+            cell.textLabel?.text = NSLocalizedString("Error fetching results, please try again", comment: "Error fetching results, please try again")
+            cell.textLabel?.textColor = Theme.Colours.bbcRed
+            break
+        case .isLoading:
+            cell.textLabel?.text = NSLocalizedString("Loading...", comment: "Loading...")
+            cell.textLabel?.textColor = Theme.Colours.silver
+        }
         return cell
     }
 }

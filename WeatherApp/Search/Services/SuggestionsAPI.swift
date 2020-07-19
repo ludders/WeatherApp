@@ -29,34 +29,40 @@ class SuggestionsAPI: API {
     func getSuggestionsResponse(for searchString: String, completion: @escaping (SuggestionsResponseCompletion) -> ()) {
         let parameters = SuggestionsRequestParameters(searchString: searchString)
         guard let url = buildRequestURL(using: parameters) else {
-            completion(.failure(.error))
+            completion(.failure(.error(nil)))
             return
         }
-
+        print("REQUEST: \n\(url)\n")
         let session = URLSession.shared
         let dataTask = session.dataTask(with: url) { (data, response, error) in
 
-            print(url)
-            guard let response = response as? HTTPURLResponse,
-                (200...299).contains(response.statusCode),
-                response.mimeType == "application/json" else {
-                completion(.failure(.error))
+            guard let httpResponse = response as? HTTPURLResponse,
+                httpResponse.mimeType == "application/json" else {
+                completion(.failure(.error(nil)))
+                return
+            }
+
+            guard (200...299).contains(httpResponse.statusCode) else {
+                completion(.failure(.error(httpResponse.statusCode)))
                 return
             }
 
             if let data = data {
+                if let json = try? JSONSerialization.jsonObject(with: data, options: .allowFragments) {
+                    print("RESPONSE SUCCESS: \n\(json)\n")
+                }
                 let decoder = JSONDecoder()
-                let response: SuggestionsResponse
+                let suggestionsResponse: SuggestionsResponse
                 do {
-                    response = try decoder.decode(SuggestionsResponse.self, from: data) as! SuggestionsResponse
-                    completion(.success(response))
+                    suggestionsResponse = try decoder.decode(SuggestionsResponse.self, from: data)
+                    completion(.success(suggestionsResponse))
                 } catch let error {
                     print(data)
                     print(error)
                 }
 
             } else {
-                completion(.failure(.error))
+                completion(.failure(.error(nil)))
             }
         }
 

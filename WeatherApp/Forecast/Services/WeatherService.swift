@@ -12,7 +12,7 @@ import CoreLocation
 typealias LocationForecastCompletion = Result<LocationForecast, NetworkError>
 
 enum NetworkError: Error {
-    case error
+    case error(Int?)
 }
 
 class WeatherService {

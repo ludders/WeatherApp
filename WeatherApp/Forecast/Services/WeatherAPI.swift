@@ -22,7 +22,7 @@ struct WeatherAPI: API {
                                                   longitude: String(coordinates.longitude),
                                                   units: "metric")
         guard let url = buildRequestURL(using: parameters) else {
-            onCompletion(.failure(.error))
+            onCompletion(.failure(.error(nil)))
             return
         }
 
@@ -33,11 +33,11 @@ struct WeatherAPI: API {
             guard let response = response as? HTTPURLResponse,
                 response.mimeType == "application/json",
                 (200...299).contains(response.statusCode) else {
-                    onCompletion(.failure(.error))
+                    onCompletion(.failure(.error(nil)))
                     return
             }
             guard let data = data else {
-                onCompletion(.failure(.error))
+                onCompletion(.failure(.error(nil)))
                 return
             }
             let decoder = JSONDecoder()

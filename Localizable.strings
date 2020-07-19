@@ -17,4 +17,5 @@
 "Close" = "Close";
 "Location Search" = "Location Search";
 "Enter a location" = "Enter a location";
-
+"Error fetching results, please try again" = "Error fetching results, please try again";
+"Loading..." = "Loading...";
