@@ -12,9 +12,9 @@ class SearchViewModel {
     private let suggestionsService: SuggestionsService
     private var timer: Timer?
 
-    private(set) var suggestionsModel = Observable<SuggestionsModel?>(nil)
+    private(set) var searchModel = Observable<SearchModel?>(nil)
     public var numberOfSuggestions: Int {
-        return suggestionsModel.value?.suggestions.count ?? 0
+        return searchModel.value?.suggestions.count ?? 0
     }
 
     init(suggestionsService: SuggestionsService) {
@@ -22,7 +22,7 @@ class SearchViewModel {
     }
 
     func searchTextDidChange(to text: String) {
-        suggestionsModel.value = SuggestionsModel(suggestions: [], state: .isLoading)
+        searchModel.value = SearchModel(suggestions: [], state: .isLoading)
 
         timer?.invalidate()
         if text.count >= 3 {
@@ -30,9 +30,9 @@ class SearchViewModel {
                 self.suggestionsService.getSuggestions(searchString: text) { result in
                     switch result {
                     case .success(let suggestions):
-                        self.suggestionsModel.value = SuggestionsModel(suggestions: suggestions, state: .hasLoaded)
+                        self.searchModel.value = SearchModel(suggestions: suggestions, state: .hasLoaded)
                     case.failure(let error):
-                        self.suggestionsModel.value?.state = .hasError(error)
+                        self.searchModel.value?.state = .hasError(error)
                         break
                     }
                 }
@@ -44,15 +44,6 @@ class SearchViewModel {
     }
 
     func clearSuggestions() {
-        suggestionsModel.value = SuggestionsModel(suggestions: [], state: .hasLoaded)
+        searchModel.value = SearchModel(suggestions: [], state: .hasLoaded)
     }
-}
-
-struct SuggestionsModel {
-    var suggestions: [Suggestion]
-    var state: SuggestionsState
-}
-
-enum SuggestionsState {
-    case isLoading, hasLoaded, hasError(Error)
 }

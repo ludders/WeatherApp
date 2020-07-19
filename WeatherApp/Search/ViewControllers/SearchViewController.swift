@@ -43,7 +43,7 @@ class SearchViewController: UIViewController {
         setupActions()
         setupTableView()
         setupConstraints()
-        viewModel.suggestionsModel.bind { suggestions in
+        viewModel.searchModel.bind { suggestions in
             guard suggestions != nil else { return }
             DispatchQueue.main.async {
                 self.tableView.reloadData()
@@ -190,7 +190,7 @@ extension SearchViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let suggestionsModel = viewModel.suggestionsModel.value else {
+        guard let suggestionsModel = viewModel.searchModel.value else {
             return 0
         }
         switch suggestionsModel.state {
@@ -207,16 +207,16 @@ extension SearchViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "suggestionCell", for: indexPath)
-        guard let suggestionsModel = viewModel.suggestionsModel.value else {
+        guard let searchModel = viewModel.searchModel.value else {
             fatalError("No suggestion found at given IndexPath")
         }
 
         cell.contentView.backgroundColor = Theme.Colours.black
         cell.textLabel?.textColor = Theme.Colours.white
 
-        switch suggestionsModel.state {
+        switch searchModel.state {
         case .hasLoaded:
-            let suggestion = suggestionsModel.suggestions[indexPath.row]
+            let suggestion = searchModel.suggestions[indexPath.row]
             cell.textLabel?.text = suggestion.displayName
             return cell
         case .hasError(_):

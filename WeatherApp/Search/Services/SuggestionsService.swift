@@ -27,7 +27,6 @@ class SuggestionsService {
                 }
                 completion(.success(suggestions))
             case .failure(let error):
-                print(error)
                 completion(.failure(error))
             }
         }
