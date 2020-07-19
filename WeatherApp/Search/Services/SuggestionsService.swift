@@ -6,6 +6,7 @@
 //  Copyright © 2020 David Ludlow. All rights reserved.
 //
 
+import CoreLocation
 import Foundation
 
 typealias SuggestionsCompletion = Result<[Suggestion], NetworkingError>
@@ -22,8 +23,13 @@ class SuggestionsService {
         suggestionsAPI.getSuggestionsResponse(for: searchString) { result in
             switch result {
             case .success(let response):
-                let suggestions = response.map { suggestionResult -> Suggestion in
-                    return Suggestion(displayName: suggestionResult.displayName)
+                let suggestions = response.compactMap { suggestionResult -> Suggestion? in
+                    guard let latitude = Double(suggestionResult.lat),
+                        let longitude = Double(suggestionResult.lon) else { return nil }
+
+                    return Suggestion(displayName: suggestionResult.displayName,
+                                      coordinates: CLLocationCoordinate2D(latitude: latitude,
+                                                                          longitude: longitude))
                 }
                 completion(.success(suggestions))
             case .failure(let error):

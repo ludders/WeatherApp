@@ -31,7 +31,6 @@ class WeatherViewController: UIViewController {
 
         self.forecastCollectionViewController = UICollectionViewController(collectionViewLayout: forecastFlowLayout)
         self.forecastCollectionViewDataSource = forecastCollectionViewDataSource
-        //TODO: Add forecast collection view delegate
         self.dayCollectionViewController = UICollectionViewController(collectionViewLayout: dayFlowLayout)
         self.dayCollectionViewDataSource = dayCollectionViewDataSource
         self.dayCollectionViewDelegate = DayCollectionViewDelegate(viewModel: weatherViewModel)
@@ -74,7 +73,6 @@ class WeatherViewController: UIViewController {
         viewModel.selectedDayObs.bind { dailyForecast in
             guard let selectedDay = dailyForecast else { return }
             DispatchQueue.main.async {
-                //TODO update header view subtitle/sunrise/sunset with dailyForecasts[selectedIndex][0] etc....
                 self.weatherView.headingView.subtitleLabel.text = selectedDay.subtitleDisplayText
                 self.weatherView.headingView.sunriseLabel.text = selectedDay.sunriseDisplayText
                 self.weatherView.headingView.sunsetLabel.text = selectedDay.sunriseDisplayText

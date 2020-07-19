@@ -12,6 +12,8 @@ import SnapKit
 
 protocol SearchViewControllerDelegate: AnyObject {
     func didTapClose()
+
+    func startWeatherFlow(for location: Location)
 }
 
 class SearchViewController: UIViewController {
@@ -179,7 +181,15 @@ extension SearchViewController: UITextFieldDelegate {
 
 // MARK - Table View Delegate
 
-extension SearchViewController: UITableViewDelegate {}
+extension SearchViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        viewModel.handleSelection(at: indexPath.row)
+        if let location = viewModel.selectedLocation {
+            coordinatorDelegate?.didTapClose()
+            coordinatorDelegate?.startWeatherFlow(for: location)
+        }
+    }
+}
 
 //MARK - Table View Data Source
 
@@ -214,8 +224,10 @@ extension SearchViewController: UITableViewDataSource {
         case .hasLoaded:
             let suggestion = searchModel.suggestions[indexPath.row]
             cell.textLabel?.text = suggestion.displayName
+            tableView.allowsSelection = true
             return cell
         case .hasError(let error):
+            tableView.allowsSelection = false
             switch error {
             case .error(let statusCode):
                 if let statusCode = statusCode,
@@ -229,6 +241,7 @@ extension SearchViewController: UITableViewDataSource {
             cell.textLabel?.textColor = Theme.Colours.bbcRed
             break
         case .isLoading:
+            tableView.allowsSelection = false
             cell.textLabel?.text = NSLocalizedString("Loading...", comment: "Loading...")
             cell.textLabel?.textColor = Theme.Colours.silver
         }

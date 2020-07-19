@@ -6,6 +6,7 @@
 //  Copyright © 2020 David Ludlow. All rights reserved.
 //
 
+import CoreLocation
 import Foundation
 import UIKit
 
@@ -42,11 +43,20 @@ class MainCoordinator: Coordinator {
     }
 }
 
-extension MainCoordinator: IntroViewControllerDelegate {
+extension MainCoordinator: IntroViewControllerDelegate, SearchViewControllerDelegate {
+
     func startWeatherFlow() {
-        //TODO: Set up data source / view controllers for this.
+        startWeatherFlow(for: Location(name: "Null Island",
+                                       coordinates: CLLocationCoordinate2D.nullIsland))
+    }
+
+    func startWeatherFlow(for location: Location) {
         let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
-        let viewModel = WeatherViewModel()
+        let model = LocationForecast(name: location.name,
+                                     coordinates: location.coordinates,
+                                     currentForecast: nil,
+                                     dailyForecasts: nil)
+        let viewModel = WeatherViewModel(model: model)
         let forecastCollectionViewDataSource = ForecastCollectionViewDataSource(viewModel: viewModel)
         let dayCollectionViewDataSource = DayCollectionViewDataSource(viewModel: viewModel)
         let vc1 = WeatherViewController(weatherViewModel: viewModel,
@@ -56,6 +66,10 @@ extension MainCoordinator: IntroViewControllerDelegate {
         let weatherContainerViewController = WeatherContainerViewController(pageViewController: pageViewController)
         weatherContainerViewController.coordinatorDelegate = self
         navigationController.pushViewController(weatherContainerViewController, animated: true)
+    }
+
+    func didTapClose() {
+        navigationController.dismiss(animated: true, completion: nil)
     }
 }
 
@@ -69,12 +83,6 @@ extension MainCoordinator: WeatherContainerViewControllerDelegate {
         navigationController.present(searchViewController, animated: true) {
             //TODO: Handle search selection
         }
-    }
-}
-
-extension MainCoordinator: SearchViewControllerDelegate {
-    func didTapClose() {
-        navigationController.dismiss(animated: true, completion: nil)
     }
 }
 

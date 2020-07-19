@@ -16,10 +16,7 @@ class WeatherViewModel {
     var selectedDayIndex = Observable<Int>(0)
     var selectedDayObs = Observable<DailyForecast?>(nil)
     //TODO: Remove the default forecast when no longer needed
-    public init(model: LocationForecast = LocationForecast(name: nil,
-                                              coordinates: CLLocationCoordinate2D.nullIsland,
-                                              currentForecast: nil,
-                                              dailyForecasts: nil)) {
+    public init(model: LocationForecast) {
         self.locationForecast = Observable<LocationForecast>(model)
         self.selectedDayIndex.bind { index in
             self.selectedDayObs.value = self.dailyForecast(for: index)

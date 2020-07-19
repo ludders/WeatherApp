@@ -8,6 +8,10 @@
 
 import Foundation
 
+protocol SearchViewModelDelegate {
+    
+}
+
 class SearchViewModel {
     private let suggestionsService: SuggestionsService
     private var timer: Timer?
@@ -16,6 +20,7 @@ class SearchViewModel {
     public var numberOfSuggestions: Int {
         return searchModel.value?.suggestions.count ?? 0
     }
+    private(set) var selectedLocation: Location? = nil
 
     init(suggestionsService: SuggestionsService) {
         self.suggestionsService = suggestionsService
@@ -45,5 +50,11 @@ class SearchViewModel {
 
     func clearSuggestions() {
         searchModel.value = SearchModel(suggestions: [], state: .hasLoaded)
+    }
+
+    func handleSelection(at index: Int) {
+        guard let selectedSuggestion = searchModel.value?.suggestions[index] else { return }
+        selectedLocation = Location(name: selectedSuggestion.shortName,
+                                coordinates: selectedSuggestion.coordinates)
     }
 }
