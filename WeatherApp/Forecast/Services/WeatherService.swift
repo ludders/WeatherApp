@@ -9,9 +9,9 @@
 import Foundation
 import CoreLocation
 
-typealias LocationForecastCompletion = Result<LocationForecast, NetworkError>
+typealias LocationForecastCompletion = Result<LocationForecast, NetworkingError>
 
-enum NetworkError: Error {
+enum NetworkingError: Error {
     case error(Int?)
 }
 

@@ -9,7 +9,7 @@
 import CoreLocation
 import Foundation
 
-typealias WeatherResponseCompletion = Result<WeatherResponse, NetworkError>
+typealias WeatherResponseCompletion = Result<WeatherResponse, NetworkingError>
 
 struct WeatherAPI: API {
     var scheme: String = "https"

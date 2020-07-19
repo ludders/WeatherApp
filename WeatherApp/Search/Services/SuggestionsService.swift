@@ -8,7 +8,7 @@
 
 import Foundation
 
-typealias SuggestionsCompletion = Result<[Suggestion], Error>
+typealias SuggestionsCompletion = Result<[Suggestion], NetworkingError>
 
 class SuggestionsService {
 

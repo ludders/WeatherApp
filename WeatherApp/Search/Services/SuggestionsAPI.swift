@@ -8,7 +8,7 @@
 
 import Foundation
 
-typealias SuggestionsResponseCompletion = Result<SuggestionsResponse, NetworkError>
+typealias SuggestionsResponseCompletion = Result<SuggestionsResponse, NetworkingError>
 
 class SuggestionsAPI: API {
     var scheme: String = "https"

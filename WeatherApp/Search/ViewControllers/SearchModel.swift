@@ -14,5 +14,5 @@ struct SearchModel {
 }
 
 enum SearchModelState {
-    case isLoading, hasLoaded, hasError(Error)
+    case isLoading, hasLoaded, hasError(NetworkingError)
 }

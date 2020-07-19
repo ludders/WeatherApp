@@ -201,10 +201,6 @@ extension SearchViewController: UITableViewDataSource {
         }
     }
 
-//    Use UITableViewHeaderFooterView objects to define the appearance of your headers and footers.
-//    Register your UITableViewHeaderFooterView objects with your table view.
-//    Implement the tableView(_:viewForHeaderInSection:) and tableView(_:viewForFooterInSection:) methods in your table view delegate object to create and configure your views.
-
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "suggestionCell", for: indexPath)
         guard let searchModel = viewModel.searchModel.value else {
@@ -219,8 +215,17 @@ extension SearchViewController: UITableViewDataSource {
             let suggestion = searchModel.suggestions[indexPath.row]
             cell.textLabel?.text = suggestion.displayName
             return cell
-        case .hasError(_):
-            cell.textLabel?.text = NSLocalizedString("Error fetching results, please try again", comment: "Error fetching results, please try again")
+        case .hasError(let error):
+            switch error {
+            case .error(let statusCode):
+                if let statusCode = statusCode,
+                    statusCode == 404 {
+                    cell.textLabel?.text = NSLocalizedString("No results found for", comment: "No results found for") + " \(textField.text ?? "")"
+                }
+                else {
+                    cell.textLabel?.text = NSLocalizedString("Error fetching results, please try again", comment: "Error fetching results, please try again")
+                }
+            }
             cell.textLabel?.textColor = Theme.Colours.bbcRed
             break
         case .isLoading:

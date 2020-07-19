@@ -9,7 +9,7 @@
 import Foundation
 import CoreLocation
 
-typealias UpdateForecastCompletion = Result<Bool, NetworkError>
+typealias UpdateForecastCompletion = Result<Bool, NetworkingError>
 
 class WeatherViewModel {
     private(set) var locationForecast: Observable<LocationForecast>
