@@ -7,9 +7,11 @@
 //
 
 import Foundation
+import UIKit
 
-protocol SearchViewModelDelegate {
-    
+protocol SearchViewTableViewModel {
+    var numberOfRows: Int { get }
+    var numberOfSections: Int { get }
 }
 
 class SearchViewModel {
@@ -17,9 +19,6 @@ class SearchViewModel {
     private var timer: Timer?
 
     private(set) var searchModel = Observable<SearchModel?>(nil)
-    public var numberOfSuggestions: Int {
-        return searchModel.value?.suggestions.count ?? 0
-    }
     private(set) var selectedLocation: Location? = nil
 
     init(suggestionsService: SuggestionsService) {
@@ -57,4 +56,57 @@ class SearchViewModel {
         selectedLocation = Location(name: selectedSuggestion.shortName,
                                 coordinates: selectedSuggestion.coordinates)
     }
+}
+
+extension SearchViewModel: SearchViewTableViewModel {
+    public var numberOfRows: Int {
+        guard let model = searchModel.value else {
+            return 0
+        }
+        switch model.state {
+        case .hasLoaded:
+            return model.suggestions.count
+        case .isLoading, .hasError(_):
+            return 1
+        }
+    }
+
+    public var numberOfSections: Int {
+        return 1
+    }
+
+    public func viewModelForCellAt(index: Int, searchText: String) -> SuggestionCellViewModel {
+        guard let searchModel = searchModel.value else {
+            fatalError("No SearchViewModel exists!")
+        }
+        var cellViewModel = SuggestionCellViewModel()
+
+        switch searchModel.state {
+        case .hasLoaded:
+            cellViewModel.text = searchModel.suggestions[index].displayName
+        case .hasError(let error):
+            switch error {
+            case .error(let statusCode):
+                if let statusCode = statusCode,
+                    statusCode == 404 {
+                    cellViewModel.text = NSLocalizedString("No results found for ", comment: "No results found for ") + "\(searchText)"
+                }
+                else {
+                    cellViewModel.text = NSLocalizedString("Error fetching results, please try again", comment: "Error fetching results, please try again")
+                }
+            }
+            cellViewModel.textColor = Theme.Colours.bbcRed
+            break
+        case .isLoading:
+            cellViewModel.text = NSLocalizedString("Loading...", comment: "Loading...")
+            cellViewModel.textColor = Theme.Colours.silver
+        }
+        return cellViewModel
+    }
+}
+
+struct SuggestionCellViewModel {
+    var text: String?
+    var textColor: UIColor = Theme.Colours.white
+    var backgroundColor: UIColor = Theme.Colours.black
 }

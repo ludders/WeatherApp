@@ -12,13 +12,13 @@ import SnapKit
 
 protocol SearchViewControllerDelegate: AnyObject {
     func didTapClose()
-
     func startWeatherFlow(for location: Location)
 }
 
 class SearchViewController: UIViewController {
 
     private let viewModel: SearchViewModel
+    weak var coordinatorDelegate: SearchViewControllerDelegate?
 
     private let titleLabel = UILabel()
     private var closeButton = UIButton()
@@ -29,7 +29,6 @@ class SearchViewController: UIViewController {
     private let tableView = UITableView()
     private let tableViewController = UITableViewController()
 
-    weak var coordinatorDelegate: SearchViewControllerDelegate?
 
     init(viewModel: SearchViewModel) {
         self.viewModel = viewModel
@@ -111,7 +110,6 @@ class SearchViewController: UIViewController {
     }
 
     func setupConstraints() {
-
         titleLabel.snp.makeConstraints { make in
             make.top.leading.equalTo(view.safeAreaLayoutGuide).inset(10)
             make.trailing.equalTo(closeButton.snp.leading).offset(-10)
@@ -140,29 +138,6 @@ class SearchViewController: UIViewController {
     @objc func didTapClear() {
         textField.text = ""
         viewModel.clearSuggestions()
-    }
-}
-
-class PaddableTextField: UITextField {
-
-    public var overlayViewsEdgeInsets: UIEdgeInsets = .zero
-
-    override func leftViewRect(forBounds bounds: CGRect) -> CGRect {
-        let leftViewFrame = self.leftView!.frame
-        return CGRect(x: 0 + overlayViewsEdgeInsets.left, y: overlayViewsEdgeInsets.top, width: leftViewFrame.width, height: leftViewFrame.height)
-    }
-
-    override func rightViewRect(forBounds bounds: CGRect) -> CGRect {
-        let rightViewFrame = self.rightView!.frame
-        return CGRect(x: self.frame.width - rightViewFrame.width - overlayViewsEdgeInsets.right, y: overlayViewsEdgeInsets.top, width: rightViewFrame.width, height: rightViewFrame.height)
-    }
-
-    override func textRect(forBounds bounds: CGRect) -> CGRect {
-        return super.textRect(forBounds: bounds.inset(by: overlayViewsEdgeInsets))
-    }
-
-    override func editingRect(forBounds bounds: CGRect) -> CGRect {
-        return super.editingRect(forBounds: bounds.inset(by: overlayViewsEdgeInsets))
     }
 }
 
@@ -196,55 +171,21 @@ extension SearchViewController: UITableViewDelegate {
 extension SearchViewController: UITableViewDataSource {
 
     func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+        return viewModel.numberOfSections
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let suggestionsModel = viewModel.searchModel.value else {
-            return 0
-        }
-        switch suggestionsModel.state {
-        case .hasLoaded:
-            return viewModel.numberOfSuggestions
-        case .isLoading, .hasError(_):
-            return 1
-        }
+        return viewModel.numberOfRows
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "suggestionCell", for: indexPath)
-        guard let searchModel = viewModel.searchModel.value else {
-            fatalError("No suggestion found at given IndexPath")
-        }
+        let cellViewModel = viewModel.viewModelForCellAt(index: indexPath.row, searchText: textField.text ?? "")
 
-        cell.contentView.backgroundColor = Theme.Colours.black
-        cell.textLabel?.textColor = Theme.Colours.white
+        cell.contentView.backgroundColor = cellViewModel.backgroundColor
+        cell.textLabel?.textColor = cellViewModel.textColor
+        cell.textLabel?.text = cellViewModel.text
 
-        switch searchModel.state {
-        case .hasLoaded:
-            let suggestion = searchModel.suggestions[indexPath.row]
-            cell.textLabel?.text = suggestion.displayName
-            tableView.allowsSelection = true
-            return cell
-        case .hasError(let error):
-            tableView.allowsSelection = false
-            switch error {
-            case .error(let statusCode):
-                if let statusCode = statusCode,
-                    statusCode == 404 {
-                    cell.textLabel?.text = NSLocalizedString("No results found for", comment: "No results found for") + " \(textField.text ?? "")"
-                }
-                else {
-                    cell.textLabel?.text = NSLocalizedString("Error fetching results, please try again", comment: "Error fetching results, please try again")
-                }
-            }
-            cell.textLabel?.textColor = Theme.Colours.bbcRed
-            break
-        case .isLoading:
-            tableView.allowsSelection = false
-            cell.textLabel?.text = NSLocalizedString("Loading...", comment: "Loading...")
-            cell.textLabel?.textColor = Theme.Colours.silver
-        }
         return cell
     }
 }
