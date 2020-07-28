@@ -18,7 +18,7 @@ class DayCollectionViewDataSource: NSObject, UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.locationObs.value.forecast?.dailyForecasts?.count ?? 0
+        return viewModel.numberOfDayItems
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -26,23 +26,8 @@ class DayCollectionViewDataSource: NSObject, UICollectionViewDataSource {
             fatalError("Failed to dequeue DayCollectionViewCell")
         }
 
-        guard let dailyForecasts = viewModel.locationObs.value.forecast?.dailyForecasts else {
-            fatalError("Attempted to dequeue DayCollectionViewCell with no model present")
-        }
-
-        var style: DayCellStyle {
-            switch indexPath.row {
-            case 0:
-                return .frontCell
-            case dailyForecasts.count - 1:
-                return .endCell
-            default:
-                return .middleCell
-            }
-        }
-
-        cell.isSelected = viewModel.selectedDayIndex.value == indexPath.item
-        cell.configure(with: dailyForecasts[indexPath.row], style: style)
+        let cellViewModel = viewModel.viewModelForDayCollectionViewCellAt(at: indexPath.item)
+        cell.configure(with: cellViewModel)
         return cell
     }
 }

@@ -144,11 +144,11 @@ class DayCollectionViewDelegate: NSObject, UICollectionViewDelegate, UICollectio
 
     //MARK: Delegate Functions
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let currentSelectionIndexPath = IndexPath(item: viewModel.selectedDayIndex.value, section: 0)
+        let currentSelectionIndexPath = IndexPath(item: viewModel.selectedDayIndexObs.value, section: 0)
         let newSelectionIndexPath = indexPath
 
         if newSelectionIndexPath != currentSelectionIndexPath {
-            viewModel.selectedDayIndex.value = newSelectionIndexPath.item
+            viewModel.selectedDayIndexObs.value = newSelectionIndexPath.item
             DispatchQueue.main.async {
                 collectionView.reloadItems(at: [currentSelectionIndexPath, newSelectionIndexPath])
             }

@@ -47,20 +47,19 @@ class DayCollectionViewCell: UICollectionViewCell {
     let leftCornerMask = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMinXMaxYCorner)
     let rightCornerMask = CACornerMask(arrayLiteral: .layerMaxXMinYCorner, .layerMaxXMaxYCorner)
 
-    func configure(with forecast: DailyForecast, style: DayCellStyle) {
+    func configure(with viewModel: DayCollectionViewCellViewModel) {
         contentView.backgroundColor = Theme.Colours.bbcGrey
-        dayLabel.text = forecast.time.formattedAs("EEE")
+        dayLabel.text = viewModel.dayName
         contentView.addSubview(dayLabel)
-        iconView.image = UIImage(systemName: forecast.symbol ?? "")
+        iconView.image = viewModel.image
         contentView.addSubview(iconView)
-        maxTempLabel.text = forecast.maxTemp?.asTemperatureString
+        maxTempLabel.text = viewModel.maxTemp
         contentView.addSubview(maxTempLabel)
-        minTempLabel.text = forecast.minTemp?.asTemperatureString
+        minTempLabel.text = viewModel.minTemp
         contentView.addSubview(minTempLabel)
-        bottomBar.backgroundColor = Theme.Colours.bbcRed
-        contentView.addSubview(bottomBar)
+        isSelected = viewModel.isSelected
 
-        configureCornerStyling(with: style)
+        configureCornerStyling(with: viewModel.cellStyle)
 
         if isSelected {
             configureBottomBar()
