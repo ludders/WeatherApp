@@ -77,8 +77,8 @@ final class WeatherView: UIView {
         }
     }
 
-    func configure(with locationForecast: LocationForecast) {
-        self.headingView.configure(with: locationForecast)
+    func configure(with locationModel: LocationModel) {
+        self.headingView.configure(with: locationModel)
         DispatchQueue.main.async {
             self.forecastCollectionView.reloadData()
             self.dayCollectionView.reloadData()

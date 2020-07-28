@@ -22,8 +22,8 @@ class WeatherService {
         self.weatherAPI = weatherAPI
     }
 
-    func getLocationForecast(at coordinates: CLLocationCoordinate2D, onCompletion: @escaping (LocationForecastCompletion) -> ()) {
-        weatherAPI.getWeatherResponse(for: coordinates, onCompletion: { result in
+    func getLocationForecast(for location: LocationModel, onCompletion: @escaping (LocationForecastCompletion) -> ()) {
+        weatherAPI.getWeatherResponse(for: location.coordinates, onCompletion: { result in
             switch result {
             case .success(let response):
                 let locationForecast = self.buildLocationForecast(using: response)
@@ -36,9 +36,7 @@ class WeatherService {
 
     private func buildLocationForecast(using response: WeatherResponse) -> LocationForecast {
         let current = response.current
-        var locationForecast = LocationForecast(name: "Placeholder",
-                                coordinates: CLLocationCoordinate2D(latitude: response.lat ?? 0, longitude: response.lon ?? 0),
-                                currentForecast: CurrentForecast(sunrise: current?.sunrise,
+        var locationForecast = LocationForecast(currentForecast: CurrentForecast(sunrise: current?.sunrise,
                                                                  sunset: current?.sunset,
                                                                  temperature: current?.temp,
                                                                  windSpeed: current?.windSpeed,

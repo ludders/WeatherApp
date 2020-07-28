@@ -12,12 +12,12 @@ import CoreLocation
 typealias UpdateForecastCompletion = Result<Bool, NetworkingError>
 
 class WeatherViewModel {
-    private(set) var locationForecast: Observable<LocationForecast>
+    private(set) var locationObs: Observable<LocationModel>
     var selectedDayIndex = Observable<Int>(0)
     var selectedDayObs = Observable<DailyForecast?>(nil)
-    //TODO: Remove the default forecast when no longer needed
-    public init(model: LocationForecast) {
-        self.locationForecast = Observable<LocationForecast>(model)
+
+    public init(model: LocationModel) {
+        self.locationObs = Observable<LocationModel>(model)
         self.selectedDayIndex.bind { index in
             self.selectedDayObs.value = self.dailyForecast(for: index)
         }
@@ -27,10 +27,10 @@ class WeatherViewModel {
 
     public func updateForecast(onCompletion: @escaping (UpdateForecastCompletion) -> ()) {
         let service = WeatherService()
-        service.getLocationForecast(at: locationForecast.value.coordinates) { result in
+        service.getLocationForecast(for: locationObs.value) { result in
             switch result {
             case .success(let forecast):
-                self.locationForecast.value = forecast
+                self.locationObs.value.forecast = forecast
                 self.forecastDataItems = forecast.asDataItems
                 self.selectedDayObs.value = self.dailyForecast(for: self.selectedDayIndex.value)
                 onCompletion(.success(true))

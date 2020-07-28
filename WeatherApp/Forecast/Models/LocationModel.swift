@@ -9,8 +9,8 @@
 import CoreLocation
 import Foundation
 
-struct Location {
+struct LocationModel {
     let name: String
     let coordinates: CLLocationCoordinate2D
-    let forecast: LocationForecast? = nil
+    var forecast: LocationForecast? = nil
 }

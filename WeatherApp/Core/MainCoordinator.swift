@@ -46,17 +46,13 @@ class MainCoordinator: Coordinator {
 extension MainCoordinator: IntroViewControllerDelegate, SearchViewControllerDelegate {
 
     func startWeatherFlow() {
-        startWeatherFlow(for: Location(name: "Null Island",
-                                       coordinates: CLLocationCoordinate2D.nullIsland))
+        startWeatherFlow(for: LocationModel(name: "Null Island",
+                                            coordinates: CLLocationCoordinate2D.nullIsland))
     }
 
-    func startWeatherFlow(for location: Location) {
+    func startWeatherFlow(for location: LocationModel) {
         let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
-        let model = LocationForecast(name: location.name,
-                                     coordinates: location.coordinates,
-                                     currentForecast: nil,
-                                     dailyForecasts: nil)
-        let viewModel = WeatherViewModel(model: model)
+        let viewModel = WeatherViewModel(model: location)
         let forecastCollectionViewDataSource = ForecastCollectionViewDataSource(viewModel: viewModel)
         let dayCollectionViewDataSource = DayCollectionViewDataSource(viewModel: viewModel)
         let vc1 = WeatherViewController(weatherViewModel: viewModel,

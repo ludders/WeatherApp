@@ -18,7 +18,7 @@ class DayCollectionViewDataSource: NSObject, UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.locationForecast.value.dailyForecasts?.count ?? 0
+        return viewModel.locationObs.value.forecast?.dailyForecasts?.count ?? 0
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -26,7 +26,7 @@ class DayCollectionViewDataSource: NSObject, UICollectionViewDataSource {
             fatalError("Failed to dequeue DayCollectionViewCell")
         }
 
-        guard let dailyForecasts = viewModel.locationForecast.value.dailyForecasts else {
+        guard let dailyForecasts = viewModel.locationObs.value.forecast?.dailyForecasts else {
             fatalError("Attempted to dequeue DayCollectionViewCell with no model present")
         }
 

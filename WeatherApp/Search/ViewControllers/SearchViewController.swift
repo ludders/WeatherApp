@@ -12,7 +12,7 @@ import SnapKit
 
 protocol SearchViewControllerDelegate: AnyObject {
     func didTapClose()
-    func startWeatherFlow(for location: Location)
+    func startWeatherFlow(for location: LocationModel)
 }
 
 class SearchViewController: UIViewController {

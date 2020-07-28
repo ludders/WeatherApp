@@ -67,8 +67,8 @@ class WeatherViewController: UIViewController {
     }
 
     private func setupBindings() {
-        viewModel.locationForecast.bindOnNext { locationForecast in
-            self.weatherView.configure(with: locationForecast)
+        viewModel.locationObs.bindOnNext { locationModel in
+            self.weatherView.configure(with: locationModel)
         }
         viewModel.selectedDayObs.bind { dailyForecast in
             guard let selectedDay = dailyForecast else { return }

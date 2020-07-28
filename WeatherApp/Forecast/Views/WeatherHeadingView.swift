@@ -47,7 +47,6 @@ class WeatherHeadingView: UIView {
     }()
     var subtitleLabel: UILabel = {
         let label = UILabel()
-        label.text = NSLocalizedString("Next Hour", comment: "Next Hour")
         label.font = Theme.Fonts.BBC.largeSubTitle
         label.textColor = Theme.Colours.white
         return label
@@ -125,11 +124,10 @@ class WeatherHeadingView: UIView {
         })
     }
 
-    func configure(with locationForecast: LocationForecast) {
+    func configure(with locationModel: LocationModel) {
         DispatchQueue.main.async {
-            let locationForecast = locationForecast
-            self.refreshLabel.text = locationForecast.lastUpdateDisplayText
-            self.locationLabel.text = locationForecast.name
+            self.locationLabel.text = locationModel.name
+            self.refreshLabel.text = locationModel.forecast?.lastUpdateDisplayText
         }
     }
 }
