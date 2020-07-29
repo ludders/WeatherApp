@@ -78,36 +78,25 @@ final class HourlyForecastCollectionViewCell: UICollectionViewCell {
         return view
     }()
 
-    func configure(with forecast: HourlyForecast) {
-        let format = DateFormatter.dateFormat(fromTemplate: "HH:mm", options: 0, locale: Locale.current)
-        let hhMMFormatter = DateFormatter()
-        hhMMFormatter.setLocalizedDateFormatFromTemplate(format ?? "HH:mm")
-        timeView.text = hhMMFormatter.string(from: forecast.date)
-        contentView.addSubview(timeView)
+    func configure(with viewModel: HourlyForecastCellViewModel) {
+        timeView.text = viewModel.time
+        dayLabel.text = viewModel.nextDay
+        showDayLabel = viewModel.nextDay != nil
+        symbolView.image = viewModel.image
+        temperatureLabel.text = viewModel.temp
+        cloudPercentageLabel.text = viewModel.cloudPercentage
+        windView.degrees = viewModel.windDegrees
+        windView.label.text = viewModel.windSpeed
 
-
-        if forecast.date.isAtExactly(hour: 0),
-            let dayName = forecast.date.nextDayAsEEE?.localizedUppercase {
-            dayLabel.text = dayName
-            contentView.addSubview(dayLabel)
-            showDayLabel = true
-        }
-
-        symbolView.image = UIImage(systemName: forecast.symbol ?? "")
-        contentView.addSubview(symbolView)
-
-        temperatureLabel.text = forecast.temp?.asTemperatureString
-        contentView.addSubview(temperatureLabel)
-
-        cloudPercentageLabel.text = String(forecast.clouds ?? 0) + "%"
         cloudStackView.addArrangedSubview(cloudSymbolView)
         cloudStackView.addArrangedSubview(cloudPercentageLabel)
+
+        contentView.addSubview(timeView)
+        contentView.addSubview(dayLabel)
+        contentView.addSubview(symbolView)
+        contentView.addSubview(temperatureLabel)
         contentView.addSubview(cloudStackView)
-
-        windView.degrees = forecast.windDeg ?? 0
-        windView.label.text = String(Int(forecast.windSpeed ?? 0))
         contentView.addSubview(windView)
-
         contentView.addSubview(verticalSeparatorView)
 
         setupConstraints()

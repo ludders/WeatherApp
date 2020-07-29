@@ -54,14 +54,14 @@ final class DailyForecastCollectionViewCell: UICollectionViewCell {
         return view
     }()
 
-    func configure(with forecast: DailyForecast) {
-        //TODO: All this formatting stuff can probably go in a Cell View Model (Look into this)
-        symbolView.image = UIImage(systemName: forecast.symbol ?? "")
-        maxTempLabel.text = forecast.maxTemp?.asTemperatureString
-        minTempLabel.text = forecast.minTemp?.asTemperatureString
-        descriptionLabel.text = forecast.description?.localizedCapitalized
-        windView.label.text = String(Int(forecast.windSpeed ?? 0))
-        self.windView.degrees = forecast.windDeg ?? 0
+    func configure(with viewModel: DailyForecastCellViewModel) {
+        symbolView.image = viewModel.image
+        maxTempLabel.text = viewModel.maxTemp
+        minTempLabel.text = viewModel.minTemp
+        descriptionLabel.text = viewModel.description
+        windView.label.text = viewModel.windSpeed
+        self.windView.degrees = viewModel.windDegrees
+
         contentView.addSubview(symbolView)
         contentView.addSubview(descriptionLabel)
         contentView.addSubview(maxTempLabel)

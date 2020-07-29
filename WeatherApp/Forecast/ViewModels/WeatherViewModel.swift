@@ -12,6 +12,11 @@ import UIKit
 
 typealias UpdateForecastCompletion = Result<Bool, NetworkingError>
 
+protocol ForecastCollectionViewViewModel {
+    var numberOfRows: Int { get }
+    var numberOfSections: Int { get }
+}
+
 class WeatherViewModel {
     private(set) var locationObs: Observable<LocationModel>
     var selectedDayIndexObs = Observable<Int>(0)
@@ -58,21 +63,16 @@ enum ForecastDataItem {
     case hourly(HourlyForecast)
 }
 
-//MARK: - Day Collection View Cell ViewModel
+//MARK: - DayCollectionView Cell ViewModel Provider
 
-struct DayCollectionViewCellViewModel {
-    var cellStyle: DayCellStyle
-    var backgroundColor: UIColor
-    var dayName: String
-    var image: UIImage?
-    var maxTemp: String?
-    var minTemp: String?
-    var isSelected: Bool
+protocol DayCollectionViewCellViewModelProvider {
+    var numberOfDayItems: Int { get }
+    func viewModelForCellAt(index: Int) -> DayCellViewModel
 }
 
-extension WeatherViewModel {
+extension WeatherViewModel: DayCollectionViewCellViewModelProvider {
 
-    var dailyForecasts: [DailyForecast]? {
+    private var dailyForecasts: [DailyForecast]? {
         return locationObs.value.forecast?.dailyForecasts ?? nil
     }
 
@@ -80,7 +80,7 @@ extension WeatherViewModel {
         return dailyForecasts?.count ?? 0
     }
 
-    func viewModelForDayCollectionViewCellAt(at index: Int) -> DayCollectionViewCellViewModel {
+    func viewModelForCellAt(index: Int) -> DayCellViewModel {
         guard let dailyForecast = dailyForecasts?[index] else {
             fatalError("No Daily Forecast found for cell at this IndexPath!")
         }
@@ -93,31 +93,82 @@ extension WeatherViewModel {
         default:
             cellStyle = .middleCell
         }
-        let cellViewModel = DayCollectionViewCellViewModel(cellStyle: cellStyle,
-                                                           backgroundColor: Theme.Colours.bbcGrey,
-                                                           dayName: dailyForecast.time.formattedAs("EEE"),
-                                                           image: UIImage(systemName: dailyForecast.symbol ?? ""),
-                                                           maxTemp: dailyForecast.maxTemp?.asTemperatureString,
-                                                           minTemp: dailyForecast.minTemp?.asTemperatureString,
-                                                           isSelected: selectedDayIndexObs.value == index)
+        let cellViewModel = DayCellViewModel(cellStyle: cellStyle,
+                                             backgroundColor: Theme.Colours.bbcGrey,
+                                             dayName: dailyForecast.time.formattedAs("EEE"),
+                                             image: UIImage(systemName: dailyForecast.symbol ?? ""),
+                                             maxTemp: dailyForecast.maxTemp?.asTemperatureString,
+                                             minTemp: dailyForecast.minTemp?.asTemperatureString,
+                                             isSelected: selectedDayIndexObs.value == index)
         return cellViewModel
     }
 }
 
-//MARK: - Forecast Collection View Cell ViewModel
+struct DayCellViewModel {
+    var cellStyle: DayCellStyle
+    var backgroundColor: UIColor
+    var dayName: String
+    var image: UIImage?
+    var maxTemp: String?
+    var minTemp: String?
+    var isSelected: Bool
+}
 
-extension WeatherViewModel {
+//MARK: - ForecastCollectionView Cell ViewModel Provider
+
+protocol ForecastCollectionViewCellViewModelProvider {
+    var numberOfDayItems: Int { get }
+    func viewModelForCellAt(index: Int) -> DayCellViewModel
+}
+
+extension WeatherViewModel: ForecastCollectionViewCellViewModelProvider {
 
     var numberOfForecastItems: Int {
-        return 0
+        guard forecastDataItems.count > 1 else { return 0 }
+        return forecastDataItems[selectedDayIndexObs.value].count
     }
 
-    func viewModelForForecastCollectionViewCellAt(at index: Int) -> ForecastCollectionViewCellViewModel {
-        let cellViewModel = ForecastCollectionViewCellViewModel()
-        return cellViewModel
-    }
+    func viewModelForCellAt(index: Int) -> ForecastCellViewModel {
+        let item = forecastDataItems[selectedDayIndexObs.value][index]
 
-    struct ForecastCollectionViewCellViewModel {
+        switch item {
+        case .day(let forecast):
+            return DailyForecastCellViewModel(image: UIImage(systemName: forecast.symbol ?? ""),
+                                            maxTemp: forecast.maxTemp?.asTemperatureString,
+                                            minTemp: forecast.minTemp?.asTemperatureString,
+                                            description: forecast.description?.localizedCapitalized,
+                                            windSpeed: String(Int(forecast.windSpeed ?? 0)),
+                                            windDegrees: forecast.windDeg ?? 0)
+
+        case .hourly(let forecast):
+            return HourlyForecastCellViewModel(time: forecast.formattedTime,
+                                             nextDay: forecast.nextDay,
+                                             image: UIImage(systemName: forecast.symbol ?? ""),
+                                             temp: forecast.temp?.asTemperatureString,
+                                             cloudPercentage: String(forecast.clouds ?? 0) + "%",
+                                             windSpeed: String(Int(forecast.windSpeed ?? 0)),
+                                             windDegrees: forecast.windDeg ?? 0)
+        }
     }
 }
 
+protocol ForecastCellViewModel { }
+
+struct DailyForecastCellViewModel: ForecastCellViewModel {
+    let image: UIImage?
+    let maxTemp: String?
+    let minTemp: String?
+    let description: String?
+    let windSpeed: String?
+    let windDegrees: Int
+}
+
+struct HourlyForecastCellViewModel: ForecastCellViewModel {
+    let time: String
+    let nextDay: String?
+    let image: UIImage?
+    let temp: String?
+    let cloudPercentage: String
+    let windSpeed: String?
+    let windDegrees: Int
+}

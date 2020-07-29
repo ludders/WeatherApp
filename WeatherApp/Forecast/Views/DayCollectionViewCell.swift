@@ -47,7 +47,7 @@ class DayCollectionViewCell: UICollectionViewCell {
     let leftCornerMask = CACornerMask(arrayLiteral: .layerMinXMinYCorner, .layerMinXMaxYCorner)
     let rightCornerMask = CACornerMask(arrayLiteral: .layerMaxXMinYCorner, .layerMaxXMaxYCorner)
 
-    func configure(with viewModel: DayCollectionViewCellViewModel) {
+    func configure(with viewModel: DayCellViewModel) {
         contentView.backgroundColor = Theme.Colours.bbcGrey
         dayLabel.text = viewModel.dayName
         contentView.addSubview(dayLabel)

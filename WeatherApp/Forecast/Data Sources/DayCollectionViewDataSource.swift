@@ -26,7 +26,7 @@ class DayCollectionViewDataSource: NSObject, UICollectionViewDataSource {
             fatalError("Failed to dequeue DayCollectionViewCell")
         }
 
-        let cellViewModel = viewModel.viewModelForDayCollectionViewCellAt(at: indexPath.item)
+        let cellViewModel: DayCellViewModel = viewModel.viewModelForCellAt(index: indexPath.item)
         cell.configure(with: cellViewModel)
         return cell
     }

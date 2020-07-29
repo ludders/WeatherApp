@@ -18,29 +18,29 @@ class ForecastCollectionViewDataSource: NSObject, UICollectionViewDataSource {
     }
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if viewModel.forecastDataItems.count > 1 {
-            return viewModel.forecastDataItems[viewModel.selectedDayIndexObs.value].count
-        } else {
-            return 0
-        }
+        return viewModel.numberOfForecastItems
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
-        let item = viewModel.forecastDataItems[viewModel.selectedDayIndexObs.value][indexPath.item]
-        switch item {
-        case .day(let dailyForecast):
+        let cellViewModel: ForecastCellViewModel = viewModel.viewModelForCellAt(index: indexPath.item)
+
+        if let cellViewModel = cellViewModel as? DailyForecastCellViewModel {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dayCell", for: indexPath) as? DailyForecastCollectionViewCell else {
-                fatalError("Failed to dequeue DailyWeatherCollectionViewCell")
+                fatalError("Failed to dequeue DailyForecastCollectionViewCell")
             }
-            cell.configure(with: dailyForecast)
+            cell.configure(with: cellViewModel)
             return cell
-        case .hourly(let hourlyForecast):
+
+        } else if let cellViewModel = cellViewModel as? HourlyForecastCellViewModel {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "hourCell", for: indexPath) as? HourlyForecastCollectionViewCell else {
-                fatalError("Failed to dequeue HourlyWeatherCollectionViewCell")
+                fatalError("Failed to dequeue HourlyForecastCollectionViewCell")
             }
-            cell.configure(with: hourlyForecast)
+            cell.configure(with: cellViewModel)
             return cell
+
+        } else {
+            fatalError("Unhandled implementation of ForecastCellViewModel returned for item at index: \(indexPath.item)")
         }
     }
 }

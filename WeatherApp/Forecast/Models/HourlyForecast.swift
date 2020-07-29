@@ -21,3 +21,17 @@ struct HourlyForecast {
     var feelsLike: Double?
     var clouds: Int?
 }
+
+extension HourlyForecast {
+
+    var nextDay: String? {
+        return date.isAtExactly(hour: 0) ? date.nextDayAsEEE?.localizedUppercase : nil
+    }
+
+    var formattedTime: String {
+        let format = DateFormatter.dateFormat(fromTemplate: "HH:mm", options: 0, locale: Locale.current)
+        let hhMMFormatter = DateFormatter()
+        hhMMFormatter.setLocalizedDateFormatFromTemplate(format ?? "HH:mm")
+        return hhMMFormatter.string(from: date)
+    }
+}
