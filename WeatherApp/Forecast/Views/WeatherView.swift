@@ -66,12 +66,11 @@ final class WeatherView: UIView {
             make.height.equalTo(safeAreaLayoutGuide).dividedBy(3)
         }
         forecastCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(headingView.snp.bottom)
+            make.top.equalTo(headingView.snp.bottom).offset(5)
             make.leading.width.equalTo(safeAreaLayoutGuide)
-            make.bottom.equalTo(dayCollectionView.snp.top)
+            make.bottom.equalTo(dayCollectionView.snp.top).offset(-10)
         }
         dayCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(forecastCollectionView.snp.bottom)
             make.height.equalTo(100)
             make.width.bottom.equalTo(safeAreaLayoutGuide)
         }

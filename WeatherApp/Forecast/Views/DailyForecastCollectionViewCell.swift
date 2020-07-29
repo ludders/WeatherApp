@@ -24,7 +24,6 @@ final class DailyForecastCollectionViewCell: UICollectionViewCell {
         let label = UILabel(frame: .zero)
         label.font = Theme.Fonts.BBC.largeSubTitle
         label.textColor = Theme.Colours.white
-        label.text = "Sample Description"
         return label
     }()
 
@@ -53,6 +52,12 @@ final class DailyForecastCollectionViewCell: UICollectionViewCell {
         view.label.textColor = Theme.Colours.black
         return view
     }()
+    private var showHoursIndicator: Bool = false
+    private var hoursIndicator: UIImageView = {
+        let imageView = UIImageView(image: UIImage(systemName: "chevron.right"))
+        imageView.tintColor = Theme.Colours.silver
+        return imageView
+    }()
 
     func configure(with viewModel: DailyForecastCellViewModel) {
         symbolView.image = viewModel.image
@@ -61,12 +66,16 @@ final class DailyForecastCollectionViewCell: UICollectionViewCell {
         descriptionLabel.text = viewModel.description
         windView.label.text = viewModel.windSpeed
         self.windView.degrees = viewModel.windDegrees
+        self.showHoursIndicator = viewModel.showHoursIndicator
 
         contentView.addSubview(symbolView)
         contentView.addSubview(descriptionLabel)
         contentView.addSubview(maxTempLabel)
         contentView.addSubview(minTempLabel)
         contentView.addSubview(windView)
+        if showHoursIndicator {
+            contentView.addSubview(hoursIndicator)
+        }
 
         setupConstraints()
     }
@@ -101,5 +110,16 @@ final class DailyForecastCollectionViewCell: UICollectionViewCell {
             make.bottom.leading.equalTo(contentView.layoutMarginsGuide)
             make.trailing.equalTo(windView.snp.leading)
         }
+        if showHoursIndicator {
+            hoursIndicator.snp.makeConstraints { make in
+                make.bottom.trailing.equalTo(contentView).inset(5)
+            }
+        }
+    }
+
+    override func prepareForReuse() {
+        hoursIndicator.removeFromSuperview()
+        showHoursIndicator = false
+        super.prepareForReuse()
     }
 }

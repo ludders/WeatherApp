@@ -130,5 +130,6 @@ class DayCollectionViewCell: UICollectionViewCell {
         contentView.layer.maskedCorners = []
         topBar.removeFromSuperview()
         bottomBar.removeFromSuperview()
+        super.prepareForReuse()
     }
 }

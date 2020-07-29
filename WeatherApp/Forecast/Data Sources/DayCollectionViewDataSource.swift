@@ -11,7 +11,7 @@ import UIKit
 
 class DayCollectionViewDataSource: NSObject, UICollectionViewDataSource {
 
-    let viewModel: WeatherViewModel
+    let viewModel: DayCollectionViewViewModel
 
     init(viewModel: WeatherViewModel) {
         self.viewModel = viewModel

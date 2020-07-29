@@ -11,7 +11,7 @@ import UIKit
 
 class ForecastCollectionViewDataSource: NSObject, UICollectionViewDataSource {
 
-    let viewModel: WeatherViewModel
+    let viewModel: ForecastCollectionViewViewModel
 
     init(viewModel: WeatherViewModel) {
         self.viewModel = viewModel
@@ -24,7 +24,6 @@ class ForecastCollectionViewDataSource: NSObject, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
 
         let cellViewModel: ForecastCellViewModel = viewModel.viewModelForCellAt(index: indexPath.item)
-
         if let cellViewModel = cellViewModel as? DailyForecastCellViewModel {
             guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "dayCell", for: indexPath) as? DailyForecastCollectionViewCell else {
                 fatalError("Failed to dequeue DailyForecastCollectionViewCell")

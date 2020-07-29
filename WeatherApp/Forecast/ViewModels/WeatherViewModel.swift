@@ -12,11 +12,6 @@ import UIKit
 
 typealias UpdateForecastCompletion = Result<Bool, NetworkingError>
 
-protocol ForecastCollectionViewViewModel {
-    var numberOfRows: Int { get }
-    var numberOfSections: Int { get }
-}
-
 class WeatherViewModel {
     private(set) var locationObs: Observable<LocationModel>
     var selectedDayIndexObs = Observable<Int>(0)
@@ -63,14 +58,14 @@ enum ForecastDataItem {
     case hourly(HourlyForecast)
 }
 
-//MARK: - DayCollectionView Cell ViewModel Provider
+//MARK: - DayCollectionView Cell ViewModels
 
-protocol DayCollectionViewCellViewModelProvider {
+protocol DayCollectionViewViewModel {
     var numberOfDayItems: Int { get }
     func viewModelForCellAt(index: Int) -> DayCellViewModel
 }
 
-extension WeatherViewModel: DayCollectionViewCellViewModelProvider {
+extension WeatherViewModel: DayCollectionViewViewModel {
 
     private var dailyForecasts: [DailyForecast]? {
         return locationObs.value.forecast?.dailyForecasts ?? nil
@@ -114,14 +109,14 @@ struct DayCellViewModel {
     var isSelected: Bool
 }
 
-//MARK: - ForecastCollectionView Cell ViewModel Provider
+//MARK: - ForecastCollectionView Cell ViewModels
 
-protocol ForecastCollectionViewCellViewModelProvider {
-    var numberOfDayItems: Int { get }
-    func viewModelForCellAt(index: Int) -> DayCellViewModel
+protocol ForecastCollectionViewViewModel {
+    var numberOfForecastItems: Int { get }
+    func viewModelForCellAt(index: Int) -> ForecastCellViewModel
 }
 
-extension WeatherViewModel: ForecastCollectionViewCellViewModelProvider {
+extension WeatherViewModel: ForecastCollectionViewViewModel {
 
     var numberOfForecastItems: Int {
         guard forecastDataItems.count > 1 else { return 0 }
@@ -133,12 +128,14 @@ extension WeatherViewModel: ForecastCollectionViewCellViewModelProvider {
 
         switch item {
         case .day(let forecast):
+            print("numberOfForecastItems: \(numberOfForecastItems)")
             return DailyForecastCellViewModel(image: UIImage(systemName: forecast.symbol ?? ""),
                                             maxTemp: forecast.maxTemp?.asTemperatureString,
                                             minTemp: forecast.minTemp?.asTemperatureString,
                                             description: forecast.description?.localizedCapitalized,
                                             windSpeed: String(Int(forecast.windSpeed ?? 0)),
-                                            windDegrees: forecast.windDeg ?? 0)
+                                            windDegrees: forecast.windDeg ?? 0,
+                                            showHoursIndicator: numberOfForecastItems > 1)
 
         case .hourly(let forecast):
             return HourlyForecastCellViewModel(time: forecast.formattedTime,
@@ -161,6 +158,7 @@ struct DailyForecastCellViewModel: ForecastCellViewModel {
     let description: String?
     let windSpeed: String?
     let windDegrees: Int
+    let showHoursIndicator: Bool
 }
 
 struct HourlyForecastCellViewModel: ForecastCellViewModel {
