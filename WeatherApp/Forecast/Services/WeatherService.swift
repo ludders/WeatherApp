@@ -22,7 +22,7 @@ class WeatherService {
         self.weatherAPI = weatherAPI
     }
 
-    func getLocationForecast(for location: LocationModel, onCompletion: @escaping (LocationForecastCompletion) -> ()) {
+    func getLocationForecast(for location: Location, onCompletion: @escaping (LocationForecastCompletion) -> ()) {
         weatherAPI.getWeatherResponse(for: location.coordinates, onCompletion: { result in
             switch result {
             case .success(let response):

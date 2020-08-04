@@ -19,7 +19,7 @@ class SearchViewModel {
     private var timer: Timer?
 
     private(set) var searchModel = Observable<SearchModel?>(nil)
-    private(set) var selectedLocation: LocationModel? = nil
+    private(set) var selectedLocation: Location? = nil
 
     init(suggestionsService: SuggestionsService) {
         self.suggestionsService = suggestionsService
@@ -53,7 +53,7 @@ class SearchViewModel {
 
     func handleSelection(at index: Int) {
         guard let selectedSuggestion = searchModel.value?.suggestions[index] else { return }
-        selectedLocation = LocationModel(name: selectedSuggestion.shortName,
+        selectedLocation = Location(name: selectedSuggestion.shortName,
                                 coordinates: selectedSuggestion.coordinates)
     }
 }

@@ -18,7 +18,6 @@ class WeatherHeadingView: UIView {
         button.setImage(UIImage(systemName: "arrow.clockwise.circle"), for: .normal)
         button.imageView?.preferredSymbolConfiguration = UIImage.SymbolConfiguration(textStyle: .footnote)
         button.tintColor = Theme.Colours.silver
-        //        button.addTarget(self, action: #selector(didTapRefresh), for: .touchUpInside)
         return button
     }()
     var refreshLabel: UILabel = {
@@ -126,7 +125,7 @@ class WeatherHeadingView: UIView {
 
     func configure(with locationModel: LocationModel) {
         DispatchQueue.main.async {
-            self.locationLabel.text = locationModel.name
+            self.locationLabel.text = locationModel.location.name
             self.refreshLabel.text = locationModel.forecast?.lastUpdateDisplayText
         }
     }

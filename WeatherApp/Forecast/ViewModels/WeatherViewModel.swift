@@ -13,12 +13,12 @@ import UIKit
 typealias UpdateForecastCompletion = Result<Bool, NetworkingError>
 
 class WeatherViewModel {
-    private(set) var locationObs: Observable<LocationModel>
+    private(set) var locationModelObs: Observable<LocationModel>
     var selectedDayIndexObs = Observable<Int>(0)
     var selectedDayObs = Observable<DailyForecast?>(nil)
 
     public init(model: LocationModel) {
-        self.locationObs = Observable<LocationModel>(model)
+        self.locationModelObs = Observable<LocationModel>(model)
         self.selectedDayIndexObs.bind { index in
             self.selectedDayObs.value = self.dailyForecast(for: index)
         }
@@ -28,10 +28,10 @@ class WeatherViewModel {
 
     public func updateForecast(onCompletion: @escaping (UpdateForecastCompletion) -> ()) {
         let service = WeatherService()
-        service.getLocationForecast(for: locationObs.value) { result in
+        service.getLocationForecast(for: locationModelObs.value.location) { result in
             switch result {
             case .success(let forecast):
-                self.locationObs.value.forecast = forecast
+                self.locationModelObs.value.forecast = forecast
                 self.forecastDataItems = forecast.asDataItems
                 self.selectedDayObs.value = self.dailyForecast(for: self.selectedDayIndexObs.value)
                 onCompletion(.success(true))
@@ -68,7 +68,7 @@ protocol DayCollectionViewViewModel {
 extension WeatherViewModel: DayCollectionViewViewModel {
 
     private var dailyForecasts: [DailyForecast]? {
-        return locationObs.value.forecast?.dailyForecasts ?? nil
+        return locationModelObs.value.forecast?.dailyForecasts ?? nil
     }
 
     var numberOfDayItems: Int {
@@ -128,7 +128,6 @@ extension WeatherViewModel: ForecastCollectionViewViewModel {
 
         switch item {
         case .day(let forecast):
-            print("numberOfForecastItems: \(numberOfForecastItems)")
             return DailyForecastCellViewModel(image: UIImage(systemName: forecast.symbol ?? ""),
                                             maxTemp: forecast.maxTemp?.asTemperatureString,
                                             minTemp: forecast.minTemp?.asTemperatureString,

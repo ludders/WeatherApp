@@ -46,18 +46,26 @@ class MainCoordinator: Coordinator {
 extension MainCoordinator: IntroViewControllerDelegate, SearchViewControllerDelegate {
 
     func startWeatherFlow() {
-        startWeatherFlow(for: LocationModel(name: "Null Island",
-                                            coordinates: CLLocationCoordinate2D.nullIsland))
+        if let location = Defaults.get(Location.self, forKey: .defaultLocation) {
+            startWeatherFlow(for: location)
+        } else {
+            startWeatherFlow(for: Location(name: "Null Island",
+                                           latitude: 0,
+                                           longitude: 0))
+        }
     }
 
-    func startWeatherFlow(for location: LocationModel) {
-        let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
-        let viewModel = WeatherViewModel(model: location)
+    func startWeatherFlow(for location: Location) {
+        Defaults.set(location, forKey: .defaultLocation)
+        let model = LocationModel(location: location)
+        let viewModel = WeatherViewModel(model: model)
         let forecastCollectionViewDataSource = ForecastCollectionViewDataSource(viewModel: viewModel)
         let dayCollectionViewDataSource = DayCollectionViewDataSource(viewModel: viewModel)
         let vc1 = WeatherViewController(weatherViewModel: viewModel,
                                         forecastCollectionViewDataSource: forecastCollectionViewDataSource,
                                         dayCollectionViewDataSource: dayCollectionViewDataSource)
+
+        let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
         pageViewController.setViewControllers([vc1], direction: .forward, animated: true, completion: nil)
         let weatherContainerViewController = WeatherContainerViewController(pageViewController: pageViewController)
         weatherContainerViewController.coordinatorDelegate = self

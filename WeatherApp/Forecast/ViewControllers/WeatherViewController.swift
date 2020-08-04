@@ -67,7 +67,7 @@ class WeatherViewController: UIViewController {
     }
 
     private func setupBindings() {
-        viewModel.locationObs.bindOnNext { locationModel in
+        viewModel.locationModelObs.bindOnNext { locationModel in
             self.weatherView.configure(with: locationModel)
         }
         viewModel.selectedDayObs.bind { dailyForecast in
@@ -75,7 +75,7 @@ class WeatherViewController: UIViewController {
             DispatchQueue.main.async {
                 self.weatherView.headingView.subtitleLabel.text = selectedDay.subtitleDisplayText
                 self.weatherView.headingView.sunriseLabel.text = selectedDay.sunriseDisplayText
-                self.weatherView.headingView.sunsetLabel.text = selectedDay.sunriseDisplayText
+                self.weatherView.headingView.sunsetLabel.text = selectedDay.sunsetDisplayText
                 self.weatherView.forecastCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredHorizontally, animated: false)
                 self.weatherView.forecastCollectionView.reloadData()
             }

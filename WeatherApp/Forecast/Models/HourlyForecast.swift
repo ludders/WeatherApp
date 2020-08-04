@@ -24,6 +24,7 @@ struct HourlyForecast {
 
 extension HourlyForecast {
 
+    //TODO: This is one day ahead, fix.
     var nextDay: String? {
         return date.isAtExactly(hour: 0) ? date.nextDayAsEEE?.localizedUppercase : nil
     }

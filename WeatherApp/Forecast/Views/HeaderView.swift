@@ -37,7 +37,6 @@ class HeaderView: UIView {
     }()
 
     func setupView() {
-
         addSubview(menuButton)
         addSubview(titleImage)
         addSubview(toolbar)

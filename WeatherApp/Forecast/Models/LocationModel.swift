@@ -10,7 +10,24 @@ import CoreLocation
 import Foundation
 
 struct LocationModel {
-    let name: String
-    let coordinates: CLLocationCoordinate2D
+    let location: Location
     var forecast: LocationForecast? = nil
+}
+
+struct Location: Codable {
+    let name: String
+    let latitude: Double
+    let longitude: Double
+
+    var coordinates: CLLocationCoordinate2D {
+        return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+}
+
+extension Location {
+    init(name: String, coordinates: CLLocationCoordinate2D) {
+        self.init(name: name,
+                  latitude: coordinates.latitude,
+                  longitude: coordinates.longitude)
+    }
 }

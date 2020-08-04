@@ -37,7 +37,7 @@ public struct Theme {
             return UIColor(hex: "#000000")
         }
         public static var blackTranslucent: UIColor {
-            return UIColor(hex: "#000000E6")
+            return UIColor(hex: "#00000099")
         }
     }
 

@@ -13,7 +13,7 @@ class DayCollectionViewDataSource: NSObject, UICollectionViewDataSource {
 
     let viewModel: DayCollectionViewViewModel
 
-    init(viewModel: WeatherViewModel) {
+    init(viewModel: DayCollectionViewViewModel) {
         self.viewModel = viewModel
     }
 

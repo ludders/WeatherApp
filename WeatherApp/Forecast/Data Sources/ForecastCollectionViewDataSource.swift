@@ -13,7 +13,7 @@ class ForecastCollectionViewDataSource: NSObject, UICollectionViewDataSource {
 
     let viewModel: ForecastCollectionViewViewModel
 
-    init(viewModel: WeatherViewModel) {
+    init(viewModel: ForecastCollectionViewViewModel) {
         self.viewModel = viewModel
     }
 

@@ -12,7 +12,7 @@ import SnapKit
 
 protocol SearchViewControllerDelegate: AnyObject {
     func didTapClose()
-    func startWeatherFlow(for location: LocationModel)
+    func startWeatherFlow(for location: Location)
 }
 
 class SearchViewController: UIViewController {
@@ -53,7 +53,7 @@ class SearchViewController: UIViewController {
     }
     
     func setupViews() {
-        view.backgroundColor = Theme.Colours.blackTranslucent
+        view.backgroundColor = Theme.Colours.black
 
         titleLabel.font = Theme.Fonts.BBC.largeTitle30
         titleLabel.text = NSLocalizedString("Location Search", comment: "Location Search")
@@ -182,6 +182,7 @@ extension SearchViewController: UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: "suggestionCell", for: indexPath)
         let cellViewModel = viewModel.viewModelForCellAt(index: indexPath.row, searchText: textField.text ?? "")
 
+        cell.backgroundColor = cellViewModel.backgroundColor
         cell.contentView.backgroundColor = cellViewModel.backgroundColor
         cell.textLabel?.textColor = cellViewModel.textColor
         cell.textLabel?.text = cellViewModel.text
