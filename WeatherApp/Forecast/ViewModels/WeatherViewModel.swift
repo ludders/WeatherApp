@@ -36,7 +36,6 @@ class WeatherViewModel {
                 self.selectedDayObs.value = self.dailyForecast(for: self.selectedDayIndexObs.value)
                 onCompletion(.success(true))
             case .failure(let error):
-                print(error)
                 onCompletion(.failure(error))
             }
         }

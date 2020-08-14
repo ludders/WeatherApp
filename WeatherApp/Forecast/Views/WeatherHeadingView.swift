@@ -70,7 +70,16 @@ class WeatherHeadingView: UIView {
     }()
     var sunTimesView: UIStackView?
 
-    func setupView() {
+    init() {
+        super.init(frame: CGRect.zero)
+        setupSubViews()
+    }
+
+    required init?(coder: NSCoder) {
+        fatalError("No storyboards!")
+    }
+
+    private func setupSubViews() {
         addSubview(refreshButton)
         addSubview(refreshLabel)
         addSubview(locationLabel)
@@ -80,7 +89,7 @@ class WeatherHeadingView: UIView {
         setupConstraints()
     }
 
-    func setupSunTimesView() {
+    private func setupSunTimesView() {
         sunTimesView = UIStackView(arrangedSubviews: [sunriseImageView, sunriseLabel, sunsetLabel])
         sunTimesView?.alignment = .firstBaseline
         sunTimesView?.distribution = .fillProportionally

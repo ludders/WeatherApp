@@ -48,13 +48,11 @@ class WeatherViewController: UIViewController {
     }
 
     override func viewDidLoad() {
-        addChildViewControllers()
-        weatherView.setupView()
         configureForecastCollectionView()
         configureDayCollectionView()
         setupBindings()
         weatherView.headingView.refreshButton.addTarget(self, action: #selector(didTapRefresh), for: .touchUpInside)
-
+        weatherView.setupConstraints()
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -80,16 +78,6 @@ class WeatherViewController: UIViewController {
                 self.weatherView.forecastCollectionView.reloadData()
             }
         }
-    }
-
-    private func addChildViewControllers() {
-        addChild(forecastCollectionViewController)
-        forecastCollectionViewController.collectionView = weatherView.forecastCollectionView
-        forecastCollectionViewController.didMove(toParent: self)
-
-        addChild(dayCollectionViewController)
-        dayCollectionViewController.collectionView = weatherView.dayCollectionView
-        dayCollectionViewController.didMove(toParent: self)
     }
 
     private func configureForecastCollectionView() {

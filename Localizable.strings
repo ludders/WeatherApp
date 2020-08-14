@@ -15,8 +15,13 @@
 "Next Hour" =  "Next Hour";
 "Menu" = "Menu";
 "Close" = "Close";
+"Cancel" = "Cancel";
 "Location Search" = "Location Search";
 "Enter a location" = "Enter a location";
 "Error fetching results, please try again" = "Error fetching results, please try again";
 "Loading..." = "Loading...";
 "No results found for " = "No results found for ";
+"Current Location" = "Current Location";
+"Location Disabled" = "Location Disabled";
+"Please enable location services to use this feature" = "Location Disabled";
+"Go To Settings" = "Go To Settings";

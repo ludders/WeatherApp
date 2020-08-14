@@ -23,20 +23,19 @@ final class WeatherView: UIView {
         self.dayCollectionView = UICollectionView(frame: .zero, collectionViewLayout: dayFlowLayout)
         self.dayFlowLayout = dayFlowLayout
         super.init(frame: CGRect.zero)
+        setupSubViews()
     }
 
     required init?(coder: NSCoder) {
         fatalError("No storyboards!")
     }
 
-    func setupView() {
+    private func setupSubViews() {
         addSubview(headingView)
         addSubview(forecastCollectionView)
         addSubview(dayCollectionView)
-        headingView.setupView()
         setupForecastCollectionView()
         setupDayCollectionView()
-        setupConstraints()
     }
 
     //MARK: Forecast Collection View & Layout Setup
@@ -60,7 +59,7 @@ final class WeatherView: UIView {
 
     //MARK: Constraints
 
-    private func setupConstraints() {
+    func setupConstraints() {
         headingView.snp.makeConstraints { make in
             make.top.leading.width.equalTo(safeAreaLayoutGuide)
             make.height.equalTo(safeAreaLayoutGuide).dividedBy(3)

@@ -27,9 +27,8 @@ struct WeatherAPI: API {
         }
 
         let session = URLSession.shared
-        print(url)
-
-        let dataTask = session.dataTask(with: url) { (data, response, error) in
+        let request = URLRequest(url: url, cachePolicy: .useProtocolCachePolicy, timeoutInterval: 10)
+        let dataTask = session.dataTask(with: request) { (data, response, error) in
             guard let response = response as? HTTPURLResponse,
                 response.mimeType == "application/json",
                 (200...299).contains(response.statusCode) else {

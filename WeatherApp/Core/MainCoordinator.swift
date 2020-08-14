@@ -55,8 +55,14 @@ extension MainCoordinator: IntroViewControllerDelegate, SearchViewControllerDele
         }
     }
 
-    func startWeatherFlow(for location: Location) {
-        Defaults.set(location, forKey: .defaultLocation)
+    func startWeatherFlow(for location: Location, setAsDefault: Bool = true) {
+        if setAsDefault {
+            Defaults.set(location, forKey: .defaultLocation)
+        }
+        startWeatherFlow(for: location)
+    }
+
+    private func startWeatherFlow(for location: Location) {
         let model = LocationModel(location: location)
         let viewModel = WeatherViewModel(model: model)
         let forecastCollectionViewDataSource = ForecastCollectionViewDataSource(viewModel: viewModel)
@@ -67,7 +73,10 @@ extension MainCoordinator: IntroViewControllerDelegate, SearchViewControllerDele
 
         let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
         pageViewController.setViewControllers([vc1], direction: .forward, animated: true, completion: nil)
-        let weatherContainerViewController = WeatherContainerViewController(pageViewController: pageViewController)
+        let locationManager = CLLocationManager()
+        let currentLocationProvider = CurrentLocationProvider(locationManager: locationManager)
+        let weatherContainerViewController = WeatherContainerViewController(pageViewController: pageViewController,
+                                                                            currentLocationProvider: currentLocationProvider)
         weatherContainerViewController.coordinatorDelegate = self
         navigationController.pushViewController(weatherContainerViewController, animated: true)
     }
@@ -87,6 +96,10 @@ extension MainCoordinator: WeatherContainerViewControllerDelegate {
         navigationController.present(searchViewController, animated: true) {
             //TODO: Handle search selection
         }
+    }
+
+    func startWeatherFlowForCurrentLocation(_ currentLocation: Location) {
+        startWeatherFlow(for: currentLocation, setAsDefault: false)
     }
 }
 

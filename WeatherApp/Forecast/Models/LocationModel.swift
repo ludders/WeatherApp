@@ -19,7 +19,7 @@ struct Location: Codable {
     let latitude: Double
     let longitude: Double
 
-    var coordinates: CLLocationCoordinate2D {
+    var coordinate: CLLocationCoordinate2D {
         return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
     }
 }
