@@ -12,6 +12,11 @@ import UIKit
 class WeatherViewController: UIViewController {
 
     var weatherView: WeatherView!
+    lazy var errorView: WeatherErrorView = {
+        let view = WeatherErrorView()
+        view.tryAgainButton.addTarget(self, action: #selector(didTapTryAgain), for: .touchUpInside)
+        return view
+    }()
     var viewModel: WeatherViewModel
 
     let forecastCollectionViewController: UICollectionViewController
@@ -38,7 +43,7 @@ class WeatherViewController: UIViewController {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("No storyboards!")
+        fatalError("init(coder:) has not been implemented")
     }
 
     override func loadView() {
@@ -56,12 +61,7 @@ class WeatherViewController: UIViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        view.displayLoadingView()
-        viewModel.updateForecast { result in
-            DispatchQueue.main.async {
-                self.view.hideLoadingView()
-            }
-        }
+        updateWeatherView()
     }
 
     private func setupBindings() {
@@ -91,10 +91,32 @@ class WeatherViewController: UIViewController {
     }
 
     @objc func didTapRefresh() {
+        updateWeatherView()
+    }
+
+    @objc func didTapTryAgain() {
+        updateWeatherView()
+    }
+
+    private func updateWeatherView() {
         view.displayLoadingView()
-        viewModel.updateForecast { result in
+        viewModel.updateForecast { [weak self] result in
+            guard let self = self else { return }
             DispatchQueue.main.async {
                 self.view.hideLoadingView()
+            }
+            switch result {
+            case .success(_):
+                DispatchQueue.main.async {
+                    guard self.view == self.weatherView else {
+                        self.view = self.weatherView
+                        return
+                    }
+                }
+            case .failure(_):
+                DispatchQueue.main.async {
+                    self.view = self.errorView
+                }
             }
         }
     }

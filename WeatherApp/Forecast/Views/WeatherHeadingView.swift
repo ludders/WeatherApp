@@ -15,15 +15,12 @@ class WeatherHeadingView: UIView {
     
     var refreshButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "arrow.clockwise.circle"), for: .normal)
         button.imageView?.preferredSymbolConfiguration = UIImage.SymbolConfiguration(textStyle: .footnote)
         button.tintColor = Theme.Colours.silver
         return button
     }()
     var refreshLabel: UILabel = {
         let label = UILabel()
-        let formatString = NSLocalizedString("%d minutes ago", comment: "%d minutes ago")
-        label.text = String.localizedStringWithFormat(formatString, 5)
         label.font = Theme.Fonts.BBC.footnote
         label.textColor = Theme.Colours.silver
         return label
@@ -39,14 +36,13 @@ class WeatherHeadingView: UIView {
     }()
     var addLocationButton: UIButton = {
         let button = UIButton(type: .system)
-        button.setImage(UIImage(systemName: "plus.square"), for: .normal)
         button.imageView?.preferredSymbolConfiguration = UIImage.SymbolConfiguration(textStyle: .largeTitle)
         button.tintColor = Theme.Colours.white
         return button
     }()
     var subtitleLabel: UILabel = {
         let label = UILabel()
-        label.font = Theme.Fonts.BBC.largeSubTitle
+        label.font = Theme.Fonts.BBC.largeSubTitleItalic
         label.textColor = Theme.Colours.white
         return label
     }()
@@ -63,7 +59,7 @@ class WeatherHeadingView: UIView {
         return label
     }()
     var sunriseImageView: UIImageView = {
-        let imageView = UIImageView(image: UIImage(systemName: "sunrise.fill"))
+        let imageView = UIImageView()
         imageView.preferredSymbolConfiguration = UIImage.SymbolConfiguration(textStyle: .body)
         imageView.tintColor = Theme.Colours.white
         return imageView
@@ -76,7 +72,7 @@ class WeatherHeadingView: UIView {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("No storyboards!")
+        fatalError("init(coder:) has not been implemented")
     }
 
     private func setupSubViews() {
@@ -135,7 +131,10 @@ class WeatherHeadingView: UIView {
     func configure(with locationModel: LocationModel) {
         DispatchQueue.main.async {
             self.locationLabel.text = locationModel.location.name
+            self.addLocationButton.setImage(UIImage(systemName: "plus.square"), for: .normal)
+            self.refreshButton.setImage(UIImage(systemName: "arrow.clockwise.circle"), for: .normal)
             self.refreshLabel.text = locationModel.forecast?.lastUpdateDisplayText
+            self.sunriseImageView.image = UIImage(systemName: "sunrise.fill")
         }
     }
 }

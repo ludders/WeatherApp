@@ -59,9 +59,13 @@ public struct Theme {
                 let size = CGFloat(30)
                 return UIFont(name: boldItalic, size: size) ?? UIFont.systemFont(ofSize: size)
             }
-            public static var largeSubTitle: UIFont {
+            public static var largeSubTitleItalic: UIFont {
                 let size = CGFloat(34)
                 return UIFont(name: italic, size: size) ?? UIFont.systemFont(ofSize: size)
+            }
+            public static var largeSubTitle: UIFont {
+                let size = CGFloat(34)
+                return UIFont(name: regular, size: size) ?? UIFont.systemFont(ofSize: size)
             }
             public static var body: UIFont {
                 let size = CGFloat(17)

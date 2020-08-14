@@ -40,7 +40,7 @@ class IntroViewController: UIViewController {
 
         weatherLabel = UILabel(frame: CGRect.zero)
         weatherLabel.text = "WEATHER"
-        weatherLabel.font = Theme.Fonts.BBC.largeSubTitle
+        weatherLabel.font = Theme.Fonts.BBC.largeSubTitleItalic
         weatherLabel.textColor = Theme.Colours.white
         weatherLabel.textAlignment = .center
 

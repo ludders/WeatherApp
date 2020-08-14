@@ -27,7 +27,7 @@ final class WindIconView: UIView {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("No storyboards!")
+        fatalError("init(coder:) has not been implemented")
     }
 
     fileprivate func setupView() {

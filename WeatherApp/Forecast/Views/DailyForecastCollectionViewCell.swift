@@ -22,7 +22,7 @@ final class DailyForecastCollectionViewCell: UICollectionViewCell {
 
     private var descriptionLabel: UILabel = {
         let label = UILabel(frame: .zero)
-        label.font = Theme.Fonts.BBC.largeSubTitle
+        label.font = Theme.Fonts.BBC.largeSubTitleItalic
         label.textColor = Theme.Colours.white
         return label
     }()

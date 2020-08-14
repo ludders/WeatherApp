@@ -21,7 +21,7 @@ final class RGBLoadingView: UIView {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("No storyboards!")
+        fatalError("init(coder:) has not been implemented")
     }
 
     private func setupConstraints() {
@@ -51,7 +51,7 @@ final class RGBSpinnerView: UIView {
     }
 
     required init?(coder: NSCoder) {
-        fatalError("No storyboards!")
+        fatalError("init(coder:) has not been implemented")
     }
 
     override var intrinsicContentSize: CGSize {
