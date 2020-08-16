@@ -23,12 +23,6 @@ struct HourlyForecast {
 }
 
 extension HourlyForecast {
-
-    //TODO: This is one day ahead, fix.
-    var nextDay: String? {
-        return date.isAtExactly(hour: 0) ? date.nextDayAsEEE?.localizedUppercase : nil
-    }
-
     var formattedTime: String {
         let format = DateFormatter.dateFormat(fromTemplate: "HH:mm", options: 0, locale: Locale.current)
         let hhMMFormatter = DateFormatter()

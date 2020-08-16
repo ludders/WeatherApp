@@ -100,39 +100,3 @@ extension WeatherContainerViewController: HeaderViewDelegate {
         }
     }
 }
-
-//// User has not yet made a choice with regards to this application
-//case notDetermined = 0
-//
-//
-//// This application is not authorized to use location services.  Due
-//// to active restrictions on location services, the user cannot change
-//// this status, and may not have personally denied authorization
-//case restricted = 1
-//
-//
-//// User has explicitly denied authorization for this application, or
-//// location services are disabled in Settings.
-//case denied = 2
-//
-//
-//// User has granted authorization to use their location at any
-//// time.  Your app may be launched into the background by
-//// monitoring APIs such as visit monitoring, region monitoring,
-//// and significant location change monitoring.
-////
-//// This value should be used on iOS, tvOS and watchOS.  It is available on
-//// MacOS, but kCLAuthorizationStatusAuthorized is synonymous and preferred.
-//@available(iOS 8.0, *)
-//case authorizedAlways = 3
-//
-//
-//// User has granted authorization to use their location only while
-//// they are using your app.  Note: You can reflect the user's
-//// continued engagement with your app using
-//// -allowsBackgroundLocationUpdates.
-////
-//// This value is not available on MacOS.  It should be used on iOS, tvOS and
-//// watchOS.
-//@available(iOS 8.0, *)
-//case authorizedWhenInUse = 4

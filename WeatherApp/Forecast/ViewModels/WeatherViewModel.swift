@@ -137,12 +137,12 @@ extension WeatherViewModel: ForecastCollectionViewViewModel {
 
         case .hourly(let forecast):
             return HourlyForecastCellViewModel(time: forecast.formattedTime,
-                                             nextDay: forecast.nextDay,
-                                             image: UIImage(systemName: forecast.symbol ?? ""),
-                                             temp: forecast.temp?.asTemperatureString,
-                                             cloudPercentage: String(forecast.clouds ?? 0) + "%",
-                                             windSpeed: String(Int(forecast.windSpeed ?? 0)),
-                                             windDegrees: forecast.windDeg ?? 0)
+                                               nextDay: forecast.date.isAtMidnight ? forecast.date.formattedAs("EEE").localizedUppercase : nil,
+                                               image: UIImage(systemName: forecast.symbol ?? ""),
+                                               temp: forecast.temp?.asTemperatureString,
+                                               cloudPercentage: String(forecast.clouds ?? 0) + "%",
+                                               windSpeed: String(Int(forecast.windSpeed ?? 0)),
+                                               windDegrees: forecast.windDeg ?? 0)
         }
     }
 }
