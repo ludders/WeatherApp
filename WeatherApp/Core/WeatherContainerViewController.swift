@@ -92,11 +92,16 @@ extension WeatherContainerViewController: HeaderViewDelegate {
             let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel")
 
             let ac = UIAlertController(title: locationTitle, message: locationMessage, preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: settingsTitle, style: .default, handler: nil))
+            ac.addAction(UIAlertAction(title: settingsTitle, style: .default, handler: goToSettings))
             ac.addAction(UIAlertAction(title: cancelTitle, style: .cancel, handler: nil))
             present(ac, animated: true, completion: nil)
         @unknown default:
             fatalError("Unhandled CLAuthorizationStatus: \(status)")
         }
+    }
+
+    private func goToSettings(_: UIAlertAction) {
+        guard let settingsURL = URL(string: UIApplication.openSettingsURLString) else { return }
+        UIApplication.shared.open(settingsURL, options: [:], completionHandler: nil)
     }
 }
