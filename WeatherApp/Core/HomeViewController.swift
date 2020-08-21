@@ -6,29 +6,21 @@
 //  Copyright © 2020 David Ludlow. All rights reserved.
 //
 
-import CoreLocation
 import Foundation
 import UIKit
 import SnapKit
 
-
-protocol HomeViewControllerDelegate: AnyObject {
-    func startSearchFlow()
-    func startWeatherFlow(for location: Location, setAsDefault: Bool)
-}
-
 //Will manage header view & act as parent for weather page view controller
 class HomeViewController: UIViewController {
 
-    private let currentLocationProvider: CurrentLocationProvider
+    private let viewModel: HomeViewModel
     private let pageViewController: UIPageViewController
-    weak var coordinatorDelegate: HomeViewControllerDelegate?
     private var containerView: UIView!
     private var headerView: HeaderView!
 
-    init(pageViewController: UIPageViewController, currentLocationProvider: CurrentLocationProvider) {
+    init(viewModel: HomeViewModel, pageViewController: UIPageViewController) {
+        self.viewModel = viewModel
         self.pageViewController = pageViewController
-        self.currentLocationProvider = currentLocationProvider
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -68,36 +60,43 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: HeaderViewDelegate {
     func didTapSearch() {
-        coordinatorDelegate?.startSearchFlow()
+        viewModel.didTapSearch()
     }
 
     func didTapLocation() {
-        let status = CLLocationManager.authorizationStatus()
-        switch status {
-        case .authorizedAlways, .authorizedWhenInUse:
-            currentLocationProvider.getCurrentLocation { [weak self] result in
-                switch result {
-                case .success(let currentLocation):
-                    self?.coordinatorDelegate?.startWeatherFlow(for: currentLocation, setAsDefault: false)
-                case .failure(let error):
-                    print(error)
-                }
+        viewModel.didTapLocation { [weak self] (disabled, error) in
+            if disabled {
+                self?.showLocationDisabledAlert()
             }
-        case .notDetermined:
-            currentLocationProvider.requestWhenInUseAuthorisation()
-        case .denied, .restricted:
-            let locationTitle = NSLocalizedString("Location Disabled", comment: "Location Disabled")
-            let locationMessage = NSLocalizedString("Please enable location services to use this feature", comment: "Please enable location services to use this feature")
-            let settingsTitle = NSLocalizedString("Go To Settings", comment: "Go To Settings")
-            let cancelTitle = NSLocalizedString("Cancel", comment: "Cancel")
-
-            let ac = UIAlertController(title: locationTitle, message: locationMessage, preferredStyle: .alert)
-            ac.addAction(UIAlertAction(title: settingsTitle, style: .default, handler: goToSettings))
-            ac.addAction(UIAlertAction(title: cancelTitle, style: .cancel, handler: nil))
-            present(ac, animated: true, completion: nil)
-        @unknown default:
-            fatalError("Unhandled CLAuthorizationStatus: \(status)")
+            if let error = error {
+                self?.showErrorFetchingLocationAlert()
+            }
         }
+    }
+
+    private func showLocationDisabledAlert() {
+        let locationTitle = NSLocalizedString("Location Disabled", comment: "Location Disabled")
+        let locationMessage = NSLocalizedString("Please enable location services to use this feature", comment: "Please enable location services to use this feature")
+        let settingsButtonTitle = NSLocalizedString("Go To Settings", comment: "Go To Settings")
+        let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel")
+
+        let ac = UIAlertController(title: locationTitle, message: locationMessage, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: settingsButtonTitle, style: .default, handler: goToSettings))
+        ac.addAction(UIAlertAction(title: cancelButtonTitle, style: .cancel, handler: nil))
+        self.present(ac, animated: true, completion: nil)
+    }
+
+    private func showErrorFetchingLocationAlert() {
+        let title = NSLocalizedString("Error", comment: "Error")
+        let message = NSLocalizedString("Error fetching current location, please try again", comment: "Error fetching current location, please try again")
+        let tryAgainButtonTitle = NSLocalizedString("Try Again", comment: "Try Again")
+        let cancelButtonTitle = NSLocalizedString("Cancel", comment: "Cancel")
+
+        let ac = UIAlertController(title: title, message: message, preferredStyle: .alert)
+        ac.addAction(UIAlertAction(title: tryAgainButtonTitle, style: .default, handler: { [weak self] _ in
+            self?.didTapLocation()
+        }))
+        ac.addAction(UIAlertAction(title: cancelButtonTitle, style: .cancel, handler: nil))
     }
 
     private func goToSettings(_: UIAlertAction) {

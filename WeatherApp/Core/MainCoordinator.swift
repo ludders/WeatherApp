@@ -73,11 +73,13 @@ extension MainCoordinator: SearchViewControllerDelegate {
 
         let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
         pageViewController.setViewControllers([vc1], direction: .forward, animated: true, completion: nil)
+
         let locationManager = CLLocationManager()
         let currentLocationProvider = CurrentLocationProvider(locationManager: locationManager)
-        let homeViewController = HomeViewController(pageViewController: pageViewController,
-                                                                            currentLocationProvider: currentLocationProvider)
-        homeViewController.coordinatorDelegate = self
+        let homeViewModel = HomeViewModel(currentLocationProvider: currentLocationProvider)
+        homeViewModel.coordinatorDelegate = self
+        let homeViewController = HomeViewController(viewModel: homeViewModel,
+                                                    pageViewController: pageViewController)
         navigationController.pushViewController(homeViewController, animated: true)
     }
 
@@ -86,16 +88,14 @@ extension MainCoordinator: SearchViewControllerDelegate {
     }
 }
 
-extension MainCoordinator: HomeViewControllerDelegate {
+extension MainCoordinator: HomeViewModelDelegate {
     func startSearchFlow() {
         let suggestionsAPI = SuggestionsAPI()
         let suggestionsService = SuggestionsService(suggestionsAPI: suggestionsAPI)
         let viewModel = SearchViewModel(suggestionsService: suggestionsService)
         let searchViewController = SearchViewController(viewModel: viewModel)
         searchViewController.coordinatorDelegate = self
-        navigationController.present(searchViewController, animated: true) {
-            //TODO: Handle search selection
-        }
+        navigationController.present(searchViewController, animated: true)
     }
 
     func startWeatherFlowForCurrentLocation(_ currentLocation: Location) {

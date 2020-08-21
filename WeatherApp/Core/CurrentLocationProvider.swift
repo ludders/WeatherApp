@@ -22,7 +22,7 @@ class CurrentLocationProvider: NSObject {
         locationManager.delegate = self
     }
 
-    func getCurrentLocation(onCompletion completion: @escaping CurrentLocationCompletion) {
+    func getCurrentLocation(completion: @escaping CurrentLocationCompletion) {
         currentLocationCompletion = completion
         locationManager.requestLocation()
     }
