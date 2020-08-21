@@ -12,19 +12,19 @@ import UIKit
 import SnapKit
 
 
-protocol WeatherContainerViewControllerDelegate: AnyObject {
+protocol HomeViewControllerDelegate: AnyObject {
     func startSearchFlow()
     func startWeatherFlow(for location: Location, setAsDefault: Bool)
 }
 
 //Will manage header view & act as parent for weather page view controller
-class WeatherContainerViewController: UIViewController {
+class HomeViewController: UIViewController {
 
-    var containerView: UIView!
-    var headerView: HeaderView!
-    var pageViewController: UIPageViewController
-    weak var coordinatorDelegate: WeatherContainerViewControllerDelegate?
     private let currentLocationProvider: CurrentLocationProvider
+    private let pageViewController: UIPageViewController
+    weak var coordinatorDelegate: HomeViewControllerDelegate?
+    private var containerView: UIView!
+    private var headerView: HeaderView!
 
     init(pageViewController: UIPageViewController, currentLocationProvider: CurrentLocationProvider) {
         self.pageViewController = pageViewController
@@ -66,7 +66,7 @@ class WeatherContainerViewController: UIViewController {
     }
 }
 
-extension WeatherContainerViewController: HeaderViewDelegate {
+extension HomeViewController: HeaderViewDelegate {
     func didTapSearch() {
         coordinatorDelegate?.startSearchFlow()
     }

@@ -16,7 +16,6 @@ protocol Coordinator {
 }
 
 class MainCoordinator: Coordinator {
-    
     var childCoordinators: [Coordinator]?
     var navigationController: UINavigationController
     var navigationControllerDelegate: UINavigationControllerDelegate?
@@ -43,8 +42,7 @@ class MainCoordinator: Coordinator {
     }
 }
 
-extension MainCoordinator: IntroViewControllerDelegate, SearchViewControllerDelegate {
-
+extension MainCoordinator: IntroViewControllerDelegate {
     func startWeatherFlow() {
         if let location = Defaults.get(Location.self, forKey: .defaultLocation) {
             startWeatherFlow(for: location)
@@ -54,7 +52,9 @@ extension MainCoordinator: IntroViewControllerDelegate, SearchViewControllerDele
                                            longitude: 0))
         }
     }
+}
 
+extension MainCoordinator: SearchViewControllerDelegate {
     func startWeatherFlow(for location: Location, setAsDefault: Bool = true) {
         if setAsDefault {
             Defaults.set(location, forKey: .defaultLocation)
@@ -75,10 +75,10 @@ extension MainCoordinator: IntroViewControllerDelegate, SearchViewControllerDele
         pageViewController.setViewControllers([vc1], direction: .forward, animated: true, completion: nil)
         let locationManager = CLLocationManager()
         let currentLocationProvider = CurrentLocationProvider(locationManager: locationManager)
-        let weatherContainerViewController = WeatherContainerViewController(pageViewController: pageViewController,
+        let homeViewController = HomeViewController(pageViewController: pageViewController,
                                                                             currentLocationProvider: currentLocationProvider)
-        weatherContainerViewController.coordinatorDelegate = self
-        navigationController.pushViewController(weatherContainerViewController, animated: true)
+        homeViewController.coordinatorDelegate = self
+        navigationController.pushViewController(homeViewController, animated: true)
     }
 
     func didTapClose() {
@@ -86,7 +86,7 @@ extension MainCoordinator: IntroViewControllerDelegate, SearchViewControllerDele
     }
 }
 
-extension MainCoordinator: WeatherContainerViewControllerDelegate {
+extension MainCoordinator: HomeViewControllerDelegate {
     func startSearchFlow() {
         let suggestionsAPI = SuggestionsAPI()
         let suggestionsService = SuggestionsService(suggestionsAPI: suggestionsAPI)
