@@ -16,8 +16,6 @@ class SuggestionsAPI: API {
     var path: String = "/v1/search.php"
     static let key = "5b0809a5d38d91"
 
-//    GET https://eu1.locationiq.com/v1/search.php?key=5b0809a5d38d91&addressdetails=1&format=json&q=London
-
     func getURLComponents() -> URLComponents {
         var components = URLComponents()
         components.scheme = scheme
