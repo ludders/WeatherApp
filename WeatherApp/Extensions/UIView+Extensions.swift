@@ -33,7 +33,7 @@ extension UIView {
 
     func displayLoadingView() {
         let loadingView = RGBLoadingView()
-        guard let window = UIApplication.shared.keyWindow else { return }
+        guard let window = UIApplication.shared.currentWindow else { return }
         window.addSubview(loadingView)
         loadingView.snp.makeConstraints { make in
             make.edges.equalTo(window)
@@ -42,7 +42,7 @@ extension UIView {
     }
 
     func hideLoadingView() {
-        guard let window = UIApplication.shared.keyWindow else { return }
+        guard let window = UIApplication.shared.currentWindow else { return }
         window.subviews.filter { $0.isKind(of: RGBLoadingView.self) }
             .forEach { $0.fadeOutAndRemoveFromSuperview() }
     }
