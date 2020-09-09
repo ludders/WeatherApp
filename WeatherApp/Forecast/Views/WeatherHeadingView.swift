@@ -13,8 +13,8 @@ import SnapKit
 
 class WeatherHeadingView: UIView {
     
-    var refreshButton: UIButton = {
-        let button = UIButton(type: .system)
+    var refreshButton: Button = {
+        let button = Button(type: .system)
         button.imageView?.preferredSymbolConfiguration = UIImage.SymbolConfiguration(textStyle: .footnote)
         button.tintColor = Theme.Colours.silver
         return button
@@ -34,8 +34,8 @@ class WeatherHeadingView: UIView {
         label.minimumScaleFactor = 0.7
         return label
     }()
-    var addLocationButton: UIButton = {
-        let button = UIButton(type: .system)
+    var addLocationButton: Button = {
+        let button = Button(type: .system)
         button.imageView?.preferredSymbolConfiguration = UIImage.SymbolConfiguration(textStyle: .largeTitle)
         button.tintColor = Theme.Colours.white
         return button

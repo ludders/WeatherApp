@@ -17,9 +17,12 @@ protocol HomeViewModelDelegate: AnyObject {
 class HomeViewModel {
     private let currentLocationProvider: CurrentLocationProvider
     weak var coordinatorDelegate: HomeViewModelDelegate?
+    var locations: [LocationModel]
 
-    init(currentLocationProvider: CurrentLocationProvider) {
+    init(currentLocationProvider: CurrentLocationProvider,
+         locations: [LocationModel] = []) {
         self.currentLocationProvider = currentLocationProvider
+        self.locations = locations
     }
 
     func requestLocationAuthorisation() {

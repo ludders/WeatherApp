@@ -29,8 +29,8 @@ class WeatherErrorView: UIView {
         label.numberOfLines = 0
         return label
     }()
-    var tryAgainButton: UIButton = {
-        let button = UIButton()
+    var tryAgainButton: Button = {
+        let button = Button()
         button.tintColor = Theme.Colours.white
         button.titleLabel?.font = Theme.Fonts.BBC.body
         button.contentHorizontalAlignment = .center

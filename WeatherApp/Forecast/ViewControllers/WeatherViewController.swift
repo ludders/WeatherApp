@@ -14,7 +14,9 @@ class WeatherViewController: UIViewController {
     var weatherView: WeatherView!
     lazy var errorView: WeatherErrorView = {
         let view = WeatherErrorView()
-        view.tryAgainButton.addTarget(self, action: #selector(didTapTryAgain), for: .touchUpInside)
+        view.tryAgainButton.onTouchUpInside { [weak self] in
+            self?.refreshWeather()
+        }
         return view
     }()
     var viewModel: WeatherViewModel
@@ -56,12 +58,14 @@ class WeatherViewController: UIViewController {
         configureForecastCollectionView()
         configureDayCollectionView()
         setupBindings()
-        weatherView.headingView.refreshButton.addTarget(self, action: #selector(didTapRefresh), for: .touchUpInside)
+        weatherView.headingView.refreshButton.onTouchUpInside { [weak self] in
+            self?.refreshWeather()
+        }
         weatherView.setupConstraints()
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        updateWeatherView()
+        refreshWeather()
     }
 
     private func setupBindings() {
@@ -90,15 +94,7 @@ class WeatherViewController: UIViewController {
         weatherView.dayCollectionView.dataSource = dayCollectionViewDataSource
     }
 
-    @objc func didTapRefresh() {
-        updateWeatherView()
-    }
-
-    @objc func didTapTryAgain() {
-        updateWeatherView()
-    }
-
-    private func updateWeatherView() {
+    private func refreshWeather() {
         view.displayLoadingView()
         viewModel.updateForecast { [weak self] result in
             guard let self = self else { return }

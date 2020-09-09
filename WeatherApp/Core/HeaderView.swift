@@ -15,8 +15,8 @@ class HeaderView: UIView {
 
     weak var delegate: HeaderViewDelegate?
 
-    private var menuButton: UIButton = {
-        let button = UIButton(type: .system)
+    private var menuButton: Button = {
+        let button = Button(type: .system)
         button.setTitle(NSLocalizedString("Menu", comment: "Menu"), for: .normal)
         return button
     }()
@@ -34,16 +34,14 @@ class HeaderView: UIView {
         stackView.spacing = 10
         return stackView
     }()
-    private var searchButton: UIButton = {
-        let button = UIButton(type: .custom)
+    private var searchButton: Button = {
+        let button = Button(type: .custom)
         button.setImage(UIImage(systemName: "magnifyingglass"), for: .normal)
-        button.addTarget(self, action: #selector(didTapSearch), for: .touchUpInside)
         return button
     }()
-    private var locationButton: UIButton = {
-        let button = UIButton(type: .custom)
+    private var locationButton: Button = {
+        let button = Button(type: .custom)
         button.setImage(UIImage(systemName: "location"), for: .normal)
-        button.addTarget(self, action: #selector(didTapLocation), for: .touchUpInside)
         return button
     }()
 
@@ -54,7 +52,17 @@ class HeaderView: UIView {
         buttonsStackView.addArrangedSubview(searchButton)
         buttonsStackView.addArrangedSubview(locationButton)
         addSubview(buttonsStackView)
+        addActions()
         applyConstraints()
+    }
+
+    private func addActions() {
+        searchButton.onTouchUpInside { [weak self] in
+            self?.delegate?.didTapSearch()
+        }
+        locationButton.onTouchUpInside { [weak self] in
+            self?.delegate?.didTapLocation()
+        }
     }
 
     private func applyConstraints() {
@@ -80,14 +88,6 @@ class HeaderView: UIView {
         buttonsStackView.snp.makeConstraints { make in
             make.height.trailing.top.bottom.equalTo(layoutMarginsGuide)
         }
-    }
-
-    @objc private func didTapSearch() {
-        delegate?.didTapSearch()
-    }
-
-    @objc private func didTapLocation() {
-        delegate?.didTapLocation()
     }
 }
 
