@@ -37,7 +37,7 @@ class HomeViewModel {
         let status = CLLocationManager.authorizationStatus()
         switch status {
         case .authorizedAlways, .authorizedWhenInUse:
-            deviceLocationProvider.getCurrentLocation { [weak self] result in
+            deviceLocationProvider.getDeviceLocation { [weak self] result in
                 switch result {
                 case .success(let location):
                     self?.coordinatorDelegate?.startWeatherFlowForCurrentLocation(location)

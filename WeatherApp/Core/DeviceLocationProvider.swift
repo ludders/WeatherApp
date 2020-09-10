@@ -13,7 +13,7 @@ typealias DeviceLocationCompletion = (Result<Location, Error>) -> ()
 
 class DeviceLocationProvider: NSObject {
     private let locationManager: CLLocationManager
-    private var currentLocationCompletion: DeviceLocationCompletion?
+    private var deviceLocationCompletion: DeviceLocationCompletion?
 
     init(locationManager: CLLocationManager) {
         self.locationManager = locationManager
@@ -22,8 +22,8 @@ class DeviceLocationProvider: NSObject {
         locationManager.delegate = self
     }
 
-    func getCurrentLocation(completion: @escaping DeviceLocationCompletion) {
-        currentLocationCompletion = completion
+    func getDeviceLocation(completion: @escaping DeviceLocationCompletion) {
+        deviceLocationCompletion = completion
         locationManager.requestLocation()
     }
 
@@ -39,10 +39,10 @@ extension DeviceLocationProvider: CLLocationManagerDelegate {
         guard let recievedLocation = locations.last else { return }
         let location = Location(name: NSLocalizedString("Current Location", comment: "Current Location"),
                                 coordinates: recievedLocation.coordinate)
-        currentLocationCompletion?(.success(location))
+        deviceLocationCompletion?(.success(location))
     }
 
     func locationManager(_ manager: CLLocationManager, didFailWithError error: Error) {
-        currentLocationCompletion?(.failure(error))
+        deviceLocationCompletion?(.failure(error))
     }
 }
