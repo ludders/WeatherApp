@@ -10,17 +10,17 @@ import Foundation
 import UIKit
 import SnapKit
 
-//Will manage header view & act as parent for weather page view controller
+//Will manage header view & eventually be a container for 1..many weather views that you can scroll through.
 class HomeViewController: UIViewController {
 
     private let viewModel: HomeViewModel
-    private let pageViewController: UIPageViewController
     private var containerView: UIView!
     private var headerView: HeaderView!
+    private var weatherViewController: WeatherViewController
 
-    init(viewModel: HomeViewModel, pageViewController: UIPageViewController) {
+    init(viewModel: HomeViewModel, weatherViewController: WeatherViewController) {
         self.viewModel = viewModel
-        self.pageViewController = pageViewController
+        self.weatherViewController = weatherViewController
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -39,22 +39,24 @@ class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupPageViewController()
+        setupWeatherViewAndController()
         setupHeaderView()
+    }
+
+    private func setupWeatherViewAndController() {
+        addChild(weatherViewController)
+        containerView.addSubview(weatherViewController.view)
+        weatherViewController.view.snp.makeConstraints { make in
+            make.edges.equalTo(view.safeAreaLayoutGuide)
+        }
+        weatherViewController.didMove(toParent: self)
     }
 
     private func setupHeaderView() {
         headerView = HeaderView()
         headerView.delegate = self
-        headerView.tintColor = Theme.Colours.white
         containerView.addSubview(headerView)
         headerView.setupView()
-    }
-
-    private func setupPageViewController() {
-        containerView.addSubview(pageViewController.view)
-        self.addChild(pageViewController)
-        pageViewController.didMove(toParent: self)
     }
 }
 

@@ -67,19 +67,14 @@ extension MainCoordinator: SearchViewControllerDelegate {
         let viewModel = WeatherViewModel(model: model)
         let forecastCollectionViewDataSource = ForecastCollectionViewDataSource(viewModel: viewModel)
         let dayCollectionViewDataSource = DayCollectionViewDataSource(viewModel: viewModel)
-        let vc1 = WeatherViewController(weatherViewModel: viewModel,
+        let weatherViewController = WeatherViewController(weatherViewModel: viewModel,
                                         forecastCollectionViewDataSource: forecastCollectionViewDataSource,
                                         dayCollectionViewDataSource: dayCollectionViewDataSource)
-
-        let pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
-        pageViewController.setViewControllers([vc1], direction: .forward, animated: true, completion: nil)
-
         let locationManager = CLLocationManager()
         let currentLocationProvider = CurrentLocationProvider(locationManager: locationManager)
         let homeViewModel = HomeViewModel(currentLocationProvider: currentLocationProvider)
         homeViewModel.coordinatorDelegate = self
-        let homeViewController = HomeViewController(viewModel: homeViewModel,
-                                                    pageViewController: pageViewController)
+        let homeViewController = HomeViewController(viewModel: homeViewModel, weatherViewController: weatherViewController)
         navigationController.pushViewController(homeViewController, animated: true)
     }
 

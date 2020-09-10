@@ -46,6 +46,7 @@ class HeaderView: UIView {
     }()
 
     func setupView() {
+        tintColor = Theme.Colours.white
         menuButton.tintColor = tintColor
         addSubview(menuButton)
         addSubview(titleImage)
