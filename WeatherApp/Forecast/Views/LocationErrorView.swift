@@ -1,5 +1,5 @@
 //
-//  WeatherErrorView.swift
+//  LocationErrorView.swift
 //  WeatherApp
 //
 //  Created by dludlow7 on 14/08/2020.
@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class WeatherErrorView: UIView {
+class LocationErrorView: UIView {
     private var titleLabel: UILabel = {
         let label = UILabel()
         label.textColor = Theme.Colours.white

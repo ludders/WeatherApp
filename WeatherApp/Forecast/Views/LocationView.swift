@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 final class LocationView: UIView {
-    let headingView = WeatherHeadingView()
+    let headingView = LocationHeaderView()
     let forecastCollectionView: UICollectionView
     let dayCollectionView: UICollectionView
     let forecastflowLayout: UICollectionViewFlowLayout

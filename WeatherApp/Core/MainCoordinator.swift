@@ -28,7 +28,7 @@ class MainCoordinator: Coordinator {
 
     func start() {
         if UserDefaults.standard.bool(forKey: "hasSeenIntro") {
-            startWeatherFlow()
+            showWeatherLocation()
         } else {
             UserDefaults.standard.set(true, forKey: "hasSeenIntro")
             startIntroFlow()
@@ -43,11 +43,11 @@ class MainCoordinator: Coordinator {
 }
 
 extension MainCoordinator: IntroViewControllerDelegate {
-    func startWeatherFlow() {
+    func showWeatherLocation() {
         if let location = Defaults.get(Location.self, forKey: .defaultLocation) {
-            startWeatherFlow(for: location)
+            showWeatherLocation(for: location)
         } else {
-            startWeatherFlow(for: Location(name: "Null Island",
+            showWeatherLocation(for: Location(name: "Null Island",
                                            latitude: 0,
                                            longitude: 0))
         }
@@ -59,22 +59,23 @@ extension MainCoordinator: SearchViewControllerDelegate {
         if setAsDefault {
             Defaults.set(location, forKey: .defaultLocation)
         }
-        startWeatherFlow(for: location)
+        showWeatherLocation(for: location)
     }
 
-    private func startWeatherFlow(for location: Location) {
+    private func showWeatherLocation(for location: Location) {
         let model = LocationModel(location: location)
-        let viewModel = WeatherViewModel(model: model)
-        let forecastCollectionViewDataSource = ForecastCollectionViewDataSource(viewModel: viewModel)
-        let dayCollectionViewDataSource = DayCollectionViewDataSource(viewModel: viewModel)
-        let weatherViewController = WeatherViewController(weatherViewModel: viewModel,
+        let locationViewModel = LocationViewModel(model: model)
+        let forecastCollectionViewDataSource = ForecastCollectionViewDataSource(viewModel: locationViewModel)
+        let dayCollectionViewDataSource = DayCollectionViewDataSource(viewModel: locationViewModel)
+        let locationViewController = LocationViewController(viewModel: locationViewModel,
                                         forecastCollectionViewDataSource: forecastCollectionViewDataSource,
                                         dayCollectionViewDataSource: dayCollectionViewDataSource)
+
         let locationManager = CLLocationManager()
         let currentLocationProvider = CurrentLocationProvider(locationManager: locationManager)
         let homeViewModel = HomeViewModel(currentLocationProvider: currentLocationProvider)
         homeViewModel.coordinatorDelegate = self
-        let homeViewController = HomeViewController(viewModel: homeViewModel, weatherViewController: weatherViewController)
+        let homeViewController = HomeViewController(viewModel: homeViewModel, locationViewController: locationViewController)
         navigationController.pushViewController(homeViewController, animated: true)
     }
 

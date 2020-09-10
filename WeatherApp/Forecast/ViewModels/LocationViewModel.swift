@@ -1,5 +1,5 @@
 //
-//  WeatherViewModel.swift
+//  LocationViewModel.swift
 //  WeatherApp
 //
 //  Created by dludlow7 on 02/06/2020.
@@ -12,7 +12,7 @@ import UIKit
 
 typealias UpdateForecastCompletion = Result<Bool, NetworkingError>
 
-class WeatherViewModel {
+class LocationViewModel {
     private(set) var locationModelObs: Observable<LocationModel>
     var selectedDayIndexObs = Observable<Int>(0)
     var selectedDayObs = Observable<DailyForecast?>(nil)
@@ -50,6 +50,10 @@ class WeatherViewModel {
                 return nil
             }
     }
+
+    func addLocationTapped() {
+
+    }
 }
 
 enum ForecastDataItem {
@@ -64,7 +68,7 @@ protocol DayCollectionViewViewModel {
     func viewModelForCellAt(index: Int) -> DayCellViewModel
 }
 
-extension WeatherViewModel: DayCollectionViewViewModel {
+extension LocationViewModel: DayCollectionViewViewModel {
 
     private var dailyForecasts: [DailyForecast]? {
         return locationModelObs.value.forecast?.dailyForecasts ?? nil
@@ -115,7 +119,7 @@ protocol ForecastCollectionViewViewModel {
     func viewModelForCellAt(index: Int) -> ForecastCellViewModel
 }
 
-extension WeatherViewModel: ForecastCollectionViewViewModel {
+extension LocationViewModel: ForecastCollectionViewViewModel {
 
     var numberOfForecastItems: Int {
         guard forecastDataItems.count > 1 else { return 0 }

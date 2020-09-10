@@ -11,9 +11,9 @@ import UIKit
 
 class LocationViewController: UIViewController {
 
-    var weatherView: WeatherView!
-    lazy var errorView: WeatherErrorView = {
-        let view = WeatherErrorView()
+    var weatherView: LocationView!
+    lazy var errorView: LocationErrorView = {
+        let view = LocationErrorView()
         view.tryAgainButton.onTouchUpInside { [weak self] in
             self?.refreshWeather()
         }
@@ -31,16 +31,16 @@ class LocationViewController: UIViewController {
     let dayFlowLayout = UICollectionViewFlowLayout()
     let dayCollectionViewDelegate: DayCollectionViewDelegate
 
-    init(weatherViewModel: LocationViewModel,
+    init(viewModel: LocationViewModel,
          forecastCollectionViewDataSource: ForecastCollectionViewDataSource,
         dayCollectionViewDataSource: DayCollectionViewDataSource) {
-        self.viewModel = weatherViewModel
+        self.viewModel = viewModel
 
         self.forecastCollectionViewController = UICollectionViewController(collectionViewLayout: forecastFlowLayout)
         self.forecastCollectionViewDataSource = forecastCollectionViewDataSource
         self.dayCollectionViewController = UICollectionViewController(collectionViewLayout: dayFlowLayout)
         self.dayCollectionViewDataSource = dayCollectionViewDataSource
-        self.dayCollectionViewDelegate = DayCollectionViewDelegate(viewModel: weatherViewModel)
+        self.dayCollectionViewDelegate = DayCollectionViewDelegate(viewModel: viewModel)
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -49,7 +49,7 @@ class LocationViewController: UIViewController {
     }
 
     override func loadView() {
-        weatherView = WeatherView(forecastFlowLayout: forecastFlowLayout, dayFlowLayout: dayFlowLayout)
+        weatherView = LocationView(forecastFlowLayout: forecastFlowLayout, dayFlowLayout: dayFlowLayout)
         weatherView.backgroundColor = Theme.Colours.black
         view = weatherView
     }

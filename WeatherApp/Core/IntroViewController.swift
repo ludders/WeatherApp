@@ -9,7 +9,7 @@
 import UIKit
 
 protocol IntroViewControllerDelegate: AnyObject {
-    func startWeatherFlow()
+    func showWeatherLocation()
 }
 
 class IntroViewController: UIViewController {
@@ -71,7 +71,7 @@ class IntroViewController: UIViewController {
 
 extension IntroViewController: CAAnimationDelegate {
     func animationDidStop(_ anim: CAAnimation, finished flag: Bool) {
-        coordinatorDelegate?.startWeatherFlow()
+        coordinatorDelegate?.showWeatherLocation()
     }
 }
 

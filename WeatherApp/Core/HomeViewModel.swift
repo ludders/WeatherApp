@@ -17,12 +17,12 @@ protocol HomeViewModelDelegate: AnyObject {
 class HomeViewModel {
     private let currentLocationProvider: CurrentLocationProvider
     weak var coordinatorDelegate: HomeViewModelDelegate?
-    var locations: [LocationModel]
+    var weatherViewModels: [LocationViewModel]
 
     init(currentLocationProvider: CurrentLocationProvider,
-         locations: [LocationModel] = []) {
+         weatherViewModels: [LocationViewModel] = []) {
         self.currentLocationProvider = currentLocationProvider
-        self.locations = locations
+        self.weatherViewModels = weatherViewModels
     }
 
     func requestLocationAuthorisation() {

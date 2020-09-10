@@ -16,11 +16,11 @@ class HomeViewController: UIViewController {
     private let viewModel: HomeViewModel
     private var containerView: UIView!
     private var headerView: HeaderView!
-    private var weatherViewController: WeatherViewController
+    private var locationViewController: LocationViewController
 
-    init(viewModel: HomeViewModel, weatherViewController: WeatherViewController) {
+    init(viewModel: HomeViewModel, locationViewController: LocationViewController) {
         self.viewModel = viewModel
-        self.weatherViewController = weatherViewController
+        self.locationViewController = locationViewController
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -44,12 +44,12 @@ class HomeViewController: UIViewController {
     }
 
     private func setupWeatherViewAndController() {
-        addChild(weatherViewController)
-        containerView.addSubview(weatherViewController.view)
-        weatherViewController.view.snp.makeConstraints { make in
+        addChild(locationViewController)
+        containerView.addSubview(locationViewController.view)
+        locationViewController.view.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
-        weatherViewController.didMove(toParent: self)
+        locationViewController.didMove(toParent: self)
     }
 
     private func setupHeaderView() {
