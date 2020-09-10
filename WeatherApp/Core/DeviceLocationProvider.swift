@@ -1,5 +1,5 @@
 //
-//  CurrentLocationProvider.swift
+//  DeviceLocationProvider.swift
 //  WeatherApp
 //
 //  Created by dludlow7 on 06/08/2020.
@@ -9,11 +9,11 @@
 import CoreLocation
 import Foundation
 
-typealias CurrentLocationCompletion = (Result<Location, Error>) -> ()
+typealias DeviceLocationCompletion = (Result<Location, Error>) -> ()
 
-class CurrentLocationProvider: NSObject {
+class DeviceLocationProvider: NSObject {
     private let locationManager: CLLocationManager
-    private var currentLocationCompletion: CurrentLocationCompletion?
+    private var currentLocationCompletion: DeviceLocationCompletion?
 
     init(locationManager: CLLocationManager) {
         self.locationManager = locationManager
@@ -22,7 +22,7 @@ class CurrentLocationProvider: NSObject {
         locationManager.delegate = self
     }
 
-    func getCurrentLocation(completion: @escaping CurrentLocationCompletion) {
+    func getCurrentLocation(completion: @escaping DeviceLocationCompletion) {
         currentLocationCompletion = completion
         locationManager.requestLocation()
     }
@@ -34,7 +34,7 @@ class CurrentLocationProvider: NSObject {
 
 //MARK: - CLLocationManager Delegate Functions
 
-extension CurrentLocationProvider: CLLocationManagerDelegate {
+extension DeviceLocationProvider: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let recievedLocation = locations.last else { return }
         let location = Location(name: NSLocalizedString("Current Location", comment: "Current Location"),

@@ -72,8 +72,8 @@ extension MainCoordinator: SearchViewControllerDelegate {
                                         dayCollectionViewDataSource: dayCollectionViewDataSource)
 
         let locationManager = CLLocationManager()
-        let currentLocationProvider = CurrentLocationProvider(locationManager: locationManager)
-        let homeViewModel = HomeViewModel(currentLocationProvider: currentLocationProvider)
+        let deviceLocationProvider = DeviceLocationProvider(locationManager: locationManager)
+        let homeViewModel = HomeViewModel(deviceLocationProvider: deviceLocationProvider, weatherViewModels: [locationViewModel])
         homeViewModel.coordinatorDelegate = self
         let homeViewController = HomeViewController(viewModel: homeViewModel, locationViewController: locationViewController)
         navigationController.pushViewController(homeViewController, animated: true)

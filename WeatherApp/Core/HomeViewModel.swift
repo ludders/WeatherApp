@@ -15,18 +15,18 @@ protocol HomeViewModelDelegate: AnyObject {
 }
 
 class HomeViewModel {
-    private let currentLocationProvider: CurrentLocationProvider
+    private let deviceLocationProvider: DeviceLocationProvider
     weak var coordinatorDelegate: HomeViewModelDelegate?
     var weatherViewModels: [LocationViewModel]
 
-    init(currentLocationProvider: CurrentLocationProvider,
+    init(deviceLocationProvider: DeviceLocationProvider,
          weatherViewModels: [LocationViewModel] = []) {
-        self.currentLocationProvider = currentLocationProvider
+        self.deviceLocationProvider = deviceLocationProvider
         self.weatherViewModels = weatherViewModels
     }
 
     func requestLocationAuthorisation() {
-        currentLocationProvider.requestWhenInUseAuthorisation()
+        deviceLocationProvider.requestWhenInUseAuthorisation()
     }
 
     func didTapSearch() {
@@ -37,7 +37,7 @@ class HomeViewModel {
         let status = CLLocationManager.authorizationStatus()
         switch status {
         case .authorizedAlways, .authorizedWhenInUse:
-            currentLocationProvider.getCurrentLocation { [weak self] result in
+            deviceLocationProvider.getCurrentLocation { [weak self] result in
                 switch result {
                 case .success(let location):
                     self?.coordinatorDelegate?.startWeatherFlowForCurrentLocation(location)
@@ -46,7 +46,7 @@ class HomeViewModel {
                 }
             }
         case .notDetermined:
-            currentLocationProvider.requestWhenInUseAuthorisation()
+            deviceLocationProvider.requestWhenInUseAuthorisation()
             onFailure(false, nil)
         case .restricted, .denied:
             onFailure(true, nil)
