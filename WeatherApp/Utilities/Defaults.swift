@@ -13,7 +13,7 @@ class Defaults {
     private init() { }
 
     static func set<T>(_ value: T, forKey key: DefaultsKeys) where T: Codable {
-        guard let data = try? PropertyListEncoder().encode(value) else {
+        guard let data = try? JSONEncoder().encode(value) else {
             fatalError("Could not encode value!")
         }
         userDefaults.set(data, forKey: key.rawValue)
@@ -21,12 +21,12 @@ class Defaults {
 
     static func get<T>(_ type: T.Type, forKey key: DefaultsKeys) -> T? where T: Codable {
         guard let data = userDefaults.data(forKey: key.rawValue),
-            let value = try? PropertyListDecoder().decode(type, from: data) else { return nil }
+            let value = try? JSONDecoder().decode(type, from: data) else { return nil }
         return value
     }
 }
 
 enum DefaultsKeys: String {
-    case defaultLocation = "KEY_defaultLocation"
+    case savedLocations = "KEY_savedLocations"
     case hasSeenIntro = "KEY_hasSeenIntro"
 }

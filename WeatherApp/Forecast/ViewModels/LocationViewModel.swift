@@ -52,7 +52,14 @@ class LocationViewModel {
     }
 
     func addLocationTapped() {
-
+        let location = locationModelObs.value.location
+        if var savedLocations = Defaults.get([Location].self, forKey: .savedLocations),
+            !savedLocations.contains(location) {
+            savedLocations.append(location)
+            Defaults.set(savedLocations, forKey: .savedLocations)
+        } else {
+            Defaults.set([location], forKey: .savedLocations)
+        }
     }
 }
 

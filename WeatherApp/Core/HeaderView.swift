@@ -64,6 +64,9 @@ class HeaderView: UIView {
         locationButton.onTouchUpInside { [weak self] in
             self?.delegate?.didTapLocation()
         }
+        menuButton.onTouchUpInside { [weak self] in
+            self?.delegate?.didTapMenu()
+        }
     }
 
     private func applyConstraints() {
@@ -95,4 +98,5 @@ class HeaderView: UIView {
 protocol HeaderViewDelegate: AnyObject {
     func didTapSearch()
     func didTapLocation()
+    func didTapMenu()
 }

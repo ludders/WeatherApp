@@ -14,10 +14,11 @@ struct LocationModel {
     var forecast: LocationForecast? = nil
 }
 
-struct Location: Codable {
+struct Location: Codable, Equatable {
     let name: String
     let latitude: Double
     let longitude: Double
+    var isDefault: Bool
 
     var coordinate: CLLocationCoordinate2D {
         return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -25,9 +26,10 @@ struct Location: Codable {
 }
 
 extension Location {
-    init(name: String, coordinates: CLLocationCoordinate2D) {
+    init(name: String, coordinates: CLLocationCoordinate2D, isDefault: Bool = false) {
         self.init(name: name,
                   latitude: coordinates.latitude,
-                  longitude: coordinates.longitude)
+                  longitude: coordinates.longitude,
+                  isDefault: isDefault)
     }
 }

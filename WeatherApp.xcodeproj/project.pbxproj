@@ -31,6 +31,7 @@
 		9D13A90F248EDA1C00613184 /* HourlyForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13A90E248EDA1C00613184 /* HourlyForecast.swift */; };
 		9D186913249AC61000D8978B /* WeatherIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D186912249AC61000D8978B /* WeatherIconView.swift */; };
 		9D1D911024A5F84000AB3E46 /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1D910F24A5F84000AB3E46 /* Double+Extensions.swift */; };
+		9D24E42E250FB4C0003273CD /* LocationPageViewControllerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D24E42D250FB4C0003273CD /* LocationPageViewControllerDataSource.swift */; };
 		9D2BF7C0245B3F1500ED3207 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2BF7BF245B3F1500ED3207 /* MainCoordinator.swift */; };
 		9D3381B824E6E0FE00A44A52 /* LocationErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3381B724E6E0FE00A44A52 /* LocationErrorView.swift */; };
 		9D3E7E62248A8C8C00A4A248 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3E7E61248A8C8C00A4A248 /* Observable.swift */; };
@@ -43,6 +44,7 @@
 		9D5326A224B7C051008B92B8 /* ExampleSuggestionCall.json in Resources */ = {isa = PBXBuildFile; fileRef = 9D5326A124B7C051008B92B8 /* ExampleSuggestionCall.json */; };
 		9D657A5A24AA14CC0041D0A1 /* RGBLoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D657A5924AA14CC0041D0A1 /* RGBLoadingView.swift */; };
 		9D76541124B8B443008B5A17 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D76541024B8B443008B5A17 /* SearchViewModel.swift */; };
+		9D7AD5A7250C1455001A80F7 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7AD5A6250C1455001A80F7 /* ImageView.swift */; };
 		9D7E10F72473291800B06C1C /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7E10F62473291800B06C1C /* WeatherAPI.swift */; };
 		9D7E10F92473297100B06C1C /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7E10F82473297100B06C1C /* API.swift */; };
 		9D8CBB0D24C4BB2C0027C37E /* LocationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8CBB0C24C4BB2C0027C37E /* LocationModel.swift */; };
@@ -125,6 +127,7 @@
 		9D13A90E248EDA1C00613184 /* HourlyForecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HourlyForecast.swift; sourceTree = "<group>"; };
 		9D186912249AC61000D8978B /* WeatherIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherIconView.swift; sourceTree = "<group>"; };
 		9D1D910F24A5F84000AB3E46 /* Double+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
+		9D24E42D250FB4C0003273CD /* LocationPageViewControllerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPageViewControllerDataSource.swift; sourceTree = "<group>"; };
 		9D2BF7BF245B3F1500ED3207 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
 		9D3381B724E6E0FE00A44A52 /* LocationErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationErrorView.swift; sourceTree = "<group>"; };
 		9D3E7E61248A8C8C00A4A248 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
@@ -135,6 +138,7 @@
 		9D5326A124B7C051008B92B8 /* ExampleSuggestionCall.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ExampleSuggestionCall.json; sourceTree = "<group>"; };
 		9D657A5924AA14CC0041D0A1 /* RGBLoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RGBLoadingView.swift; sourceTree = "<group>"; };
 		9D76541024B8B443008B5A17 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		9D7AD5A6250C1455001A80F7 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		9D7E10F62473291800B06C1C /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
 		9D7E10F82473297100B06C1C /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
 		9D8CBB0C24C4BB2C0027C37E /* LocationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationModel.swift; sourceTree = "<group>"; };
@@ -268,6 +272,7 @@
 			isa = PBXGroup;
 			children = (
 				9D0FCF3B25096CD800334F84 /* Button.swift */,
+				9D7AD5A6250C1455001A80F7 /* ImageView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -277,6 +282,7 @@
 			children = (
 				9D0FCB29245318D70074D005 /* IntroViewController.swift */,
 				9D99F2FC24DC182A00C262A9 /* DeviceLocationProvider.swift */,
+				9D24E42D250FB4C0003273CD /* LocationPageViewControllerDataSource.swift */,
 				9D2BF7BF245B3F1500ED3207 /* MainCoordinator.swift */,
 				9DC563F8245C734600A0C8CD /* HomeViewController.swift */,
 				9DB9A36C24F047F5008BC59B /* HomeViewModel.swift */,
@@ -523,6 +529,7 @@
 				9DAB019D2479A8BF005ED04C /* LocationViewController.swift in Sources */,
 				9D13A90D248ECB9000613184 /* DailyForecast.swift in Sources */,
 				9DB9A36D24F047F5008BC59B /* HomeViewModel.swift in Sources */,
+				9D7AD5A7250C1455001A80F7 /* ImageView.swift in Sources */,
 				9DAABF6C24A3E82500AC17E6 /* DayCollectionViewDataSource.swift in Sources */,
 				9D0FCB2A245318D70074D005 /* IntroViewController.swift in Sources */,
 				9D3E7E64248AA97400A4A248 /* CLLocationCoordinate2D+Extensions.swift in Sources */,
@@ -557,6 +564,7 @@
 				9D0FCB26245318D70074D005 /* AppDelegate.swift in Sources */,
 				9D00091E24D5FC1200EDC2D4 /* ReverseGeocodingAPI.swift in Sources */,
 				9DBE45D424C5FC9400E1CB11 /* PaddableTextField.swift in Sources */,
+				9D24E42E250FB4C0003273CD /* LocationPageViewControllerDataSource.swift in Sources */,
 				9D0FCF1724532ED10074D005 /* Theme.swift in Sources */,
 				9D018D4A25079C2C00D99691 /* UIApplication+Extensions.swift in Sources */,
 				9DC563F9245C734600A0C8CD /* HomeViewController.swift in Sources */,

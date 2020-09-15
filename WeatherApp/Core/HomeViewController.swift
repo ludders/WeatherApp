@@ -16,11 +16,11 @@ class HomeViewController: UIViewController {
     private let viewModel: HomeViewModel
     private var containerView: UIView!
     private var headerView: HeaderView!
-    private var locationViewController: LocationViewController
+    private var pageViewController: UIPageViewController
 
-    init(viewModel: HomeViewModel, locationViewController: LocationViewController) {
+    init(viewModel: HomeViewModel, pageViewController: UIPageViewController) {
         self.viewModel = viewModel
-        self.locationViewController = locationViewController
+        self.pageViewController = pageViewController
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -39,17 +39,18 @@ class HomeViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupWeatherViewAndController()
+        setupPageViewController()
         setupHeaderView()
     }
 
-    private func setupWeatherViewAndController() {
-        addChild(locationViewController)
-        containerView.addSubview(locationViewController.view)
-        locationViewController.view.snp.makeConstraints { make in
+    private func setupPageViewController() {
+        addChild(pageViewController)
+        containerView.addSubview(pageViewController.view)
+        pageViewController.view.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
-        locationViewController.didMove(toParent: self)
+        pageViewController.didMove(toParent: self)
+        pageViewController.delegate = self
     }
 
     private func setupHeaderView() {
@@ -57,6 +58,12 @@ class HomeViewController: UIViewController {
         headerView.delegate = self
         containerView.addSubview(headerView)
         headerView.setupView()
+    }
+}
+
+extension HomeViewController: UIPageViewControllerDelegate {
+    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
+        print("TRANSITION WOOP WOOP")
     }
 }
 
@@ -74,6 +81,15 @@ extension HomeViewController: HeaderViewDelegate {
                 self?.showErrorFetchingLocationAlert()
             }
         }
+    }
+
+    func didTapMenu() {
+        viewModel.didTapMenu()
+    }
+
+    //For debugging only
+    func didTapImage() {
+        viewModel.didTapImage()
     }
 
     private func showLocationDisabledAlert() {

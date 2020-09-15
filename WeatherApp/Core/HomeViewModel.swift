@@ -9,20 +9,19 @@
 import CoreLocation
 import Foundation
 
+//temp - delete me
+import UIKit
+
 protocol HomeViewModelDelegate: AnyObject {
     func startSearchFlow()
-    func startWeatherFlowForCurrentLocation(_ currentLocation: Location)
+    func showWeather(for location: Location)
 }
 
-class HomeViewModel {
+class HomeViewModel { 
     private let deviceLocationProvider: DeviceLocationProvider
     weak var coordinatorDelegate: HomeViewModelDelegate?
-    var weatherViewModels: [LocationViewModel]
-
-    init(deviceLocationProvider: DeviceLocationProvider,
-         weatherViewModels: [LocationViewModel] = []) {
+    init(deviceLocationProvider: DeviceLocationProvider) {
         self.deviceLocationProvider = deviceLocationProvider
-        self.weatherViewModels = weatherViewModels
     }
 
     func requestLocationAuthorisation() {
@@ -39,8 +38,8 @@ class HomeViewModel {
         case .authorizedAlways, .authorizedWhenInUse:
             deviceLocationProvider.getDeviceLocation { [weak self] result in
                 switch result {
-                case .success(let location):
-                    self?.coordinatorDelegate?.startWeatherFlowForCurrentLocation(location)
+                case .success(let deviceLocation):
+                    self?.coordinatorDelegate?.showWeather(for: deviceLocation)
                 case .failure(let error):
                     onFailure(false, error)
                 }
@@ -53,5 +52,13 @@ class HomeViewModel {
         @unknown default:
             fatalError("Unhandled authorizationStatus")
         }
+    }
+
+    func didTapMenu() {
+        
+    }
+
+    func didTapImage() {
+        //For debugging stuff
     }
 }
