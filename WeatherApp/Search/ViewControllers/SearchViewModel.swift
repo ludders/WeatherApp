@@ -56,6 +56,7 @@ class SearchViewModel {
         guard let selectedSuggestion = searchModel.value?.suggestions[index] else { return }
         selectedLocation = Location(name: selectedSuggestion.shortName,
                                 coordinates: selectedSuggestion.coordinates)
+        
     }
 }
 

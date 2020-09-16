@@ -60,10 +60,12 @@ class LocationViewController: UIViewController {
         setupBindings()
         addActions()
         weatherView.setupConstraints()
+        print("viewDidLoad Called for \(viewModel.locationModelObs.value.location.name)")
     }
 
     override func viewDidAppear(_ animated: Bool) {
         refreshWeather()
+        print("viewDidAppear Called for \(viewModel.locationModelObs.value.location.name)")
     }
 
     private func setupBindings() {
@@ -102,11 +104,12 @@ class LocationViewController: UIViewController {
     }
 
     private func refreshWeather() {
-        view.displayLoadingView()
+        //TODO: Re-implement loading spinner as a section not the whole page
+//        view.displayLoadingView()
         viewModel.updateForecast { [weak self] result in
             guard let self = self else { return }
             DispatchQueue.main.async {
-                self.view.hideLoadingView()
+//                self.view.hideLoadingView()
             }
             switch result {
             case .success(_):
@@ -122,6 +125,10 @@ class LocationViewController: UIViewController {
                 }
             }
         }
+    }
+
+    deinit {
+        print("\(viewModel.locationModelObs.value.location.name) deinit called")
     }
 }
 

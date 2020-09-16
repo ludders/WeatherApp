@@ -10,17 +10,18 @@ import Foundation
 import UIKit
 import SnapKit
 
-//Will manage header view & eventually be a container for 1..many weather views that you can scroll through.
 class HomeViewController: UIViewController {
 
     private let viewModel: HomeViewModel
     private var containerView: UIView!
     private var headerView: HeaderView!
-    private var pageViewController: UIPageViewController
+    private let pageViewController: UIPageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
+    private var locationPageViewControllerDataSource: LocationPageViewControllerDataSource
 
-    init(viewModel: HomeViewModel, pageViewController: UIPageViewController) {
+    init(viewModel: HomeViewModel,
+         locationPageViewControllerDataSource: LocationPageViewControllerDataSource) {
         self.viewModel = viewModel
-        self.pageViewController = pageViewController
+        self.locationPageViewControllerDataSource = locationPageViewControllerDataSource
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -44,13 +45,21 @@ class HomeViewController: UIViewController {
     }
 
     private func setupPageViewController() {
+        addPageViewControllerAsChild()
+        pageViewController.dataSource = locationPageViewControllerDataSource
+        pageViewController.delegate = locationPageViewControllerDataSource
+        //TODO: Show a different VC when no locations present
+        guard let locationViewController = locationPageViewControllerDataSource.initialPageViewController() else { return }
+        pageViewController.setViewControllers([locationViewController], direction: .forward, animated: true, completion: nil)
+    }
+
+    private func addPageViewControllerAsChild() {
         addChild(pageViewController)
         containerView.addSubview(pageViewController.view)
         pageViewController.view.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
         pageViewController.didMove(toParent: self)
-        pageViewController.delegate = self
     }
 
     private func setupHeaderView() {

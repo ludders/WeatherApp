@@ -9,15 +9,12 @@
 import CoreLocation
 import Foundation
 
-//temp - delete me
-import UIKit
-
 protocol HomeViewModelDelegate: AnyObject {
     func startSearchFlow()
     func showWeather(for location: Location)
 }
 
-class HomeViewModel { 
+class HomeViewModel {
     private let deviceLocationProvider: DeviceLocationProvider
     weak var coordinatorDelegate: HomeViewModelDelegate?
     init(deviceLocationProvider: DeviceLocationProvider) {
