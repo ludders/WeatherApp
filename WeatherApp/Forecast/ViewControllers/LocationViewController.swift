@@ -60,17 +60,24 @@ class LocationViewController: UIViewController {
         setupBindings()
         addActions()
         weatherView.setupConstraints()
-        print("viewDidLoad Called for \(viewModel.locationModelObs.value.location.name)")
     }
 
     override func viewDidAppear(_ animated: Bool) {
         refreshWeather()
-        print("viewDidAppear Called for \(viewModel.locationModelObs.value.location.name)")
     }
 
     private func setupBindings() {
-        viewModel.locationModelObs.bindOnNext { locationModel in
-            self.weatherView.configure(with: locationModel)
+        viewModel.locationViewStateObs.bind { state in
+            switch state {
+            case .loading:
+                //TODO: Loading spinner view instead of collectionViews
+                break
+            case .loaded(let model):
+                self.weatherView.configure(with: model)
+            case .error:
+                //TODO: Error view instead of collectionViews
+                break
+            }
         }
         viewModel.selectedDayObs.bind { dailyForecast in
             guard let selectedDay = dailyForecast else { return }
@@ -125,10 +132,6 @@ class LocationViewController: UIViewController {
                 }
             }
         }
-    }
-
-    deinit {
-        print("\(viewModel.locationModelObs.value.location.name) deinit called")
     }
 }
 

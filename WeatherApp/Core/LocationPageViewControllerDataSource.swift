@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-class LocationPageViewControllerDataSource: NSObject, UIPageViewControllerDataSource, UIPageViewControllerDelegate {
+class LocationPageViewControllerDataSource: NSObject, UIPageViewControllerDataSource {
     private var locations: [Location]
     private var currentIndex: Int = 0 //Only updated once the transition to another VC is completed
 
@@ -45,13 +45,12 @@ class LocationPageViewControllerDataSource: NSObject, UIPageViewControllerDataSo
         viewController.view.tag = index
         return viewController
     }
+}
+
+extension LocationPageViewControllerDataSource: UIPageViewControllerDelegate {
 
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         guard let newIndex = pageViewController.viewControllers?.first?.view.tag else { return }
         currentIndex = newIndex
-    }
-
-    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
-        //
     }
 }

@@ -13,7 +13,6 @@ import SnapKit
 class HomeViewController: UIViewController {
 
     private let viewModel: HomeViewModel
-    private var containerView: UIView!
     private var headerView: HeaderView!
     private let pageViewController: UIPageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
     private var locationPageViewControllerDataSource: LocationPageViewControllerDataSource
@@ -33,11 +32,6 @@ class HomeViewController: UIViewController {
         return .lightContent
     }
 
-    override func loadView() {
-        containerView = UIView(frame: UIScreen.main.bounds)
-        view = containerView
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         setupPageViewController()
@@ -55,7 +49,7 @@ class HomeViewController: UIViewController {
 
     private func addPageViewControllerAsChild() {
         addChild(pageViewController)
-        containerView.addSubview(pageViewController.view)
+        view.addSubview(pageViewController.view)
         pageViewController.view.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
@@ -65,7 +59,7 @@ class HomeViewController: UIViewController {
     private func setupHeaderView() {
         headerView = HeaderView()
         headerView.delegate = self
-        containerView.addSubview(headerView)
+        view.addSubview(headerView)
         headerView.setupView()
     }
 }

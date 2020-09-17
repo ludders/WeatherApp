@@ -12,13 +12,21 @@ import UIKit
 
 typealias UpdateForecastCompletion = Result<Bool, NetworkingError>
 
+enum LocationViewState {
+    case loading
+    case loaded(LocationModel)
+    case error
+}
+
 class LocationViewModel {
-    private(set) var locationModelObs: Observable<LocationModel>
+    private var model: LocationModel
+    private(set) var locationViewStateObs: Observable<LocationViewState>
     var selectedDayIndexObs = Observable<Int>(0)
     var selectedDayObs = Observable<DailyForecast?>(nil)
 
     public init(model: LocationModel) {
-        self.locationModelObs = Observable<LocationModel>(model)
+        self.model = model
+        self.locationViewStateObs = Observable<LocationViewState>(.loading)
         self.selectedDayIndexObs.bind { index in
             self.selectedDayObs.value = self.dailyForecast(for: index)
         }
@@ -28,10 +36,11 @@ class LocationViewModel {
 
     public func updateForecast(onCompletion: @escaping (UpdateForecastCompletion) -> ()) {
         let service = WeatherService()
-        service.getLocationForecast(for: locationModelObs.value.location) { result in
+        service.getLocationForecast(for: model.location) { result in
             switch result {
             case .success(let forecast):
-                self.locationModelObs.value.forecast = forecast
+                self.model.forecast = forecast
+                self.locationViewStateObs.value = .loaded(self.model)
                 self.forecastDataItems = forecast.asDataItems
                 self.selectedDayObs.value = self.dailyForecast(for: self.selectedDayIndexObs.value)
                 onCompletion(.success(true))
@@ -52,7 +61,7 @@ class LocationViewModel {
     }
 
     func addLocationTapped() {
-        let location = locationModelObs.value.location
+        let location = model.location
         if var savedLocations = Defaults.get([Location].self, forKey: .savedLocations),
             !savedLocations.contains(location) {
             savedLocations.append(location)
@@ -78,7 +87,7 @@ protocol DayCollectionViewViewModel {
 extension LocationViewModel: DayCollectionViewViewModel {
 
     private var dailyForecasts: [DailyForecast]? {
-        return locationModelObs.value.forecast?.dailyForecasts ?? nil
+        return model.forecast?.dailyForecasts ?? nil
     }
 
     var numberOfDayItems: Int {
