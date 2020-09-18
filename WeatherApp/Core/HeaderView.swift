@@ -69,28 +69,29 @@ class HeaderView: UIView {
         }
     }
 
+
+
     private func applyConstraints() {
-
-        layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 0, right: 20)
-
         snp.makeConstraints { make in
             if let superView = self.superview {
                 make.leading.trailing.top.equalTo(superView.safeAreaLayoutGuide)
             }
-            make.height.equalTo(48)
+            make.height.equalTo(50)
         }
 
         menuButton.snp.makeConstraints { make in
-            make.height.leading.top.bottom.equalTo(layoutMarginsGuide)
+            make.leading.top.equalTo(layoutMarginsGuide)
         }
 
         titleImage.snp.makeConstraints { make in
-            make.height.top.bottom.centerX.equalToSuperview()
+            make.top.centerX.equalToSuperview()
+            make.height.equalTo(50)
             make.width.equalTo(120)
         }
 
         buttonsStackView.snp.makeConstraints { make in
-            make.height.trailing.top.bottom.equalTo(layoutMarginsGuide)
+            make.trailing.equalTo(layoutMarginsGuide)
+            make.top.equalTo(menuButton.titleLabel!.snp.top)
         }
     }
 }

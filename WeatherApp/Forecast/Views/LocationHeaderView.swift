@@ -12,20 +12,8 @@ import UIKit
 import SnapKit
 
 class LocationHeaderView: UIView {
-    
-    var refreshButton: Button = {
-        let button = Button(type: .system)
-        button.imageView?.preferredSymbolConfiguration = UIImage.SymbolConfiguration(textStyle: .footnote)
-        button.tintColor = Theme.Colours.silver
-        return button
-    }()
-    var refreshLabel: UILabel = {
-        let label = UILabel()
-        label.font = Theme.Fonts.BBC.footnote
-        label.textColor = Theme.Colours.silver
-        return label
-    }()
-    var locationLabel: UILabel = {
+
+    var titleLabel: UILabel = {
         let label = UILabel()
         label.font = Theme.Fonts.BBC.largeTitle50
         label.textColor = Theme.Colours.white
@@ -76,9 +64,7 @@ class LocationHeaderView: UIView {
     }
 
     private func setupSubViews() {
-        addSubview(refreshButton)
-        addSubview(refreshLabel)
-        addSubview(locationLabel)
+        addSubview(titleLabel)
         addSubview(addLocationButton)
         addSubview(subtitleLabel)
         setupSunTimesView()
@@ -97,30 +83,20 @@ class LocationHeaderView: UIView {
     func setupConstraints() {
 
         layoutMargins = UIEdgeInsets(top: 64, left: 20, bottom: 20, right: 20)
-
-        refreshButton.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide).inset(48+8)
-            make.leading.equalTo(layoutMarginsGuide)
-        }
-        refreshLabel.snp.makeConstraints { make in
-            make.top.equalTo(safeAreaLayoutGuide).inset(48+8)
-            make.leading.equalTo(refreshButton.snp.trailing).offset(8)
-            make.centerY.equalTo(refreshButton)
-        }
-        locationLabel.snp.makeConstraints { make in
-            make.top.equalTo(refreshButton.snp.bottom).offset(16)
+        titleLabel.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(16)
             make.leading.equalTo(layoutMarginsGuide)
         }
         addLocationButton.snp.makeConstraints { make in
-            make.leading.equalTo(locationLabel.snp.trailing).offset(8)
+            make.leading.equalTo(titleLabel.snp.trailing).offset(8)
             make.trailing.lessThanOrEqualTo(layoutMarginsGuide)
-            make.centerY.equalTo(locationLabel)
+            make.centerY.equalTo(titleLabel)
         }
         addLocationButton.setContentCompressionResistancePriority(.required, for: .horizontal)
 
         subtitleLabel.snp.makeConstraints { make in
             make.leading.equalTo(layoutMarginsGuide)
-            make.top.equalTo(locationLabel.snp.bottom).offset(16)
+            make.top.equalTo(titleLabel.snp.bottom).offset(16)
         }
         sunTimesView?.snp.makeConstraints({ make in
             make.trailing.equalTo(layoutMarginsGuide)
@@ -130,11 +106,17 @@ class LocationHeaderView: UIView {
 
     func configure(with locationModel: LocationModel) {
         DispatchQueue.main.async {
-            self.locationLabel.text = locationModel.location.name
+            self.titleLabel.text = locationModel.location.name
             self.addLocationButton.setImage(UIImage(systemName: "plus.square"), for: .normal)
-            self.refreshButton.setImage(UIImage(systemName: "arrow.clockwise.circle"), for: .normal)
-            self.refreshLabel.text = locationModel.forecast?.lastUpdateDisplayText
             self.sunriseImageView.image = UIImage(systemName: "sunrise.fill")
+        }
+    }
+
+    func hideForecast(hide: Bool) {
+        DispatchQueue.main.async {
+            self.addLocationButton.isHidden = hide
+            self.subtitleLabel.isHidden = hide
+            self.sunTimesView?.isHidden = hide
         }
     }
 }

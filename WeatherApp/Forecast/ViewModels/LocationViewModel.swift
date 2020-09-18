@@ -10,8 +10,6 @@ import Foundation
 import CoreLocation
 import UIKit
 
-typealias UpdateForecastCompletion = Result<Bool, NetworkingError>
-
 enum LocationViewState {
     case loading
     case loaded(LocationModel)
@@ -33,8 +31,9 @@ class LocationViewModel {
     }
 
     var forecastDataItems: [[ForecastDataItem]] = [[]]
+    public func updateForecast() {
+        locationViewStateObs.value = .loading
 
-    public func updateForecast(onCompletion: @escaping (UpdateForecastCompletion) -> ()) {
         let service = WeatherService()
         service.getLocationForecast(for: model.location) { result in
             switch result {
@@ -43,9 +42,8 @@ class LocationViewModel {
                 self.locationViewStateObs.value = .loaded(self.model)
                 self.forecastDataItems = forecast.asDataItems
                 self.selectedDayObs.value = self.dailyForecast(for: self.selectedDayIndexObs.value)
-                onCompletion(.success(true))
-            case .failure(let error):
-                onCompletion(.failure(error))
+            case .failure(_):
+                self.locationViewStateObs.value = .error
             }
         }
     }

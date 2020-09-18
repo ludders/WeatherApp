@@ -21,6 +21,7 @@ struct LocationForecast {
 
 // MARK: Header View Display Formatting
 
+//TODO: Move this out to HomeViewModel once we've changed the network calls
 extension LocationForecast {
     var lastUpdateDisplayText: String {
         let seconds = Int(Date().timeIntervalSince1970 - self.lastUpdated)

@@ -16,6 +16,12 @@ final class LocationView: UIView {
     let forecastflowLayout: UICollectionViewFlowLayout
     let dayFlowLayout: UICollectionViewFlowLayout
 
+    private var shouldHideForecast = false {
+        didSet {
+            hideForecast(hide: shouldHideForecast)
+        }
+    }
+
     init(forecastFlowLayout: UICollectionViewFlowLayout,
          dayFlowLayout: UICollectionViewFlowLayout) {
         self.forecastflowLayout = forecastFlowLayout
@@ -62,7 +68,7 @@ final class LocationView: UIView {
     func setupConstraints() {
         headingView.snp.makeConstraints { make in
             make.top.leading.width.equalTo(safeAreaLayoutGuide)
-            make.height.equalTo(safeAreaLayoutGuide).dividedBy(3)
+            make.height.equalTo(150)
         }
         forecastCollectionView.snp.makeConstraints { make in
             make.top.equalTo(headingView.snp.bottom).offset(5)
@@ -80,6 +86,30 @@ final class LocationView: UIView {
         DispatchQueue.main.async {
             self.forecastCollectionView.reloadData()
             self.dayCollectionView.reloadData()
+        }
+    }
+
+    func configure(for state: LocationViewState) {
+        switch state {
+            case .loading:
+                shouldHideForecast = true
+            case .loaded(let model):
+                self.headingView.configure(with: model)
+                DispatchQueue.main.async {
+                    self.forecastCollectionView.reloadData()
+                    self.dayCollectionView.reloadData()
+                }
+                shouldHideForecast = false
+            case .error:
+                shouldHideForecast = true
+        }
+    }
+
+    private func hideForecast(hide: Bool) {
+        DispatchQueue.main.async {
+            self.forecastCollectionView.isHidden = self.shouldHideForecast
+            self.dayCollectionView.isHidden = self.shouldHideForecast
+            self.headingView.hideForecast(hide: hide)
         }
     }
 }

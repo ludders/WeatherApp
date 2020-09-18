@@ -37,6 +37,10 @@ class HomeViewController: UIViewController {
         setupPageViewController()
         setupHeaderView()
     }
+    
+    override func viewDidLayoutSubviews() {
+        pageViewController.additionalSafeAreaInsets = UIEdgeInsets(top: headerView.frame.height, left: 0, bottom: 0, right: 0)
+    }
 
     private func setupPageViewController() {
         addPageViewControllerAsChild()
