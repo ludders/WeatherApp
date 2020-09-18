@@ -11,12 +11,9 @@ import CoreLocation
 
 struct LocationForecast {
     public var lastUpdated: TimeInterval
-    public var currentForecast: CurrentForecast?
     public var dailyForecasts: [DailyForecast]?
     
-    public init(currentForecast: CurrentForecast?,
-                dailyForecasts: [DailyForecast]?) {
-        self.currentForecast = currentForecast
+    public init(dailyForecasts: [DailyForecast]?) {
         self.dailyForecasts = dailyForecasts
         lastUpdated = Date().timeIntervalSince1970
     }

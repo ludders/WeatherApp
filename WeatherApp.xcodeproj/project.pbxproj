@@ -70,7 +70,6 @@
 		9DF1214624D47BBA001845BD /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF1214524D47BBA001845BD /* Defaults.swift */; };
 		9DF6984B248169FB00C9BEC8 /* LocationForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF6984A248169FB00C9BEC8 /* LocationForecast.swift */; };
 		9DF69C18248175C200C9BEC8 /* ExampleWeatherCall.json in Resources */ = {isa = PBXBuildFile; fileRef = 9DF69C17248175C200C9BEC8 /* ExampleWeatherCall.json */; };
-		9DF69C1A24817A9700C9BEC8 /* CurrentForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF69C1924817A9700C9BEC8 /* CurrentForecast.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -164,7 +163,6 @@
 		9DF1214524D47BBA001845BD /* Defaults.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Defaults.swift; sourceTree = "<group>"; };
 		9DF6984A248169FB00C9BEC8 /* LocationForecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationForecast.swift; sourceTree = "<group>"; };
 		9DF69C17248175C200C9BEC8 /* ExampleWeatherCall.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ExampleWeatherCall.json; sourceTree = "<group>"; };
-		9DF69C1924817A9700C9BEC8 /* CurrentForecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrentForecast.swift; sourceTree = "<group>"; };
 		9DF8C17024A53F6100BCC7FC /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = Carthage/Build/iOS/PromiseKit.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -343,7 +341,6 @@
 			children = (
 				9DF6984A248169FB00C9BEC8 /* LocationForecast.swift */,
 				9D8CBB0C24C4BB2C0027C37E /* LocationModel.swift */,
-				9DF69C1924817A9700C9BEC8 /* CurrentForecast.swift */,
 				9D13A90C248ECB9000613184 /* DailyForecast.swift */,
 				9D13A90E248EDA1C00613184 /* HourlyForecast.swift */,
 				9D53269F24B7AE06008B92B8 /* Suggestion.swift */,
@@ -552,7 +549,6 @@
 				9D5326A024B7AE06008B92B8 /* Suggestion.swift in Sources */,
 				9D11719924759109003949DB /* WeatherService.swift in Sources */,
 				9D11719B24759264003949DB /* WeatherResponse.swift in Sources */,
-				9DF69C1A24817A9700C9BEC8 /* CurrentForecast.swift in Sources */,
 				9DAE20592493E1BB00B2C284 /* HourlyForecastCollectionViewCell.swift in Sources */,
 				9D3E7E62248A8C8C00A4A248 /* Observable.swift in Sources */,
 				9D13A90F248EDA1C00613184 /* HourlyForecast.swift in Sources */,

@@ -36,16 +36,8 @@ class WeatherService {
 
     private func buildLocationForecast(using response: WeatherResponse) -> LocationForecast {
         let current = response.current
-        var locationForecast = LocationForecast(currentForecast: CurrentForecast(sunrise: current?.sunrise,
-                                                                 sunset: current?.sunset,
-                                                                 temperature: current?.temp,
-                                                                 windSpeed: current?.windSpeed,
-                                                                 windDegrees: current?.windDeg,
-                                                                 description: current?.weather?.first?.description,
-                                                                 iconCode: current?.weather?.first?.icon), dailyForecasts: nil)
 
-        func buildDailyForecasts() -> [DailyForecast]? {
-            return response.daily?.map({ day -> DailyForecast in
+        let dailyForecasts = response.daily?.map({ day -> DailyForecast in
                 let hourlyForecasts = response.hourly?.filter({ hour -> Bool in
                     //Include hourly forecasts from 0600 each day, till 0500 the next day.
                     guard let dayDate = day.dt,
@@ -87,9 +79,6 @@ class WeatherService {
                                      clouds: day.clouds,
                                      hourlyForecasts: hourlyForecasts)
             })
-        }
-
-        locationForecast.dailyForecasts = buildDailyForecasts()
-        return locationForecast
+        return LocationForecast(dailyForecasts: dailyForecasts)
     }
 }
