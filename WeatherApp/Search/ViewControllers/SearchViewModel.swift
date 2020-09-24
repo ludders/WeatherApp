@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import RxSwift //Eventually.
 import UIKit
 
 protocol SearchViewTableViewModel {
