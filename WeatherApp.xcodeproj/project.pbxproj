@@ -58,8 +58,6 @@
 		9DAE20592493E1BB00B2C284 /* HourlyForecastCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE20582493E1BB00B2C284 /* HourlyForecastCollectionViewCell.swift */; };
 		9DAE205D2493FAD400B2C284 /* DayCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAE205C2493FAD400B2C284 /* DayCollectionViewCell.swift */; };
 		9DAEA0EF24AD165D00409D9F /* SearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DAEA0EE24AD165D00409D9F /* SearchViewController.swift */; };
-		9DB4373824F822A200BCDB8B /* RxSwift.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9DB4373724F822A200BCDB8B /* RxSwift.framework */; };
-		9DB4373924F822A200BCDB8B /* RxSwift.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9DB4373724F822A200BCDB8B /* RxSwift.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9DB9A36D24F047F5008BC59B /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DB9A36C24F047F5008BC59B /* HomeViewModel.swift */; };
 		9DBE45D424C5FC9400E1CB11 /* PaddableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DBE45D324C5FC9400E1CB11 /* PaddableTextField.swift */; };
 		9DC563F9245C734600A0C8CD /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC563F8245C734600A0C8CD /* HomeViewController.swift */; };
@@ -88,7 +86,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				9DB4373924F822A200BCDB8B /* RxSwift.framework in Embed Frameworks */,
 				9D5241172486DB0E005A8F1A /* SnapKit.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
@@ -169,7 +166,6 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9DB4373824F822A200BCDB8B /* RxSwift.framework in Frameworks */,
 				9D5241162486DB0E005A8F1A /* SnapKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
