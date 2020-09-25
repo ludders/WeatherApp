@@ -10,7 +10,7 @@ import CoreLocation
 import Foundation
 
 protocol HomeViewModelDelegate: AnyObject {
-    func startSearchFlow()
+    func startSearchFlow(selectionDelegate: SearchSelectionDelegate?)
     func showWeather(for location: Location)
 }
 
@@ -25,8 +25,8 @@ class HomeViewModel {
         deviceLocationProvider.requestWhenInUseAuthorisation()
     }
 
-    func didTapSearch() {
-        coordinatorDelegate?.startSearchFlow()
+    func didTapSearch(selectionDelegate: SearchSelectionDelegate?) {
+        coordinatorDelegate?.startSearchFlow(selectionDelegate: selectionDelegate)
     }
 
     func didTapLocation(onFailure: @escaping (_ locationDisabled: Bool, _ withError: Error?) -> ()) {

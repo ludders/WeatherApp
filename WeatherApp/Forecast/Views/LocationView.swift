@@ -121,7 +121,6 @@ final class LocationView: UIView {
     //MARK: Constraints
 
     func setupConstraints() {
-
         layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 20, right: 0)
         titleLabel.snp.makeConstraints { make in
             make.top.equalTo(layoutMarginsGuide).offset(16)
@@ -138,13 +137,12 @@ final class LocationView: UIView {
             make.leading.equalTo(layoutMarginsGuide)
             make.top.equalTo(titleLabel.snp.bottom).offset(16)
         }
-        sunTimesView.snp.makeConstraints({ make in
+        sunTimesView.snp.makeConstraints { make in
             make.trailing.equalTo(layoutMarginsGuide)
             make.firstBaseline.equalTo(subtitleLabel.snp.firstBaseline)
-        })
-
+        }
         forecastCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(subtitleLabel.snp.bottom).offset(5)
+            make.top.equalTo(subtitleLabel.snp.bottom).offset(16)
             make.leading.width.equalTo(safeAreaLayoutGuide)
             make.bottom.equalTo(dayCollectionView.snp.top).offset(-10)
         }

@@ -11,23 +11,29 @@ import UIKit
 
 class LocationPageViewControllerDataSource: NSObject, UIPageViewControllerDataSource {
     private var locations: [Location]
-    private var currentIndex: Int = 0 //Only updated once the transition to another VC is completed
+    private(set) var currentPageIndex: Int = 0 //Only updated once the transition to another VC is completed
 
     init(locations: [Location]) {
         self.locations = locations
     }
 
-    func initialPageViewController(startIndex: Int = 0) -> LocationViewController? {
+    func getFirstPageViewController(startIndex: Int = 0) -> LocationViewController? {
         //TODO: Return a 'no locations' view controller when this is nil
+        currentPageIndex = startIndex
         return createViewControllerForLocation(atIndex: startIndex)
     }
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        return createViewControllerForLocation(atIndex: currentIndex - 1)
+        return createViewControllerForLocation(atIndex: currentPageIndex - 1)
     }
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        return createViewControllerForLocation(atIndex: currentIndex + 1)
+        return createViewControllerForLocation(atIndex: currentPageIndex + 1)
+    }
+
+    func addNewPageAtTop(for location: Location) {
+        locations.insert(location, at: 0)
+        currentPageIndex += 1
     }
 
     //TODO: Loads of dependencies in here now - find a way to inject?
@@ -51,6 +57,6 @@ extension LocationPageViewControllerDataSource: UIPageViewControllerDelegate {
 
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         guard let newIndex = pageViewController.viewControllers?.first?.view.tag else { return }
-        currentIndex = newIndex
+        currentPageIndex = newIndex
     }
 }

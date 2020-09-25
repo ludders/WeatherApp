@@ -18,7 +18,7 @@ struct Location: Codable, Equatable {
     let name: String
     let latitude: Double
     let longitude: Double
-    var isDefault: Bool
+    var saved: Bool
 
     var coordinate: CLLocationCoordinate2D {
         return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
@@ -26,10 +26,10 @@ struct Location: Codable, Equatable {
 }
 
 extension Location {
-    init(name: String, coordinates: CLLocationCoordinate2D, isDefault: Bool = false) {
+    init(name: String, coordinates: CLLocationCoordinate2D, saved: Bool = false) {
         self.init(name: name,
                   latitude: coordinates.latitude,
                   longitude: coordinates.longitude,
-                  isDefault: isDefault)
+                  saved: saved)
     }
 }

@@ -11,7 +11,6 @@ import UIKit
 import SnapKit
 
 class HomeViewController: UIViewController {
-
     private let viewModel: HomeViewModel
     private var headerView: HeaderView!
     private let pageViewController: UIPageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
@@ -46,9 +45,7 @@ class HomeViewController: UIViewController {
         addPageViewControllerAsChild()
         pageViewController.dataSource = locationPageViewControllerDataSource
         pageViewController.delegate = locationPageViewControllerDataSource
-        //TODO: Show a different VC when no locations present
-        guard let locationViewController = locationPageViewControllerDataSource.initialPageViewController() else { return }
-        pageViewController.setViewControllers([locationViewController], direction: .forward, animated: true, completion: nil)
+        displayFirstPage()
     }
 
     private func addPageViewControllerAsChild() {
@@ -66,17 +63,24 @@ class HomeViewController: UIViewController {
         view.addSubview(headerView)
         headerView.setupView()
     }
+
+    private func displayFirstPage() {
+        //TODO: Show a different VC when no locations present
+        guard let locationViewController = locationPageViewControllerDataSource.getFirstPageViewController() else { return }
+        pageViewController.setViewControllers([locationViewController], direction: .forward, animated: false, completion: nil)
+    }
 }
 
-extension HomeViewController: UIPageViewControllerDelegate {
-    func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
-        print("TRANSITION WOOP WOOP")
+extension HomeViewController: SearchSelectionDelegate {
+    func didSelect(_ location: Location) {
+        locationPageViewControllerDataSource.addNewPageAtTop(for: location)
+        displayFirstPage()
     }
 }
 
 extension HomeViewController: HeaderViewDelegate {
     func didTapSearch() {
-        viewModel.didTapSearch()
+        viewModel.didTapSearch(selectionDelegate: self)
     }
 
     func didTapLocation() {

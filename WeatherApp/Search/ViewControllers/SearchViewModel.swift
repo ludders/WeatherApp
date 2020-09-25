@@ -9,9 +9,8 @@
 import Foundation
 import UIKit
 
-protocol SearchViewTableViewModel {
-    var numberOfRows: Int { get }
-    var numberOfSections: Int { get }
+protocol SearchSelectionDelegate: AnyObject {
+    func didSelect(_ location: Location)
 }
 
 class SearchViewModel {
@@ -20,6 +19,7 @@ class SearchViewModel {
 
     private(set) var searchModel = Observable<SearchModel?>(nil)
     private(set) var selectedLocation: Location? = nil
+    weak var selectionDelegate: SearchSelectionDelegate?
 
     init(suggestionsService: SuggestionsService) {
         self.suggestionsService = suggestionsService
@@ -54,9 +54,14 @@ class SearchViewModel {
     func handleSelection(at index: Int) {
         guard let selectedSuggestion = searchModel.value?.suggestions[index] else { return }
         selectedLocation = Location(name: selectedSuggestion.shortName,
-                                coordinates: selectedSuggestion.coordinates)
-        
+                                    coordinates: selectedSuggestion.coordinates)
+        selectionDelegate?.didSelect(selectedLocation!)
     }
+}
+
+protocol SearchViewTableViewModel {
+    var numberOfRows: Int { get }
+    var numberOfSections: Int { get }
 }
 
 extension SearchViewModel: SearchViewTableViewModel {

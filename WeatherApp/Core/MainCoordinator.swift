@@ -51,9 +51,9 @@ extension MainCoordinator: IntroViewControllerDelegate {
         homeViewModel.coordinatorDelegate = self
         
         let locations: [Location] = [
-            Location(name: "South Woodham Ferrers", coordinates: CLLocationCoordinate2D(latitude: 51.6465, longitude: 0.6147)),
-            Location(name: "Stratford", coordinates: CLLocationCoordinate2D(latitude: 51.5472, longitude: -0.0081)),
-            Location(name: "Manchester", coordinates: CLLocationCoordinate2D(latitude: 53.4808, longitude: 2.2426))
+            Location(name: "South Woodham Ferrers", coordinates: CLLocationCoordinate2D(latitude: 51.6465, longitude: 0.6147), saved: true),
+            Location(name: "Stratford", coordinates: CLLocationCoordinate2D(latitude: 51.5472, longitude: -0.0081), saved: true),
+            Location(name: "Manchester", coordinates: CLLocationCoordinate2D(latitude: 53.4808, longitude: 2.2426), saved: true)
         ]
         Defaults.set(locations, forKey: .savedLocations)
 
@@ -75,11 +75,12 @@ extension MainCoordinator: SearchViewControllerDelegate {
 }
 
 extension MainCoordinator: HomeViewModelDelegate {
-    func startSearchFlow() {
+    func startSearchFlow(selectionDelegate: SearchSelectionDelegate?) {
         let suggestionsAPI = SuggestionsAPI()
         let suggestionsService = SuggestionsService(suggestionsAPI: suggestionsAPI)
         let viewModel = SearchViewModel(suggestionsService: suggestionsService)
         let searchViewController = SearchViewController(viewModel: viewModel)
+        viewModel.selectionDelegate = selectionDelegate
         searchViewController.coordinatorDelegate = self
         navigationController.present(searchViewController, animated: true)
     }

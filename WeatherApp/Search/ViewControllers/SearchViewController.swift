@@ -157,10 +157,7 @@ extension SearchViewController: UITextFieldDelegate {
 extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.handleSelection(at: indexPath.row)
-        if let location = viewModel.selectedLocation {
-            coordinatorDelegate?.didTapClose()
-            coordinatorDelegate?.showWeather(for: location)
-        }
+        coordinatorDelegate?.didTapClose()
     }
 }
 
