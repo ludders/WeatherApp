@@ -64,17 +64,19 @@ class HomeViewController: UIViewController {
         headerView.setupView()
     }
 
-    private func displayFirstPage() {
+    private func displayFirstPage(setLocation location: Location? = nil) {
         //TODO: Show a different VC when no locations present
+        if let location = location {
+            locationPageViewControllerDataSource.addNewPageAtTop(for: location)
+        }
         guard let locationViewController = locationPageViewControllerDataSource.getFirstPageViewController() else { return }
         pageViewController.setViewControllers([locationViewController], direction: .forward, animated: false, completion: nil)
     }
 }
 
-extension HomeViewController: SearchSelectionDelegate {
+extension HomeViewController: LocationSelectionDelegate {
     func didSelect(_ location: Location) {
-        locationPageViewControllerDataSource.addNewPageAtTop(for: location)
-        displayFirstPage()
+        displayFirstPage(setLocation: location)
     }
 }
 
@@ -84,13 +86,12 @@ extension HomeViewController: HeaderViewDelegate {
     }
 
     func didTapLocation() {
-        viewModel.didTapLocation { [weak self] (disabled, error) in
-            if disabled {
-                self?.showLocationDisabledAlert()
-            }
-            if let error = error {
-                self?.showErrorFetchingLocationAlert()
-            }
+        viewModel.didTapLocation { location in
+            self.displayFirstPage(setLocation: location)
+        } onDisabled: {
+            self.showLocationDisabledAlert()
+        } onError: { error in
+            self.showErrorFetchingLocationAlert()
         }
     }
 

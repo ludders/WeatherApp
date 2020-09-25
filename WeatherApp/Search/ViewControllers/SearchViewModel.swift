@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-protocol SearchSelectionDelegate: AnyObject {
+protocol LocationSelectionDelegate: AnyObject {
     func didSelect(_ location: Location)
 }
 
@@ -19,7 +19,7 @@ class SearchViewModel {
 
     private(set) var searchModel = Observable<SearchModel?>(nil)
     private(set) var selectedLocation: Location? = nil
-    weak var selectionDelegate: SearchSelectionDelegate?
+    weak var selectionDelegate: LocationSelectionDelegate?
 
     init(suggestionsService: SuggestionsService) {
         self.suggestionsService = suggestionsService

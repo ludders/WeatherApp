@@ -10,7 +10,7 @@ import CoreLocation
 import Foundation
 
 protocol HomeViewModelDelegate: AnyObject {
-    func startSearchFlow(selectionDelegate: SearchSelectionDelegate?)
+    func startSearchFlow(delegate: LocationSelectionDelegate?)
     func showWeather(for location: Location)
 }
 
@@ -25,27 +25,28 @@ class HomeViewModel {
         deviceLocationProvider.requestWhenInUseAuthorisation()
     }
 
-    func didTapSearch(selectionDelegate: SearchSelectionDelegate?) {
-        coordinatorDelegate?.startSearchFlow(selectionDelegate: selectionDelegate)
+    func didTapSearch(selectionDelegate: LocationSelectionDelegate?) {
+        coordinatorDelegate?.startSearchFlow(delegate: selectionDelegate)
     }
 
-    func didTapLocation(onFailure: @escaping (_ locationDisabled: Bool, _ withError: Error?) -> ()) {
+    func didTapLocation(onSuccess: @escaping (Location) -> (),
+                        onDisabled: @escaping () -> (),
+                        onError: @escaping (Error) -> ()) {
         let status = CLLocationManager.authorizationStatus()
         switch status {
         case .authorizedAlways, .authorizedWhenInUse:
-            deviceLocationProvider.getDeviceLocation { [weak self] result in
+            deviceLocationProvider.getDeviceLocation { result in
                 switch result {
                 case .success(let deviceLocation):
-                    self?.coordinatorDelegate?.showWeather(for: deviceLocation)
+                    onSuccess(deviceLocation)
                 case .failure(let error):
-                    onFailure(false, error)
+                    onError(error)
                 }
             }
         case .notDetermined:
             deviceLocationProvider.requestWhenInUseAuthorisation()
-            onFailure(false, nil)
         case .restricted, .denied:
-            onFailure(true, nil)
+            onDisabled()
         @unknown default:
             fatalError("Unhandled authorizationStatus")
         }

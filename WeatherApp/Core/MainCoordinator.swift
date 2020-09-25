@@ -75,12 +75,12 @@ extension MainCoordinator: SearchViewControllerDelegate {
 }
 
 extension MainCoordinator: HomeViewModelDelegate {
-    func startSearchFlow(selectionDelegate: SearchSelectionDelegate?) {
+    func startSearchFlow(delegate: LocationSelectionDelegate?) {
         let suggestionsAPI = SuggestionsAPI()
         let suggestionsService = SuggestionsService(suggestionsAPI: suggestionsAPI)
         let viewModel = SearchViewModel(suggestionsService: suggestionsService)
         let searchViewController = SearchViewController(viewModel: viewModel)
-        viewModel.selectionDelegate = selectionDelegate
+        viewModel.selectionDelegate = delegate
         searchViewController.coordinatorDelegate = self
         navigationController.present(searchViewController, animated: true)
     }
