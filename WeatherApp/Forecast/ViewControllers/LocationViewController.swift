@@ -74,9 +74,10 @@ class LocationViewController: UIViewController {
         viewModel.selectedDayObs.bind { dailyForecast in
             guard let selectedDay = dailyForecast else { return }
             DispatchQueue.main.async {
-                self.locationView.headingView.subtitleLabel.text = selectedDay.subtitleDisplayText
-                self.locationView.headingView.sunriseLabel.text = selectedDay.sunriseDisplayText
-                self.locationView.headingView.sunsetLabel.text = selectedDay.sunsetDisplayText
+                //TODO: Move this out of here into the view?
+                self.locationView.subtitleLabel.text = selectedDay.subtitleDisplayText
+                self.locationView.sunriseLabel.text = selectedDay.sunriseDisplayText
+                self.locationView.sunsetLabel.text = selectedDay.sunsetDisplayText
                 self.locationView.forecastCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredHorizontally, animated: false)
                 self.locationView.forecastCollectionView.reloadData()
             }
@@ -84,7 +85,7 @@ class LocationViewController: UIViewController {
     }
 
     private func addActions() {
-        locationView.headingView.addLocationButton.onTouchUpInside { [weak self] in
+        locationView.addLocationButton.onTouchUpInside { [weak self] in
             self?.viewModel.addLocationTapped()
         }
     }
