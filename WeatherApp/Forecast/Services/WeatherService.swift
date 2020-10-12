@@ -9,7 +9,7 @@
 import Foundation
 import CoreLocation
 
-typealias LocationForecastCompletion = Result<LocationForecast, NetworkingError>
+typealias LocationForecastCompletion = (Result<LocationForecast, NetworkingError>) -> ()
 
 enum NetworkingError: Error {
     case error(Int?)
@@ -17,25 +17,41 @@ enum NetworkingError: Error {
 
 class WeatherService {
     var weatherAPI: WeatherAPI
+    var cache: [Location: LocationForecast] = [:]
 
     init(weatherAPI: WeatherAPI = WeatherAPI()) {
         self.weatherAPI = weatherAPI
     }
 
-    func getLocationForecast(for location: Location, onCompletion: @escaping (LocationForecastCompletion) -> ()) {
-        weatherAPI.getWeatherResponse(for: location.coordinate, onCompletion: { result in
-            switch result {
-            case .success(let response):
-                let locationForecast = self.buildLocationForecast(using: response)
-                onCompletion(.success(locationForecast))
-            case .failure(let error):
-                onCompletion(.failure(error))
-            }
-        })
+    func updateForecasts(for locations: [Location]) {
+        locations.forEach { location in
+            updateForecast(for: location)
+        }
     }
 
-    private func buildLocationForecast(using response: WeatherResponse) -> LocationForecast {
-        let current = response.current
+    func getForecast(for location: Location, onCompletion completion: @escaping LocationForecastCompletion) {
+        //TODO: Set up a method of pruning the cache of old forecasts, 1 hour TTL?
+        if let cachedForecast = cache[location] {
+            completion(.success(cachedForecast))
+        } else {
+            updateForecast(for: location, onCompletion: completion)
+        }
+    }
+
+    fileprivate func updateForecast(for location: Location, onCompletion: LocationForecastCompletion? = nil) {
+        weatherAPI.getWeatherResponse(for: location.coordinate) { result in
+            switch result {
+            case .success(let response):
+                self.cache[location] = self.buildLocationForecast(using: response)
+                onCompletion?(.success(self.cache[location]!))
+            case .failure(let error):
+                onCompletion?(.failure(error))
+            }
+        }
+    }
+
+    fileprivate func buildLocationForecast(using response: WeatherResponse) -> LocationForecast {
+        let current = response.current  //TODO: Delete this?
 
         let dailyForecasts = response.daily?.map({ day -> DailyForecast in
                 let hourlyForecasts = response.hourly?.filter({ hour -> Bool in

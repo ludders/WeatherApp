@@ -14,7 +14,7 @@ struct LocationModel {
     var forecast: LocationForecast? = nil
 }
 
-struct Location: Codable, Equatable {
+struct Location: Codable, Equatable, Hashable {
     let name: String
     let latitude: Double
     let longitude: Double

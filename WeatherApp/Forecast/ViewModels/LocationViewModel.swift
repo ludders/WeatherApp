@@ -35,7 +35,7 @@ class LocationViewModel {
         locationViewStateObs.value = .loading
 
         let service = WeatherService()
-        service.getLocationForecast(for: model.location) { result in
+        service.getForecast(for: model.location) { result in
             switch result {
             case .success(let forecast):
                 self.model.forecast = forecast
