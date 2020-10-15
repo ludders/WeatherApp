@@ -16,26 +16,34 @@ enum NetworkingError: Error {
 }
 
 class WeatherService {
-    var weatherAPI: WeatherAPI
-    var cache: [Location: LocationForecast] = [:]
+    private var weatherAPI: WeatherAPI
+    private var cache: [Location: LocationForecast] = [:]
+    private var dispatchGroup: DispatchGroup = DispatchGroup()
 
     init(weatherAPI: WeatherAPI = WeatherAPI()) {
         self.weatherAPI = weatherAPI
     }
 
     func updateForecasts(for locations: [Location]) {
+        dispatchGroup = DispatchGroup()
         locations.forEach { location in
-            updateForecast(for: location)
+            dispatchGroup.enter()
+            updateForecast(for: location) { _ in
+                self.dispatchGroup.leave()
+            }
         }
     }
 
     func getForecast(for location: Location, onCompletion completion: @escaping LocationForecastCompletion) {
         //TODO: Set up a method of pruning the cache of old forecasts, 1 hour TTL?
-        if let cachedForecast = cache[location] {
-            completion(.success(cachedForecast))
-        } else {
-            updateForecast(for: location, onCompletion: completion)
+        let getForecastWorkItem = DispatchWorkItem {
+            if let cachedForecast = self.cache[location] {
+                completion(.success(cachedForecast))
+            } else {
+                self.updateForecast(for: location, onCompletion: completion)
+            }
         }
+        dispatchGroup.notify(queue: DispatchQueue.global(qos: .default), work: getForecastWorkItem)
     }
 
     fileprivate func updateForecast(for location: Location, onCompletion: LocationForecastCompletion? = nil) {

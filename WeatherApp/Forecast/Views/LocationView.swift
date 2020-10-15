@@ -160,13 +160,13 @@ final class LocationView: UIView {
                 updateViews(with: model)
                 shouldHideForecast = false
             case .error:
+                //TODO: Show error display here!!
                 shouldHideForecast = true
         }
     }
 
     func updateViews(with model: LocationModel) {
         DispatchQueue.main.async {
-            self.titleLabel.text = model.location.name //TODO: This title can be updated seperately as we already know this before making a network call.
             self.forecastCollectionView.reloadData()
             self.dayCollectionView.reloadData()
         }

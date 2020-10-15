@@ -10,11 +10,14 @@ import Foundation
 import UIKit
 
 class LocationPageViewControllerDataSource: NSObject, UIPageViewControllerDataSource {
-    private var locations: [Location]
+    private var weatherService: WeatherService
+    private(set) var locations: [Location]
     private(set) var currentPageIndex: Int = 0 //Only updated once the transition to another VC is completed
 
-    init(locations: [Location]) {
+    init(locations: [Location],
+         weatherService: WeatherService) {
         self.locations = locations
+        self.weatherService = weatherService
     }
 
     func getFirstPageViewController(startIndex: Int = 0) -> LocationViewController? {
@@ -42,7 +45,7 @@ class LocationPageViewControllerDataSource: NSObject, UIPageViewControllerDataSo
             return nil
         }
         let model = LocationModel(location: locations[index])
-        let viewModel = LocationViewModel(model: model)
+        let viewModel = LocationViewModel(model: model, weatherService: weatherService)
         let dayCollectionViewDataSource = DayCollectionViewDataSource(viewModel: viewModel)
         let forecastCollectionViewDataSource = ForecastCollectionViewDataSource(viewModel: viewModel)
         let viewController = LocationViewController(viewModel: viewModel,

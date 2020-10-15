@@ -61,9 +61,13 @@ extension MainCoordinator: IntroViewControllerDelegate {
         savedLocations.forEach { location in
             print(location)
         }
-        let pageViewControllerDataSource = LocationPageViewControllerDataSource(locations: savedLocations)
+
+        let weatherService = WeatherService()
+        weatherService.updateForecasts(for: locations)
+        let pageViewControllerDataSource = LocationPageViewControllerDataSource(locations: savedLocations, weatherService: weatherService)
         let homeViewController = HomeViewController(viewModel: homeViewModel,
-                                                    locationPageViewControllerDataSource: pageViewControllerDataSource)
+                                                    locationPageViewControllerDataSource: pageViewControllerDataSource,
+                                                    weatherService: weatherService)
         navigationController.pushViewController(homeViewController, animated: true)
     }
 }

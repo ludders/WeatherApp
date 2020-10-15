@@ -18,12 +18,15 @@ enum LocationViewState {
 
 class LocationViewModel {
     private var model: LocationModel
+    private var weatherService: WeatherService
     private(set) var locationViewStateObs: Observable<LocationViewState>
     var selectedDayIndexObs = Observable<Int>(0)
     var selectedDayObs = Observable<DailyForecast?>(nil)
 
-    public init(model: LocationModel) {
+    public init(model: LocationModel,
+                weatherService: WeatherService) {
         self.model = model
+        self.weatherService = weatherService
         self.locationViewStateObs = Observable<LocationViewState>(.loading)
         self.selectedDayIndexObs.bind { index in
             self.selectedDayObs.value = self.dailyForecast(for: index)
@@ -31,11 +34,15 @@ class LocationViewModel {
     }
 
     var forecastDataItems: [[ForecastDataItem]] = [[]]
-    public func updateForecast() {
-        locationViewStateObs.value = .loading
 
-        let service = WeatherService()
-        service.getForecast(for: model.location) { result in
+    var displayTitle: String {
+        return model.location.name
+    }
+
+    public func getForecast() {
+        locationViewStateObs.value = .loading
+        weatherService.getForecast(for: model.location) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let forecast):
                 self.model.forecast = forecast

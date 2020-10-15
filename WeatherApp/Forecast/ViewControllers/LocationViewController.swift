@@ -10,12 +10,11 @@ import Foundation
 import UIKit
 
 class LocationViewController: UIViewController {
-
     var locationView: LocationView!
     lazy var errorView: LocationErrorView = {
         let view = LocationErrorView()
         view.tryAgainButton.onTouchUpInside { [weak self] in
-            self?.refreshWeather()
+            self?.viewModel.getForecast()
         }
         return view
     }()
@@ -47,7 +46,7 @@ class LocationViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func loadView() {
         locationView = LocationView(forecastFlowLayout: forecastFlowLayout, dayFlowLayout: dayFlowLayout)
         locationView.backgroundColor = Theme.Colours.black
@@ -63,10 +62,11 @@ class LocationViewController: UIViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
-        refreshWeather()
+        viewModel.getForecast()
     }
 
     private func setupBindings() {
+        locationView.titleLabel.text = viewModel.displayTitle
         viewModel.locationViewStateObs.bind { state in
             self.locationView.configure(for: state)
         }
@@ -98,10 +98,6 @@ class LocationViewController: UIViewController {
     private func configureDayCollectionView() {
         locationView.dayCollectionView.delegate = dayCollectionViewDelegate
         locationView.dayCollectionView.dataSource = dayCollectionViewDataSource
-    }
-
-    private func refreshWeather() {
-        viewModel.updateForecast()
     }
 }
 

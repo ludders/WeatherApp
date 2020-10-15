@@ -11,14 +11,17 @@ import UIKit
 import SnapKit
 
 class HomeViewController: UIViewController {
-    private let viewModel: HomeViewModel
     private var headerView: HeaderView!
     private let pageViewController: UIPageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
+    private let viewModel: HomeViewModel
+    private var weatherService: WeatherService
     private var locationPageViewControllerDataSource: LocationPageViewControllerDataSource
 
     init(viewModel: HomeViewModel,
-         locationPageViewControllerDataSource: LocationPageViewControllerDataSource) {
+         locationPageViewControllerDataSource: LocationPageViewControllerDataSource,
+         weatherService: WeatherService) {
         self.viewModel = viewModel
+        self.weatherService = weatherService
         self.locationPageViewControllerDataSource = locationPageViewControllerDataSource
         super.init(nibName: nil, bundle: nil)
     }
