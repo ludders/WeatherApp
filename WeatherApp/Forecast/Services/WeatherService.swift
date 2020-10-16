@@ -18,18 +18,18 @@ enum NetworkingError: Error {
 class WeatherService {
     private var weatherAPI: WeatherAPI
     private var cache: [Location: LocationForecast] = [:]
-    private var dispatchGroup: DispatchGroup = DispatchGroup()
+    private var cacheUpdateDispatchGroup: DispatchGroup = DispatchGroup()
 
     init(weatherAPI: WeatherAPI = WeatherAPI()) {
         self.weatherAPI = weatherAPI
     }
 
     func updateForecasts(for locations: [Location]) {
-        dispatchGroup = DispatchGroup()
+        cacheUpdateDispatchGroup = DispatchGroup()
         locations.forEach { location in
-            dispatchGroup.enter()
+            cacheUpdateDispatchGroup.enter()
             updateForecast(for: location) { _ in
-                self.dispatchGroup.leave()
+                self.cacheUpdateDispatchGroup.leave()
             }
         }
     }
@@ -43,7 +43,7 @@ class WeatherService {
                 self.updateForecast(for: location, onCompletion: completion)
             }
         }
-        dispatchGroup.notify(queue: DispatchQueue.global(qos: .default), work: getForecastWorkItem)
+        cacheUpdateDispatchGroup.notify(queue: DispatchQueue.global(qos: .default), work: getForecastWorkItem)
     }
 
     fileprivate func updateForecast(for location: Location, onCompletion: LocationForecastCompletion? = nil) {

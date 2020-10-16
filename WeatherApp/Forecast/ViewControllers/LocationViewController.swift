@@ -10,8 +10,8 @@ import Foundation
 import UIKit
 
 class LocationViewController: UIViewController {
-    var locationView: LocationView!
-    lazy var errorView: LocationErrorView = {
+    private var locationView: LocationView!
+    private lazy var errorView: LocationErrorView = {
         let view = LocationErrorView()
         view.tryAgainButton.onTouchUpInside { [weak self] in
             self?.viewModel.getForecast()
@@ -20,24 +20,20 @@ class LocationViewController: UIViewController {
     }()
     private var viewModel: LocationViewModel
 
-    let forecastCollectionViewController: UICollectionViewController
-    let forecastCollectionViewDataSource: ForecastCollectionViewDataSource
-    let forecastFlowLayout = UICollectionViewFlowLayout()
-    let forecastCollectionViewDelegate = ForecastCollectionViewDelegate()
+    private let forecastCollectionViewDataSource: ForecastCollectionViewDataSource
+    private let forecastFlowLayout = UICollectionViewFlowLayout()
+    private let forecastCollectionViewDelegate = ForecastCollectionViewDelegate()
 
-    let dayCollectionViewController: UICollectionViewController
-    let dayCollectionViewDataSource: DayCollectionViewDataSource
-    let dayFlowLayout = UICollectionViewFlowLayout()
-    let dayCollectionViewDelegate: DayCollectionViewDelegate
+    private let dayCollectionViewDataSource: DayCollectionViewDataSource
+    private let dayFlowLayout = UICollectionViewFlowLayout()
+    private let dayCollectionViewDelegate: DayCollectionViewDelegate
 
     init(viewModel: LocationViewModel,
          forecastCollectionViewDataSource: ForecastCollectionViewDataSource,
         dayCollectionViewDataSource: DayCollectionViewDataSource) {
         self.viewModel = viewModel
 
-        self.forecastCollectionViewController = UICollectionViewController(collectionViewLayout: forecastFlowLayout)
         self.forecastCollectionViewDataSource = forecastCollectionViewDataSource
-        self.dayCollectionViewController = UICollectionViewController(collectionViewLayout: dayFlowLayout)
         self.dayCollectionViewDataSource = dayCollectionViewDataSource
         self.dayCollectionViewDelegate = DayCollectionViewDelegate(viewModel: viewModel)
         super.init(nibName: nil, bundle: nil)
