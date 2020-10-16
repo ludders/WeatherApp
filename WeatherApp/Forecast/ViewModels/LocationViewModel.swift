@@ -28,8 +28,8 @@ class LocationViewModel {
         self.model = model
         self.weatherService = weatherService
         self.locationViewStateObs = Observable<LocationViewState>(.loading)
-        self.selectedDayIndexObs.bind { index in
-            self.selectedDayObs.value = self.dailyForecast(for: index)
+        self.selectedDayIndexObs.bind { [weak self] index in
+            self?.selectedDayObs.value = self?.dailyForecast(for: index)
         }
     }
 
