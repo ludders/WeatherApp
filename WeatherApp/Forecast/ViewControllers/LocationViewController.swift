@@ -63,19 +63,19 @@ class LocationViewController: UIViewController {
 
     private func setupBindings() {
         locationView.titleLabel.text = viewModel.displayTitle
-        viewModel.locationViewStateObs.bind { state in
-            self.locationView.configure(for: state)
+        viewModel.locationViewStateObs.bind { [weak self] state in
+            self?.locationView.configure(for: state)
         }
 
-        viewModel.selectedDayObs.bind { dailyForecast in
+        viewModel.selectedDayObs.bind { [weak self] dailyForecast in
             guard let selectedDay = dailyForecast else { return }
             DispatchQueue.main.async {
                 //TODO: Move this out of here into the view?
-                self.locationView.subtitleLabel.text = selectedDay.subtitleDisplayText
-                self.locationView.sunriseLabel.text = selectedDay.sunriseDisplayText
-                self.locationView.sunsetLabel.text = selectedDay.sunsetDisplayText
-                self.locationView.forecastCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredHorizontally, animated: false)
-                self.locationView.forecastCollectionView.reloadData()
+                self?.locationView.subtitleLabel.text = selectedDay.subtitleDisplayText
+                self?.locationView.sunriseLabel.text = selectedDay.sunriseDisplayText
+                self?.locationView.sunsetLabel.text = selectedDay.sunsetDisplayText
+                self?.locationView.forecastCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredHorizontally, animated: false)
+                self?.locationView.forecastCollectionView.reloadData()
             }
         }
     }
