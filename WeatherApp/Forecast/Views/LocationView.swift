@@ -26,6 +26,7 @@ final class LocationView: UIView {
         button.imageView?.preferredSymbolConfiguration = UIImage.SymbolConfiguration(textStyle: .largeTitle)
         button.setImage(UIImage(systemName: "plus.square"), for: .normal)
         button.tintColor = Theme.Colours.white
+        button.isHidden = true
         return button
     }()
 
@@ -167,6 +168,7 @@ final class LocationView: UIView {
 
     func updateViews(with model: LocationModel) {
         DispatchQueue.main.async {
+            self.addLocationButton.isHidden = model.location.saved
             self.forecastCollectionView.reloadData()
             self.dayCollectionView.reloadData()
         }
@@ -174,7 +176,6 @@ final class LocationView: UIView {
 
     private func hideForecast(hide: Bool) {
         DispatchQueue.main.async {
-            self.addLocationButton.isHidden = hide
             self.subtitleLabel.isHidden = hide
             self.sunTimesView.isHidden = hide
             self.forecastCollectionView.isHidden = self.shouldHideForecast

@@ -16,12 +16,17 @@ enum LocationViewState {
     case error
 }
 
+protocol LocationViewModelDelegate: AnyObject {
+    func didSave(location: Location)
+}
+
 class LocationViewModel {
     private var model: LocationModel
     private var weatherService: WeatherService
     private(set) var locationViewStateObs: Observable<LocationViewState>
     var selectedDayIndexObs = Observable<Int>(0)
     var selectedDayObs = Observable<DailyForecast?>(nil)
+    weak var delegate: LocationViewModelDelegate?
 
     public init(model: LocationModel,
                 weatherService: WeatherService) {
@@ -65,10 +70,18 @@ class LocationViewModel {
             }
     }
 
-    func addLocationTapped() {
-        let location = model.location
+    func saveLocationTapped() {
+        //Bug - cached location is now out of sync!!
+        model.location.saved = true
+        weatherService.updateCachedLocation(model.location)
+        saveLocation(model.location)
+        locationViewStateObs.value = .loaded(self.model)
+        delegate?.didSave(location: model.location)
+    }
+
+    func saveLocation(_ location: Location) {
         if var savedLocations = Defaults.get([Location].self, forKey: .savedLocations),
-            !savedLocations.contains(location) {
+           !savedLocations.contains(location) {
             savedLocations.append(location)
             Defaults.set(savedLocations, forKey: .savedLocations)
         } else {

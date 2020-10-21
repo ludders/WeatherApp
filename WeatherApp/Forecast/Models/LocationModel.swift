@@ -10,7 +10,7 @@ import CoreLocation
 import Foundation
 
 struct LocationModel {
-    let location: Location
+    var location: Location
     var forecast: LocationForecast? = nil
 }
 
@@ -22,6 +22,12 @@ struct Location: Codable, Equatable, Hashable {
 
     var coordinate: CLLocationCoordinate2D {
         return CLLocationCoordinate2D(latitude: latitude, longitude: longitude)
+    }
+
+    static func == (lhs: Self, rhs: Self) -> Bool {
+        return (lhs.name == rhs.name) &&
+                (lhs.latitude == rhs.latitude) &&
+                (rhs.longitude == rhs.longitude)
     }
 }
 

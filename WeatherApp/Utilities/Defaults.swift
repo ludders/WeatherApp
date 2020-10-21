@@ -24,6 +24,10 @@ class Defaults {
             let value = try? JSONDecoder().decode(type, from: data) else { return nil }
         return value
     }
+
+    static func hasKey(_ key: DefaultsKeys) -> Bool {
+        return userDefaults.object(forKey: key.rawValue) != nil
+    }
 }
 
 enum DefaultsKeys: String {

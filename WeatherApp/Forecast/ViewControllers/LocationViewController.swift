@@ -82,7 +82,7 @@ class LocationViewController: UIViewController {
 
     private func addActions() {
         locationView.addLocationButton.onTouchUpInside { [weak self] in
-            self?.viewModel.addLocationTapped()
+            self?.viewModel.saveLocationTapped()
         }
     }
 

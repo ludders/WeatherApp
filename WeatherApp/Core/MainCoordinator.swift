@@ -50,20 +50,20 @@ extension MainCoordinator: IntroViewControllerDelegate {
         let homeViewModel = HomeViewModel(deviceLocationProvider: deviceLocationProvider)
         homeViewModel.coordinatorDelegate = self
         
-        let locations: [Location] = [
+        let defaultLocations: [Location] = [
             Location(name: "South Woodham Ferrers", coordinates: CLLocationCoordinate2D(latitude: 51.6465, longitude: 0.6147), saved: true),
             Location(name: "Stratford", coordinates: CLLocationCoordinate2D(latitude: 51.5472, longitude: -0.0081), saved: true),
             Location(name: "Manchester", coordinates: CLLocationCoordinate2D(latitude: 53.4808, longitude: 2.2426), saved: true)
         ]
-        Defaults.set(locations, forKey: .savedLocations)
 
-        guard let savedLocations = Defaults.get([Location].self, forKey: .savedLocations) else { return } //TODO: No Saved Locations logic
-        savedLocations.forEach { location in
-            print(location)
+        if Defaults.hasKey(.savedLocations) == false {
+            Defaults.set(defaultLocations, forKey: .savedLocations)
         }
 
+        let savedLocations = Defaults.get([Location].self, forKey: .savedLocations)!
+
         let weatherService = WeatherService()
-        weatherService.updateForecasts(for: locations)
+        weatherService.updateForecasts(for: savedLocations)
         let pageViewControllerDataSource = LocationPageViewControllerDataSource(locations: savedLocations, weatherService: weatherService)
         let homeViewController = HomeViewController(viewModel: homeViewModel,
                                                     locationPageViewControllerDataSource: pageViewControllerDataSource,
@@ -87,10 +87,6 @@ extension MainCoordinator: HomeViewModelDelegate {
         viewModel.selectionDelegate = delegate
         searchViewController.coordinatorDelegate = self
         navigationController.present(searchViewController, animated: true)
-    }
-
-    func showWeather(for location: Location) {
-        //TODO: Reimplement this for multiple forecast display
     }
 }
 

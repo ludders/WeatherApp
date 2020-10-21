@@ -11,7 +11,6 @@ import Foundation
 
 protocol HomeViewModelDelegate: AnyObject {
     func startSearchFlow(delegate: LocationSelectionDelegate?)
-    func showWeather(for location: Location)
 }
 
 class HomeViewModel {

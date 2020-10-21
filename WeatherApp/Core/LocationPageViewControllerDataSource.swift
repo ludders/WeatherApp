@@ -46,6 +46,7 @@ class LocationPageViewControllerDataSource: NSObject, UIPageViewControllerDataSo
         }
         let model = LocationModel(location: locations[index])
         let viewModel = LocationViewModel(model: model, weatherService: weatherService)
+        viewModel.delegate = self
         let dayCollectionViewDataSource = DayCollectionViewDataSource(viewModel: viewModel)
         let forecastCollectionViewDataSource = ForecastCollectionViewDataSource(viewModel: viewModel)
         let viewController = LocationViewController(viewModel: viewModel,
@@ -61,5 +62,13 @@ extension LocationPageViewControllerDataSource: UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         guard let newIndex = pageViewController.viewControllers?.first?.view.tag else { return }
         currentPageIndex = newIndex
+    }
+}
+
+extension LocationPageViewControllerDataSource: LocationViewModelDelegate {
+
+    func didSave(location: Location) {
+        guard let index = locations.firstIndex(where: { $0 == location }) else { return }
+        locations[index] = location
     }
 }

@@ -35,7 +35,6 @@ class WeatherService {
     }
 
     func getForecast(for location: Location, onCompletion completion: @escaping LocationForecastCompletion) {
-        //TODO: Set up a method of pruning the cache of old forecasts, 1 hour TTL?
         let getForecastWorkItem = DispatchWorkItem {
             if let cachedForecast = self.cache[location] {
                 completion(.success(cachedForecast))
@@ -59,8 +58,7 @@ class WeatherService {
     }
 
     fileprivate func buildLocationForecast(using response: WeatherResponse) -> LocationForecast {
-        let current = response.current  //TODO: Delete this?
-
+        
         let dailyForecasts = response.daily?.map({ day -> DailyForecast in
                 let hourlyForecasts = response.hourly?.filter({ hour -> Bool in
                     //Include hourly forecasts from 0600 each day, till 0500 the next day.
@@ -104,5 +102,10 @@ class WeatherService {
                                      hourlyForecasts: hourlyForecasts)
             })
         return LocationForecast(dailyForecasts: dailyForecasts)
+    }
+
+    func updateCachedLocation(_ location: Location) {
+        let forecast = cache.removeValue(forKey: location)
+        cache[location] = forecast
     }
 }

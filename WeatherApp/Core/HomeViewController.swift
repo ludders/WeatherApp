@@ -67,19 +67,21 @@ class HomeViewController: UIViewController {
         headerView.setupView()
     }
 
-    private func displayFirstPage(setLocation location: Location? = nil) {
+    private func displayFirstPage() {
         //TODO: Show a different VC when no locations present
-        if let location = location {
-            locationPageViewControllerDataSource.addNewPageAtTop(for: location)
-        }
         guard let locationViewController = locationPageViewControllerDataSource.getFirstPageViewController() else { return }
         pageViewController.setViewControllers([locationViewController], direction: .forward, animated: false, completion: nil)
+    }
+
+    private func addNewFirstPage(for location: Location) {
+        locationPageViewControllerDataSource.addNewPageAtTop(for: location)
+        displayFirstPage()
     }
 }
 
 extension HomeViewController: LocationSelectionDelegate {
     func didSelect(_ location: Location) {
-        displayFirstPage(setLocation: location)
+        addNewFirstPage(for: location)
     }
 }
 
@@ -90,7 +92,7 @@ extension HomeViewController: HeaderViewDelegate {
 
     func didTapLocation() {
         viewModel.didTapLocation { location in
-            self.displayFirstPage(setLocation: location)
+            self.addNewFirstPage(for: location)
         } onDisabled: {
             self.showLocationDisabledAlert()
         } onError: { error in
