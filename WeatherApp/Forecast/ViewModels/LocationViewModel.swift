@@ -14,6 +14,7 @@ enum LocationViewState {
     case loading
     case loaded(LocationModel)
     case error
+    case editing
 }
 
 protocol LocationViewModelDelegate: AnyObject {
@@ -70,23 +71,36 @@ class LocationViewModel {
             }
     }
 
-    func saveLocationTapped() {
-        //Bug - cached location is now out of sync!!
-        model.location.saved = true
-        weatherService.updateCachedLocation(model.location)
-        saveLocation(model.location)
+    func addLocationButtonTapped() {
+        if model.location.fromGPS {
+            locationViewStateObs.value = .editing
+        } else {
+            saveLocation()
+            locationViewStateObs.value = .loaded(self.model)
+        }
+    }
+
+    func addLocationOKButtonTapped(name: String) {
+        guard name.isEmpty == false else { return }
+        model.location.name = name
+        saveLocation()
         locationViewStateObs.value = .loaded(self.model)
+    }
+
+    func addLocationCancelButtonTapped() {
+        locationViewStateObs.value = .loaded(self.model)
+    }
+
+    fileprivate func saveLocation() {
+        model.location.saved = true
+        weatherService.updateCache(using: model)
+        updateDefaults()
         delegate?.didSave(location: model.location)
     }
 
-    func saveLocation(_ location: Location) {
-        if var savedLocations = Defaults.get([Location].self, forKey: .savedLocations),
-           !savedLocations.contains(location) {
-            savedLocations.append(location)
-            Defaults.set(savedLocations, forKey: .savedLocations)
-        } else {
-            Defaults.set([location], forKey: .savedLocations)
-        }
+    //TODO: This doesn't really belong here - refactor out
+    fileprivate func updateDefaults() {
+        Defaults.set(weatherService.savedLocations, forKey: .savedLocations)
     }
 }
 

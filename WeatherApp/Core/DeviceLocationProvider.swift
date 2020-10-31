@@ -38,7 +38,8 @@ extension DeviceLocationProvider: CLLocationManagerDelegate {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         guard let recievedLocation = locations.last else { return }
         let location = Location(name: NSLocalizedString("Current Location", comment: "Current Location"),
-                                coordinates: recievedLocation.coordinate)
+                                coordinates: recievedLocation.coordinate,
+                                fromGPS: true)
         deviceLocationCompletion?(.success(location))
     }
 

@@ -11,14 +11,16 @@ import UIKit
 
 final class LocationView: UIView {
 
-    var titleLabel: UILabel = {
-        let label = UILabel()
-        label.font = Theme.Fonts.BBC.largeTitle50
-        label.textColor = Theme.Colours.white
-        label.adjustsFontSizeToFitWidth = true
-        label.numberOfLines = 1
-        label.minimumScaleFactor = 0.7
-        return label
+    var titleTextField: UITextField = {
+        let textField = UITextField()
+        textField.font = Theme.Fonts.BBC.largeTitle50
+        textField.textColor = Theme.Colours.white
+        textField.adjustsFontSizeToFitWidth = true
+        textField.minimumFontSize = 30.0
+        textField.returnKeyType = .done
+        textField.keyboardAppearance = .dark
+        textField.autocorrectionType = .no
+        return textField
     }()
 
     var addLocationButton: Button = {
@@ -26,7 +28,22 @@ final class LocationView: UIView {
         button.imageView?.preferredSymbolConfiguration = UIImage.SymbolConfiguration(textStyle: .largeTitle)
         button.setImage(UIImage(systemName: "plus.square"), for: .normal)
         button.tintColor = Theme.Colours.white
-        button.isHidden = true
+        return button
+    }()
+
+    var addLocationOKButton: Button = {
+        let button = Button(type: .system)
+        button.imageView?.preferredSymbolConfiguration = UIImage.SymbolConfiguration(textStyle: .largeTitle)
+        button.setImage(UIImage(systemName: "checkmark.circle"), for: .normal)
+        button.tintColor = Theme.Colours.bbcGreen
+        return button
+    }()
+
+    var addLocationCancelButton: Button = {
+        let button = Button(type: .system)
+        button.imageView?.preferredSymbolConfiguration = UIImage.SymbolConfiguration(textStyle: .largeTitle)
+        button.setImage(UIImage(systemName: "x.circle"), for: .normal)
+        button.tintColor = Theme.Colours.bbcRed
         return button
     }()
 
@@ -110,8 +127,10 @@ final class LocationView: UIView {
     }
 
     private func setupSubViews() {
-        addSubview(titleLabel)
+        addSubview(titleTextField)
         addSubview(addLocationButton)
+        addSubview(addLocationOKButton)
+        addSubview(addLocationCancelButton)
         addSubview(subtitleLabel)
         addSubview(sunTimesView)
         addSubview(forecastCollectionView)
@@ -123,20 +142,33 @@ final class LocationView: UIView {
 
     func setupConstraints() {
         layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 20, right: 0)
-        titleLabel.snp.makeConstraints { make in
+        titleTextField.snp.makeConstraints { make in
             make.top.equalTo(layoutMarginsGuide).offset(16)
             make.leading.equalTo(layoutMarginsGuide)
         }
         addLocationButton.snp.makeConstraints { make in
-            make.leading.equalTo(titleLabel.snp.trailing).offset(8)
+            make.leading.equalTo(titleTextField.snp.trailing).offset(8)
             make.trailing.lessThanOrEqualTo(layoutMarginsGuide)
-            make.centerY.equalTo(titleLabel)
+            make.centerY.equalTo(titleTextField)
         }
         addLocationButton.setContentCompressionResistancePriority(.required, for: .horizontal)
 
+        addLocationOKButton.snp.makeConstraints { make in
+            make.leading.equalTo(titleTextField.snp.trailing).offset(8)
+            make.centerY.equalTo(titleTextField)
+        }
+        addLocationOKButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+
+        addLocationCancelButton.snp.makeConstraints { make in
+            make.leading.equalTo(addLocationOKButton.snp.trailing).offset(16)
+            make.trailing.lessThanOrEqualTo(layoutMarginsGuide)
+            make.centerY.equalTo(titleTextField)
+        }
+        addLocationCancelButton.setContentCompressionResistancePriority(.required, for: .horizontal)
+
         subtitleLabel.snp.makeConstraints { make in
             make.leading.equalTo(layoutMarginsGuide)
-            make.top.equalTo(titleLabel.snp.bottom).offset(16)
+            make.top.equalTo(titleTextField.snp.bottom).offset(16)
         }
         sunTimesView.snp.makeConstraints { make in
             make.trailing.equalTo(layoutMarginsGuide)
@@ -156,10 +188,14 @@ final class LocationView: UIView {
     func configure(for state: LocationViewState) {
         switch state {
             case .loading:
+                disableEdit()
                 shouldHideForecast = true
             case .loaded(let model):
                 updateViews(with: model)
+                disableEdit()
                 shouldHideForecast = false
+            case .editing:
+                enableEdit()
             case .error:
                 //TODO: Show error display here!!
                 shouldHideForecast = true
@@ -168,6 +204,7 @@ final class LocationView: UIView {
 
     func updateViews(with model: LocationModel) {
         DispatchQueue.main.async {
+            self.titleTextField.text = model.location.name
             self.addLocationButton.isHidden = model.location.saved
             self.forecastCollectionView.reloadData()
             self.dayCollectionView.reloadData()
@@ -180,6 +217,25 @@ final class LocationView: UIView {
             self.sunTimesView.isHidden = hide
             self.forecastCollectionView.isHidden = self.shouldHideForecast
             self.dayCollectionView.isHidden = self.shouldHideForecast
+        }
+    }
+
+    private func enableEdit() {
+        DispatchQueue.main.async {
+            self.titleTextField.isEnabled = true
+            self.titleTextField.becomeFirstResponder()
+            self.addLocationButton.isHidden = true
+            self.addLocationOKButton.isHidden = false
+            self.addLocationCancelButton.isHidden = false
+        }
+    }
+
+    private func disableEdit() {
+        DispatchQueue.main.async {
+            self.titleTextField.isEnabled = false
+            self.titleTextField.resignFirstResponder()
+            self.addLocationOKButton.isHidden = true
+            self.addLocationCancelButton.isHidden = true
         }
     }
 }

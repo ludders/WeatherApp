@@ -62,7 +62,7 @@ class LocationViewController: UIViewController {
     }
 
     private func setupBindings() {
-        locationView.titleLabel.text = viewModel.displayTitle
+        locationView.titleTextField.text = viewModel.displayTitle
         viewModel.locationViewStateObs.bind { [weak self] state in
             self?.locationView.configure(for: state)
         }
@@ -82,7 +82,16 @@ class LocationViewController: UIViewController {
 
     private func addActions() {
         locationView.addLocationButton.onTouchUpInside { [weak self] in
-            self?.viewModel.saveLocationTapped()
+            self?.viewModel.addLocationButtonTapped()
+        }
+
+        locationView.addLocationOKButton.onTouchUpInside { [weak self] in
+            guard let name = self?.locationView.titleTextField.text else { return }
+            self?.viewModel.addLocationOKButtonTapped(name: name)
+        }
+
+        locationView.addLocationCancelButton.onTouchUpInside { [weak self] in
+            self?.viewModel.addLocationCancelButtonTapped()
         }
     }
 

@@ -19,6 +19,10 @@ class WeatherService {
     private var weatherAPI: WeatherAPI
     private var cache: [Location: LocationForecast] = [:]
     private var cacheUpdateDispatchGroup: DispatchGroup = DispatchGroup()
+    public var savedLocations: [Location] {
+        return cache.map { $0.key }
+            .filter { $0.saved }
+    }
 
     init(weatherAPI: WeatherAPI = WeatherAPI()) {
         self.weatherAPI = weatherAPI
@@ -104,8 +108,11 @@ class WeatherService {
         return LocationForecast(dailyForecasts: dailyForecasts)
     }
 
-    func updateCachedLocation(_ location: Location) {
-        let forecast = cache.removeValue(forKey: location)
-        cache[location] = forecast
+    func updateCache(using model: LocationModel) {
+        if let index = cache.firstIndex(where: { $0.key == model.location }) {
+            let element = cache.remove(at: index)
+            print("removing Location: \(element.key.name) from dictionary")
+        }
+        cache[model.location] = model.forecast
     }
 }
