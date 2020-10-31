@@ -24,6 +24,7 @@ final class DailyForecastCollectionViewCell: UICollectionViewCell {
         let label = UILabel(frame: .zero)
         label.font = Theme.Fonts.BBC.largeSubTitleItalic
         label.textColor = Theme.Colours.white
+        label.numberOfLines = 2
         return label
     }()
 
@@ -85,9 +86,9 @@ final class DailyForecastCollectionViewCell: UICollectionViewCell {
 
         symbolView.snp.makeConstraints { make in
             make.leading.top.equalTo(contentView.layoutMarginsGuide)
-            make.height.equalTo(200)
-            make.bottom.lessThanOrEqualTo(descriptionLabel.snp.top)
-            make.trailing.equalTo(maxTempLabel.snp.leading)
+            make.width.greaterThanOrEqualTo(220)
+            make.height.equalTo(symbolView.snp.width)
+            make.bottom.lessThanOrEqualTo(windView.snp.bottom)
         }
         maxTempLabel.snp.makeConstraints { make in
             make.top.trailing.equalTo(contentView.layoutMarginsGuide)
@@ -106,8 +107,8 @@ final class DailyForecastCollectionViewCell: UICollectionViewCell {
             make.centerX.equalTo(maxTempLabel)
         }
         descriptionLabel.snp.makeConstraints { make in
-            make.top.equalTo(symbolView.snp.bottom)
-            make.bottom.leading.equalTo(contentView.layoutMarginsGuide)
+            make.top.equalTo(symbolView.snp.bottom).offset(10)
+            make.leading.equalTo(contentView.layoutMarginsGuide)
             make.trailing.equalTo(windView.snp.leading)
         }
         if showHoursIndicator {

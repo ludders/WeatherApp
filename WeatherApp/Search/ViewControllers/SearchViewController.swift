@@ -12,13 +12,11 @@ import SnapKit
 
 protocol SearchViewControllerDelegate: AnyObject {
     func didTapClose()
-    func startWeatherFlow(for location: Location, setAsDefault: Bool)
 }
 
 class SearchViewController: UIViewController {
-
     private let viewModel: SearchViewModel
-    weak var coordinatorDelegate: SearchViewControllerDelegate?
+    weak var coordinatorDelegate: (SearchViewControllerDelegate & HomeViewModelDelegate)?
 
     private let titleLabel = UILabel()
     private var closeButton = UIButton()
@@ -159,10 +157,7 @@ extension SearchViewController: UITextFieldDelegate {
 extension SearchViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         viewModel.handleSelection(at: indexPath.row)
-        if let location = viewModel.selectedLocation {
-            coordinatorDelegate?.didTapClose()
-            coordinatorDelegate?.startWeatherFlow(for: location, setAsDefault: true)
-        }
+        coordinatorDelegate?.didTapClose()
     }
 }
 

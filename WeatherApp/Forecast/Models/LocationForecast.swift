@@ -11,12 +11,9 @@ import CoreLocation
 
 struct LocationForecast {
     public var lastUpdated: TimeInterval
-    public var currentForecast: CurrentForecast?
     public var dailyForecasts: [DailyForecast]?
     
-    public init(currentForecast: CurrentForecast?,
-                dailyForecasts: [DailyForecast]?) {
-        self.currentForecast = currentForecast
+    public init(dailyForecasts: [DailyForecast]?) {
         self.dailyForecasts = dailyForecasts
         lastUpdated = Date().timeIntervalSince1970
     }
@@ -24,6 +21,7 @@ struct LocationForecast {
 
 // MARK: Header View Display Formatting
 
+//TODO: Move this out to HomeViewModel once we've changed the network calls
 extension LocationForecast {
     var lastUpdateDisplayText: String {
         let seconds = Int(Date().timeIntervalSince1970 - self.lastUpdated)

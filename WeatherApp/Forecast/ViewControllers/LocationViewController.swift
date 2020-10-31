@@ -10,35 +10,30 @@ import Foundation
 import UIKit
 
 class LocationViewController: UIViewController {
-
-    var weatherView: LocationView!
-    lazy var errorView: LocationErrorView = {
+    private var locationView: LocationView!
+    private lazy var errorView: LocationErrorView = {
         let view = LocationErrorView()
         view.tryAgainButton.onTouchUpInside { [weak self] in
-            self?.refreshWeather()
+            self?.viewModel.getForecast()
         }
         return view
     }()
     private var viewModel: LocationViewModel
 
-    let forecastCollectionViewController: UICollectionViewController
-    let forecastCollectionViewDataSource: ForecastCollectionViewDataSource
-    let forecastFlowLayout = UICollectionViewFlowLayout()
-    let forecastCollectionViewDelegate = ForecastCollectionViewDelegate()
+    private let forecastCollectionViewDataSource: ForecastCollectionViewDataSource
+    private let forecastFlowLayout = UICollectionViewFlowLayout()
+    private let forecastCollectionViewDelegate = ForecastCollectionViewDelegate()
 
-    let dayCollectionViewController: UICollectionViewController
-    let dayCollectionViewDataSource: DayCollectionViewDataSource
-    let dayFlowLayout = UICollectionViewFlowLayout()
-    let dayCollectionViewDelegate: DayCollectionViewDelegate
+    private let dayCollectionViewDataSource: DayCollectionViewDataSource
+    private let dayFlowLayout = UICollectionViewFlowLayout()
+    private let dayCollectionViewDelegate: DayCollectionViewDelegate
 
     init(viewModel: LocationViewModel,
          forecastCollectionViewDataSource: ForecastCollectionViewDataSource,
         dayCollectionViewDataSource: DayCollectionViewDataSource) {
         self.viewModel = viewModel
 
-        self.forecastCollectionViewController = UICollectionViewController(collectionViewLayout: forecastFlowLayout)
         self.forecastCollectionViewDataSource = forecastCollectionViewDataSource
-        self.dayCollectionViewController = UICollectionViewController(collectionViewLayout: dayFlowLayout)
         self.dayCollectionViewDataSource = dayCollectionViewDataSource
         self.dayCollectionViewDelegate = DayCollectionViewDelegate(viewModel: viewModel)
         super.init(nibName: nil, bundle: nil)
@@ -47,11 +42,11 @@ class LocationViewController: UIViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
     override func loadView() {
-        weatherView = LocationView(forecastFlowLayout: forecastFlowLayout, dayFlowLayout: dayFlowLayout)
-        weatherView.backgroundColor = Theme.Colours.black
-        view = weatherView
+        locationView = LocationView(forecastFlowLayout: forecastFlowLayout, dayFlowLayout: dayFlowLayout)
+        locationView.backgroundColor = Theme.Colours.black
+        view = locationView
     }
 
     override func viewDidLoad() {
@@ -59,69 +54,55 @@ class LocationViewController: UIViewController {
         configureDayCollectionView()
         setupBindings()
         addActions()
-        weatherView.setupConstraints()
+        locationView.setupConstraints()
     }
 
-    override func viewDidAppear(_ animated: Bool) {
-        refreshWeather()
+    override func viewWillAppear(_ animated: Bool) {
+        viewModel.getForecast()
     }
 
     private func setupBindings() {
-        viewModel.locationModelObs.bindOnNext { locationModel in
-            self.weatherView.configure(with: locationModel)
+        locationView.titleTextField.text = viewModel.displayTitle
+        viewModel.locationViewStateObs.bind { [weak self] state in
+            self?.locationView.configure(for: state)
         }
-        viewModel.selectedDayObs.bind { dailyForecast in
+
+        viewModel.selectedDayObs.bind { [weak self] dailyForecast in
             guard let selectedDay = dailyForecast else { return }
             DispatchQueue.main.async {
-                self.weatherView.headingView.subtitleLabel.text = selectedDay.subtitleDisplayText
-                self.weatherView.headingView.sunriseLabel.text = selectedDay.sunriseDisplayText
-                self.weatherView.headingView.sunsetLabel.text = selectedDay.sunsetDisplayText
-                self.weatherView.forecastCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredHorizontally, animated: false)
-                self.weatherView.forecastCollectionView.reloadData()
+                //TODO: Move this out of here into the view?
+                self?.locationView.subtitleLabel.text = selectedDay.subtitleDisplayText
+                self?.locationView.sunriseLabel.text = selectedDay.sunriseDisplayText
+                self?.locationView.sunsetLabel.text = selectedDay.sunsetDisplayText
+                self?.locationView.forecastCollectionView.scrollToItem(at: IndexPath(item: 0, section: 0), at: .centeredHorizontally, animated: false)
+                self?.locationView.forecastCollectionView.reloadData()
             }
         }
     }
 
     private func addActions() {
-        weatherView.headingView.refreshButton.onTouchUpInside { [weak self] in
-            self?.refreshWeather()
+        locationView.addLocationButton.onTouchUpInside { [weak self] in
+            self?.viewModel.addLocationButtonTapped()
         }
-        weatherView.headingView.addLocationButton.onTouchUpInside { [weak self] in
-            self?.viewModel.addLocationTapped()
+
+        locationView.addLocationOKButton.onTouchUpInside { [weak self] in
+            guard let name = self?.locationView.titleTextField.text else { return }
+            self?.viewModel.addLocationOKButtonTapped(name: name)
+        }
+
+        locationView.addLocationCancelButton.onTouchUpInside { [weak self] in
+            self?.viewModel.addLocationCancelButtonTapped()
         }
     }
 
     private func configureForecastCollectionView() {
-        weatherView.forecastCollectionView.delegate = forecastCollectionViewDelegate
-        weatherView.forecastCollectionView.dataSource = forecastCollectionViewDataSource
+        locationView.forecastCollectionView.delegate = forecastCollectionViewDelegate
+        locationView.forecastCollectionView.dataSource = forecastCollectionViewDataSource
     }
 
     private func configureDayCollectionView() {
-        weatherView.dayCollectionView.delegate = dayCollectionViewDelegate
-        weatherView.dayCollectionView.dataSource = dayCollectionViewDataSource
-    }
-
-    private func refreshWeather() {
-        view.displayLoadingView()
-        viewModel.updateForecast { [weak self] result in
-            guard let self = self else { return }
-            DispatchQueue.main.async {
-                self.view.hideLoadingView()
-            }
-            switch result {
-            case .success(_):
-                DispatchQueue.main.async {
-                    guard self.view == self.weatherView else {
-                        self.view = self.weatherView
-                        return
-                    }
-                }
-            case .failure(_):
-                DispatchQueue.main.async {
-                    self.view = self.errorView
-                }
-            }
-        }
+        locationView.dayCollectionView.delegate = dayCollectionViewDelegate
+        locationView.dayCollectionView.dataSource = dayCollectionViewDataSource
     }
 }
 

@@ -9,43 +9,61 @@
 import Foundation
 import CoreLocation
 
-typealias LocationForecastCompletion = Result<LocationForecast, NetworkingError>
+typealias LocationForecastCompletion = (Result<LocationForecast, NetworkingError>) -> ()
 
 enum NetworkingError: Error {
     case error(Int?)
 }
 
 class WeatherService {
-    var weatherAPI: WeatherAPI
+    private var weatherAPI: WeatherAPI
+    private var cache: [Location: LocationForecast] = [:]
+    private var cacheUpdateDispatchGroup: DispatchGroup = DispatchGroup()
+    public var savedLocations: [Location] {
+        return cache.map { $0.key }
+            .filter { $0.saved }
+    }
 
     init(weatherAPI: WeatherAPI = WeatherAPI()) {
         self.weatherAPI = weatherAPI
     }
 
-    func getLocationForecast(for location: Location, onCompletion: @escaping (LocationForecastCompletion) -> ()) {
-        weatherAPI.getWeatherResponse(for: location.coordinate, onCompletion: { result in
-            switch result {
-            case .success(let response):
-                let locationForecast = self.buildLocationForecast(using: response)
-                onCompletion(.success(locationForecast))
-            case .failure(let error):
-                onCompletion(.failure(error))
+    func updateForecasts(for locations: [Location]) {
+        cacheUpdateDispatchGroup = DispatchGroup()
+        locations.forEach { location in
+            cacheUpdateDispatchGroup.enter()
+            updateForecast(for: location) { _ in
+                self.cacheUpdateDispatchGroup.leave()
             }
-        })
+        }
     }
 
-    private func buildLocationForecast(using response: WeatherResponse) -> LocationForecast {
-        let current = response.current
-        var locationForecast = LocationForecast(currentForecast: CurrentForecast(sunrise: current?.sunrise,
-                                                                 sunset: current?.sunset,
-                                                                 temperature: current?.temp,
-                                                                 windSpeed: current?.windSpeed,
-                                                                 windDegrees: current?.windDeg,
-                                                                 description: current?.weather?.first?.description,
-                                                                 iconCode: current?.weather?.first?.icon), dailyForecasts: nil)
+    func getForecast(for location: Location, onCompletion completion: @escaping LocationForecastCompletion) {
+        let getForecastWorkItem = DispatchWorkItem {
+            if let cachedForecast = self.cache[location] {
+                completion(.success(cachedForecast))
+            } else {
+                self.updateForecast(for: location, onCompletion: completion)
+            }
+        }
+        cacheUpdateDispatchGroup.notify(queue: DispatchQueue.global(qos: .default), work: getForecastWorkItem)
+    }
 
-        func buildDailyForecasts() -> [DailyForecast]? {
-            return response.daily?.map({ day -> DailyForecast in
+    fileprivate func updateForecast(for location: Location, onCompletion: LocationForecastCompletion? = nil) {
+        weatherAPI.getWeatherResponse(for: location.coordinate) { result in
+            switch result {
+            case .success(let response):
+                self.cache[location] = self.buildLocationForecast(using: response)
+                onCompletion?(.success(self.cache[location]!))
+            case .failure(let error):
+                onCompletion?(.failure(error))
+            }
+        }
+    }
+
+    fileprivate func buildLocationForecast(using response: WeatherResponse) -> LocationForecast {
+        
+        let dailyForecasts = response.daily?.map({ day -> DailyForecast in
                 let hourlyForecasts = response.hourly?.filter({ hour -> Bool in
                     //Include hourly forecasts from 0600 each day, till 0500 the next day.
                     guard let dayDate = day.dt,
@@ -87,9 +105,14 @@ class WeatherService {
                                      clouds: day.clouds,
                                      hourlyForecasts: hourlyForecasts)
             })
-        }
+        return LocationForecast(dailyForecasts: dailyForecasts)
+    }
 
-        locationForecast.dailyForecasts = buildDailyForecasts()
-        return locationForecast
+    func updateCache(using model: LocationModel) {
+        if let index = cache.firstIndex(where: { $0.key == model.location }) {
+            let element = cache.remove(at: index)
+            print("removing Location: \(element.key.name) from dictionary")
+        }
+        cache[model.location] = model.forecast
     }
 }

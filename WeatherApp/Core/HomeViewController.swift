@@ -10,17 +10,19 @@ import Foundation
 import UIKit
 import SnapKit
 
-//Will manage header view & eventually be a container for 1..many weather views that you can scroll through.
 class HomeViewController: UIViewController {
-
-    private let viewModel: HomeViewModel
-    private var containerView: UIView!
     private var headerView: HeaderView!
-    private var locationViewController: LocationViewController
+    private let pageViewController: UIPageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
+    private let viewModel: HomeViewModel
+    private var weatherService: WeatherService
+    private var locationPageViewControllerDataSource: LocationPageViewControllerDataSource
 
-    init(viewModel: HomeViewModel, locationViewController: LocationViewController) {
+    init(viewModel: HomeViewModel,
+         locationPageViewControllerDataSource: LocationPageViewControllerDataSource,
+         weatherService: WeatherService) {
         self.viewModel = viewModel
-        self.locationViewController = locationViewController
+        self.weatherService = weatherService
+        self.locationPageViewControllerDataSource = locationPageViewControllerDataSource
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -32,48 +34,79 @@ class HomeViewController: UIViewController {
         return .lightContent
     }
 
-    override func loadView() {
-        containerView = UIView(frame: UIScreen.main.bounds)
-        view = containerView
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        setupWeatherViewAndController()
+        setupPageViewController()
         setupHeaderView()
     }
+    
+    override func viewDidLayoutSubviews() {
+        pageViewController.additionalSafeAreaInsets = UIEdgeInsets(top: headerView.frame.height, left: 0, bottom: 0, right: 0)
+    }
 
-    private func setupWeatherViewAndController() {
-        addChild(locationViewController)
-        containerView.addSubview(locationViewController.view)
-        locationViewController.view.snp.makeConstraints { make in
+    private func setupPageViewController() {
+        addPageViewControllerAsChild()
+        pageViewController.dataSource = locationPageViewControllerDataSource
+        pageViewController.delegate = locationPageViewControllerDataSource
+        displayFirstPage()
+    }
+
+    private func addPageViewControllerAsChild() {
+        addChild(pageViewController)
+        view.addSubview(pageViewController.view)
+        pageViewController.view.snp.makeConstraints { make in
             make.edges.equalTo(view.safeAreaLayoutGuide)
         }
-        locationViewController.didMove(toParent: self)
+        pageViewController.didMove(toParent: self)
     }
 
     private func setupHeaderView() {
         headerView = HeaderView()
         headerView.delegate = self
-        containerView.addSubview(headerView)
+        view.addSubview(headerView)
         headerView.setupView()
+    }
+
+    private func displayFirstPage() {
+        //TODO: Show a different VC when no locations present
+        guard let locationViewController = locationPageViewControllerDataSource.getFirstPageViewController() else { return }
+        pageViewController.setViewControllers([locationViewController], direction: .forward, animated: false, completion: nil)
+    }
+
+    private func addNewFirstPage(for location: Location) {
+        locationPageViewControllerDataSource.addNewPageAtTop(for: location)
+        displayFirstPage()
+    }
+}
+
+extension HomeViewController: LocationSelectionDelegate {
+    func didSelect(_ location: Location) {
+        addNewFirstPage(for: location)
     }
 }
 
 extension HomeViewController: HeaderViewDelegate {
     func didTapSearch() {
-        viewModel.didTapSearch()
+        viewModel.didTapSearch(selectionDelegate: self)
     }
 
     func didTapLocation() {
-        viewModel.didTapLocation { [weak self] (disabled, error) in
-            if disabled {
-                self?.showLocationDisabledAlert()
-            }
-            if let error = error {
-                self?.showErrorFetchingLocationAlert()
-            }
+        viewModel.didTapLocation { location in
+            self.addNewFirstPage(for: location)
+        } onDisabled: {
+            self.showLocationDisabledAlert()
+        } onError: { error in
+            self.showErrorFetchingLocationAlert()
         }
+    }
+
+    func didTapMenu() {
+        viewModel.didTapMenu()
+    }
+
+    //For debugging only
+    func didTapImage() {
+        viewModel.didTapImage()
     }
 
     private func showLocationDisabledAlert() {

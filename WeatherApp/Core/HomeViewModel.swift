@@ -10,48 +10,52 @@ import CoreLocation
 import Foundation
 
 protocol HomeViewModelDelegate: AnyObject {
-    func startSearchFlow()
-    func startWeatherFlowForCurrentLocation(_ currentLocation: Location)
+    func startSearchFlow(delegate: LocationSelectionDelegate?)
 }
 
 class HomeViewModel {
     private let deviceLocationProvider: DeviceLocationProvider
     weak var coordinatorDelegate: HomeViewModelDelegate?
-    var weatherViewModels: [LocationViewModel]
-
-    init(deviceLocationProvider: DeviceLocationProvider,
-         weatherViewModels: [LocationViewModel] = []) {
+    init(deviceLocationProvider: DeviceLocationProvider) {
         self.deviceLocationProvider = deviceLocationProvider
-        self.weatherViewModels = weatherViewModels
     }
 
     func requestLocationAuthorisation() {
         deviceLocationProvider.requestWhenInUseAuthorisation()
     }
 
-    func didTapSearch() {
-        coordinatorDelegate?.startSearchFlow()
+    func didTapSearch(selectionDelegate: LocationSelectionDelegate?) {
+        coordinatorDelegate?.startSearchFlow(delegate: selectionDelegate)
     }
 
-    func didTapLocation(onFailure: @escaping (_ locationDisabled: Bool, _ withError: Error?) -> ()) {
+    func didTapLocation(onSuccess: @escaping (Location) -> (),
+                        onDisabled: @escaping () -> (),
+                        onError: @escaping (Error) -> ()) {
         let status = CLLocationManager.authorizationStatus()
         switch status {
         case .authorizedAlways, .authorizedWhenInUse:
-            deviceLocationProvider.getDeviceLocation { [weak self] result in
+            deviceLocationProvider.getDeviceLocation { result in
                 switch result {
-                case .success(let location):
-                    self?.coordinatorDelegate?.startWeatherFlowForCurrentLocation(location)
+                case .success(let deviceLocation):
+                    onSuccess(deviceLocation)
                 case .failure(let error):
-                    onFailure(false, error)
+                    onError(error)
                 }
             }
         case .notDetermined:
             deviceLocationProvider.requestWhenInUseAuthorisation()
-            onFailure(false, nil)
         case .restricted, .denied:
-            onFailure(true, nil)
+            onDisabled()
         @unknown default:
             fatalError("Unhandled authorizationStatus")
         }
+    }
+
+    func didTapMenu() {
+        
+    }
+
+    func didTapImage() {
+        //For debugging stuff
     }
 }

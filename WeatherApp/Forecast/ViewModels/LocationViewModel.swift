@@ -10,33 +10,53 @@ import Foundation
 import CoreLocation
 import UIKit
 
-typealias UpdateForecastCompletion = Result<Bool, NetworkingError>
+enum LocationViewState {
+    case loading
+    case loaded(LocationModel)
+    case error
+    case editing
+}
+
+protocol LocationViewModelDelegate: AnyObject {
+    func didSave(location: Location)
+}
 
 class LocationViewModel {
-    private(set) var locationModelObs: Observable<LocationModel>
+    private var model: LocationModel
+    private var weatherService: WeatherService
+    private(set) var locationViewStateObs: Observable<LocationViewState>
     var selectedDayIndexObs = Observable<Int>(0)
     var selectedDayObs = Observable<DailyForecast?>(nil)
+    weak var delegate: LocationViewModelDelegate?
 
-    public init(model: LocationModel) {
-        self.locationModelObs = Observable<LocationModel>(model)
-        self.selectedDayIndexObs.bind { index in
-            self.selectedDayObs.value = self.dailyForecast(for: index)
+    public init(model: LocationModel,
+                weatherService: WeatherService) {
+        self.model = model
+        self.weatherService = weatherService
+        self.locationViewStateObs = Observable<LocationViewState>(.loading)
+        self.selectedDayIndexObs.bind { [weak self] index in
+            self?.selectedDayObs.value = self?.dailyForecast(for: index)
         }
     }
 
     var forecastDataItems: [[ForecastDataItem]] = [[]]
 
-    public func updateForecast(onCompletion: @escaping (UpdateForecastCompletion) -> ()) {
-        let service = WeatherService()
-        service.getLocationForecast(for: locationModelObs.value.location) { result in
+    var displayTitle: String {
+        return model.location.name
+    }
+
+    public func getForecast() {
+        locationViewStateObs.value = .loading
+        weatherService.getForecast(for: model.location) { [weak self] result in
+            guard let self = self else { return }
             switch result {
             case .success(let forecast):
-                self.locationModelObs.value.forecast = forecast
+                self.model.forecast = forecast
+                self.locationViewStateObs.value = .loaded(self.model)
                 self.forecastDataItems = forecast.asDataItems
                 self.selectedDayObs.value = self.dailyForecast(for: self.selectedDayIndexObs.value)
-                onCompletion(.success(true))
-            case .failure(let error):
-                onCompletion(.failure(error))
+            case .failure(_):
+                self.locationViewStateObs.value = .error
             }
         }
     }
@@ -51,8 +71,36 @@ class LocationViewModel {
             }
     }
 
-    func addLocationTapped() {
+    func addLocationButtonTapped() {
+        if model.location.fromGPS {
+            locationViewStateObs.value = .editing
+        } else {
+            saveLocation()
+            locationViewStateObs.value = .loaded(self.model)
+        }
+    }
 
+    func addLocationOKButtonTapped(name: String) {
+        guard name.isEmpty == false else { return }
+        model.location.name = name
+        saveLocation()
+        locationViewStateObs.value = .loaded(self.model)
+    }
+
+    func addLocationCancelButtonTapped() {
+        locationViewStateObs.value = .loaded(self.model)
+    }
+
+    fileprivate func saveLocation() {
+        model.location.saved = true
+        weatherService.updateCache(using: model)
+        updateDefaults()
+        delegate?.didSave(location: model.location)
+    }
+
+    //TODO: This doesn't really belong here - refactor out
+    fileprivate func updateDefaults() {
+        Defaults.set(weatherService.savedLocations, forKey: .savedLocations)
     }
 }
 
@@ -71,7 +119,7 @@ protocol DayCollectionViewViewModel {
 extension LocationViewModel: DayCollectionViewViewModel {
 
     private var dailyForecasts: [DailyForecast]? {
-        return locationModelObs.value.forecast?.dailyForecasts ?? nil
+        return model.forecast?.dailyForecasts ?? nil
     }
 
     var numberOfDayItems: Int {

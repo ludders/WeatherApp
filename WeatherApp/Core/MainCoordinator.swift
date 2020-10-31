@@ -27,10 +27,11 @@ class MainCoordinator: Coordinator {
     }
 
     func start() {
-        if UserDefaults.standard.bool(forKey: "hasSeenIntro") {
-            showWeatherLocation()
+        if let hasSeenIntro = Defaults.get(Bool.self, forKey: .hasSeenIntro),
+            hasSeenIntro {
+            showHomeScreen()
         } else {
-            UserDefaults.standard.set(true, forKey: "hasSeenIntro")
+            Defaults.set(true, forKey: .hasSeenIntro)
             startIntroFlow()
         }
     }
@@ -43,59 +44,49 @@ class MainCoordinator: Coordinator {
 }
 
 extension MainCoordinator: IntroViewControllerDelegate {
-    func showWeatherLocation() {
-        if let location = Defaults.get(Location.self, forKey: .defaultLocation) {
-            showWeatherLocation(for: location)
-        } else {
-            showWeatherLocation(for: Location(name: "Null Island",
-                                           latitude: 0,
-                                           longitude: 0))
+    func showHomeScreen() {
+        let locationManager = CLLocationManager()
+        let deviceLocationProvider = DeviceLocationProvider(locationManager: locationManager)
+        let homeViewModel = HomeViewModel(deviceLocationProvider: deviceLocationProvider)
+        homeViewModel.coordinatorDelegate = self
+        
+        let defaultLocations: [Location] = [
+            Location(name: "South Woodham Ferrers", coordinates: CLLocationCoordinate2D(latitude: 51.6465, longitude: 0.6147), saved: true),
+            Location(name: "Stratford", coordinates: CLLocationCoordinate2D(latitude: 51.5472, longitude: -0.0081), saved: true),
+            Location(name: "Manchester", coordinates: CLLocationCoordinate2D(latitude: 53.4808, longitude: 2.2426), saved: true)
+        ]
+
+        if Defaults.hasKey(.savedLocations) == false {
+            Defaults.set(defaultLocations, forKey: .savedLocations)
         }
+
+        let savedLocations = Defaults.get([Location].self, forKey: .savedLocations)!
+
+        let weatherService = WeatherService()
+        weatherService.updateForecasts(for: savedLocations)
+        let pageViewControllerDataSource = LocationPageViewControllerDataSource(locations: savedLocations, weatherService: weatherService)
+        let homeViewController = HomeViewController(viewModel: homeViewModel,
+                                                    locationPageViewControllerDataSource: pageViewControllerDataSource,
+                                                    weatherService: weatherService)
+        navigationController.pushViewController(homeViewController, animated: true)
     }
 }
 
 extension MainCoordinator: SearchViewControllerDelegate {
-    func startWeatherFlow(for location: Location, setAsDefault: Bool = true) {
-        if setAsDefault {
-            Defaults.set(location, forKey: .defaultLocation)
-        }
-        showWeatherLocation(for: location)
-    }
-
-    private func showWeatherLocation(for location: Location) {
-        let model = LocationModel(location: location)
-        let locationViewModel = LocationViewModel(model: model)
-        let forecastCollectionViewDataSource = ForecastCollectionViewDataSource(viewModel: locationViewModel)
-        let dayCollectionViewDataSource = DayCollectionViewDataSource(viewModel: locationViewModel)
-        let locationViewController = LocationViewController(viewModel: locationViewModel,
-                                        forecastCollectionViewDataSource: forecastCollectionViewDataSource,
-                                        dayCollectionViewDataSource: dayCollectionViewDataSource)
-
-        let locationManager = CLLocationManager()
-        let deviceLocationProvider = DeviceLocationProvider(locationManager: locationManager)
-        let homeViewModel = HomeViewModel(deviceLocationProvider: deviceLocationProvider, weatherViewModels: [locationViewModel])
-        homeViewModel.coordinatorDelegate = self
-        let homeViewController = HomeViewController(viewModel: homeViewModel, locationViewController: locationViewController)
-        navigationController.pushViewController(homeViewController, animated: true)
-    }
-
     func didTapClose() {
         navigationController.dismiss(animated: true, completion: nil)
     }
 }
 
 extension MainCoordinator: HomeViewModelDelegate {
-    func startSearchFlow() {
+    func startSearchFlow(delegate: LocationSelectionDelegate?) {
         let suggestionsAPI = SuggestionsAPI()
         let suggestionsService = SuggestionsService(suggestionsAPI: suggestionsAPI)
         let viewModel = SearchViewModel(suggestionsService: suggestionsService)
         let searchViewController = SearchViewController(viewModel: viewModel)
+        viewModel.selectionDelegate = delegate
         searchViewController.coordinatorDelegate = self
         navigationController.present(searchViewController, animated: true)
-    }
-
-    func startWeatherFlowForCurrentLocation(_ currentLocation: Location) {
-        startWeatherFlow(for: currentLocation, setAsDefault: false)
     }
 }
 
