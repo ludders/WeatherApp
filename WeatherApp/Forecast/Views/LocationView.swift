@@ -47,11 +47,38 @@ final class LocationView: UIView {
         return button
     }()
 
+    lazy var forecastContainerView: UIView = {
+        let view = UIView()
+        view.addSubview(subtitleLabel)
+        view.addSubview(sunTimesView)
+        view.addSubview(forecastCollectionView)
+        view.addSubview(dayCollectionView)
+        view.isUserInteractionEnabled = true
+        return view
+    }()
+
     var subtitleLabel: UILabel = {
         let label = UILabel()
         label.font = Theme.Fonts.BBC.largeSubTitleItalic
         label.textColor = Theme.Colours.white
         return label
+    }()
+
+    lazy var sunTimesView: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [sunriseImageView, sunriseLabel, sunsetLabel])
+        stackView.alignment = .firstBaseline
+        stackView.distribution = .fillProportionally
+        stackView.axis = .horizontal
+        stackView.spacing = 10
+        return stackView
+    }()
+
+    var sunriseImageView: UIImageView = {
+        let imageView = UIImageView()
+        imageView.preferredSymbolConfiguration = UIImage.SymbolConfiguration(textStyle: .body)
+        imageView.image = UIImage(systemName: "sunrise.fill")
+        imageView.tintColor = Theme.Colours.white
+        return imageView
     }()
 
     var sunriseLabel: UILabel = {
@@ -67,26 +94,6 @@ final class LocationView: UIView {
         label.textColor = Theme.Colours.silver
         return label
     }()
-
-    var sunriseImageView: UIImageView = {
-        let imageView = UIImageView()
-        imageView.preferredSymbolConfiguration = UIImage.SymbolConfiguration(textStyle: .body)
-        imageView.image = UIImage(systemName: "sunrise.fill")
-        imageView.tintColor = Theme.Colours.white
-        return imageView
-    }()
-
-    lazy var sunTimesView: UIStackView = {
-        let stackView = UIStackView(arrangedSubviews: [sunriseImageView, sunriseLabel, sunsetLabel])
-        stackView.alignment = .firstBaseline
-        stackView.distribution = .fillProportionally
-        stackView.axis = .horizontal
-        stackView.spacing = 10
-        return stackView
-    }()
-
-    let forecastflowLayout: UICollectionViewFlowLayout
-    let dayFlowLayout: UICollectionViewFlowLayout
 
     lazy var forecastCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: forecastflowLayout)
@@ -107,11 +114,8 @@ final class LocationView: UIView {
         return collectionView
     }()
 
-    private var shouldHideForecast = false {
-        didSet {
-            hideForecast(hide: shouldHideForecast)
-        }
-    }
+    let forecastflowLayout: UICollectionViewFlowLayout
+    let dayFlowLayout: UICollectionViewFlowLayout
 
     init(forecastFlowLayout: UICollectionViewFlowLayout,
          dayFlowLayout: UICollectionViewFlowLayout) {
@@ -131,20 +135,18 @@ final class LocationView: UIView {
         addSubview(addLocationButton)
         addSubview(addLocationOKButton)
         addSubview(addLocationCancelButton)
-        addSubview(subtitleLabel)
-        addSubview(sunTimesView)
-        addSubview(forecastCollectionView)
-        addSubview(dayCollectionView)
-        addSubview(sunTimesView)
+        addSubview(forecastContainerView)
     }
 
     //MARK: Constraints
 
     func setupConstraints() {
         layoutMargins = UIEdgeInsets(top: 0, left: 20, bottom: 20, right: 0)
+
         titleTextField.snp.makeConstraints { make in
             make.top.equalTo(layoutMarginsGuide).offset(16)
             make.leading.equalTo(layoutMarginsGuide)
+            make.height.equalTo(60)
         }
         addLocationButton.snp.makeConstraints { make in
             make.leading.equalTo(titleTextField.snp.trailing).offset(8)
@@ -166,9 +168,15 @@ final class LocationView: UIView {
         }
         addLocationCancelButton.setContentCompressionResistancePriority(.required, for: .horizontal)
 
+        forecastContainerView.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalTo(safeAreaLayoutGuide)
+            make.top.equalTo(titleTextField.snp.bottom).offset(16)
+        }
+
         subtitleLabel.snp.makeConstraints { make in
             make.leading.equalTo(layoutMarginsGuide)
-            make.top.equalTo(titleTextField.snp.bottom).offset(16)
+            make.height.equalTo(40)
+            make.top.equalToSuperview()
         }
         sunTimesView.snp.makeConstraints { make in
             make.trailing.equalTo(layoutMarginsGuide)
@@ -176,12 +184,12 @@ final class LocationView: UIView {
         }
         forecastCollectionView.snp.makeConstraints { make in
             make.top.equalTo(subtitleLabel.snp.bottom).offset(16)
-            make.leading.width.equalTo(safeAreaLayoutGuide)
+            make.leading.trailing.width.equalToSuperview()
             make.bottom.equalTo(dayCollectionView.snp.top).offset(-10)
         }
         dayCollectionView.snp.makeConstraints { make in
             make.height.equalTo(100)
-            make.width.bottom.equalTo(safeAreaLayoutGuide)
+            make.width.bottom.equalToSuperview()
         }
     }
 
@@ -189,16 +197,16 @@ final class LocationView: UIView {
         switch state {
             case .loading:
                 disableEdit()
-                shouldHideForecast = true
+                hideForecast(true)
             case .loaded(let model):
                 updateViews(with: model)
                 disableEdit()
-                shouldHideForecast = false
+                hideForecast(false)
             case .editing:
                 enableEdit()
             case .error:
                 //TODO: Show error display here!!
-                shouldHideForecast = true
+                hideForecast(true)
         }
     }
 
@@ -208,15 +216,16 @@ final class LocationView: UIView {
             self.addLocationButton.isHidden = model.location.saved
             self.forecastCollectionView.reloadData()
             self.dayCollectionView.reloadData()
+            print(UIApplication.shared.currentWindow?.value(forKey: "_autolayoutTrace"))
         }
     }
 
-    private func hideForecast(hide: Bool) {
+    private func hideForecast(_ hide: Bool) {
         DispatchQueue.main.async {
             self.subtitleLabel.isHidden = hide
             self.sunTimesView.isHidden = hide
-            self.forecastCollectionView.isHidden = self.shouldHideForecast
-            self.dayCollectionView.isHidden = self.shouldHideForecast
+            self.forecastCollectionView.isHidden = hide
+            self.dayCollectionView.isHidden = hide
         }
     }
 
@@ -239,5 +248,4 @@ final class LocationView: UIView {
         }
     }
 }
-
 
