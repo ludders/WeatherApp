@@ -17,7 +17,7 @@ struct WeatherAPI: API {
     var path: String = "/data/2.5/onecall"
     static let key = "e98f45a3667d7ec23c10d818ae358583"
 
-    func getWeatherResponse(for coordinates: CLLocationCoordinate2D, onCompletion: @escaping WeatherResponseCompletion) {
+    func getForecastResponse(for coordinates: CLLocationCoordinate2D, onCompletion: @escaping WeatherResponseCompletion) {
         let parameters = WeatherRequestParameters(latitude: String(coordinates.latitude),
                                                   longitude: String(coordinates.longitude),
                                                   units: "metric")
@@ -43,7 +43,6 @@ struct WeatherAPI: API {
             decoder.dateDecodingStrategy = .secondsSince1970
             if let weatherResponse = try? decoder.decode(WeatherResponse.self, from: data) {
                 onCompletion(.success(weatherResponse))
-                print("API FETCH SUCCESSFUL")
             }
         }
         dataTask.resume()

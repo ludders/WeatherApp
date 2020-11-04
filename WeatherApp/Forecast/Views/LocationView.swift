@@ -196,9 +196,11 @@ final class LocationView: UIView {
     func configure(for state: LocationViewState) {
         switch state {
             case .loading:
+                forecastContainerView.displayLoadingView()
                 disableEdit()
                 hideForecast(true)
             case .loaded(let model):
+                forecastContainerView.hideLoadingView()
                 updateViews(with: model)
                 disableEdit()
                 hideForecast(false)
@@ -216,7 +218,6 @@ final class LocationView: UIView {
             self.addLocationButton.isHidden = model.location.saved
             self.forecastCollectionView.reloadData()
             self.dayCollectionView.reloadData()
-            print(UIApplication.shared.currentWindow?.value(forKey: "_autolayoutTrace"))
         }
     }
 

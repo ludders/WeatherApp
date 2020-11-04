@@ -62,6 +62,8 @@ extension MainCoordinator: IntroViewControllerDelegate {
 
         let savedLocations = Defaults.get([Location].self, forKey: .savedLocations)!
 
+        savedLocations.forEach { print("\($0.name) lat: \($0.latitude) long: \($0.longitude)") }
+
         let weatherService = WeatherService()
         weatherService.updateForecasts(for: savedLocations)
         let pageViewControllerDataSource = LocationPageViewControllerDataSource(locations: savedLocations, weatherService: weatherService)

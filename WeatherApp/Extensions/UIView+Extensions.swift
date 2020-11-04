@@ -32,18 +32,18 @@ extension UIView {
 
     func displayLoadingView() {
         let loadingView = RGBLoadingView()
-        guard let window = UIApplication.shared.currentWindow else { return }
-        window.addSubview(loadingView)
+        self.addSubview(loadingView)
         loadingView.snp.makeConstraints { make in
-            make.edges.equalTo(window)
+            make.edges.equalTo(self)
         }
         loadingView.startAnimation()
     }
 
     func hideLoadingView() {
-        guard let window = UIApplication.shared.currentWindow else { return }
-        window.subviews.filter { $0.isKind(of: RGBLoadingView.self) }
-            .forEach { $0.fadeOutAndRemoveFromSuperview() }
+        DispatchQueue.main.async {
+            self.subviews.filter { $0.isKind(of: RGBLoadingView.self) }
+                .forEach { $0.fadeOutAndRemoveFromSuperview() }
+        }
     }
 
     func fadeOutAndRemoveFromSuperview() {
@@ -54,3 +54,4 @@ extension UIView {
         }
     }
 }
+

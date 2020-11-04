@@ -50,7 +50,7 @@ class WeatherService {
     }
 
     fileprivate func updateForecast(for location: Location, onCompletion: LocationForecastCompletion? = nil) {
-        weatherAPI.getWeatherResponse(for: location.coordinate) { result in
+        weatherAPI.getForecastResponse(for: location.coordinate) { result in
             switch result {
             case .success(let response):
                 self.cache[location] = self.buildLocationForecast(using: response)
