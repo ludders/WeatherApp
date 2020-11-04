@@ -1,5 +1,5 @@
 //
-//  MainCoordinator.swift
+//  HomeCoordinator.swift
 //  WeatherApp
 //
 //  Created by dludlow7 on 30/04/2020.
@@ -15,7 +15,7 @@ protocol Coordinator {
     var navigationController: UINavigationController { get }
 }
 
-class MainCoordinator: Coordinator {
+class HomeCoordinator: Coordinator {
     var childCoordinators: [Coordinator]?
     var navigationController: UINavigationController
     var navigationControllerDelegate: UINavigationControllerDelegate?
@@ -43,13 +43,23 @@ class MainCoordinator: Coordinator {
     }
 }
 
-extension MainCoordinator: IntroViewControllerDelegate {
+extension HomeCoordinator: IntroViewControllerDelegate {
     func showHomeScreen() {
         let locationManager = CLLocationManager()
         let deviceLocationProvider = DeviceLocationProvider(locationManager: locationManager)
         let homeViewModel = HomeViewModel(deviceLocationProvider: deviceLocationProvider)
         homeViewModel.coordinatorDelegate = self
-        
+        let weatherService = WeatherService()
+        let savedLocations = getSavedLocations()
+        weatherService.updateForecasts(for: savedLocations)
+        let pageViewControllerDataSource = LocationPageViewControllerDataSource(locations: savedLocations, weatherService: weatherService)
+        let homeViewController = HomeViewController(viewModel: homeViewModel,
+                                                    locationPageViewControllerDataSource: pageViewControllerDataSource,
+                                                    weatherService: weatherService)
+        navigationController.pushViewController(homeViewController, animated: true)
+    }
+
+    fileprivate func getSavedLocations() -> [Location] {
         let defaultLocations: [Location] = [
             Location(name: "South Woodham Ferrers", coordinates: CLLocationCoordinate2D(latitude: 51.6465, longitude: 0.6147), saved: true),
             Location(name: "Stratford", coordinates: CLLocationCoordinate2D(latitude: 51.5472, longitude: -0.0081), saved: true),
@@ -59,28 +69,19 @@ extension MainCoordinator: IntroViewControllerDelegate {
         if Defaults.hasKey(.savedLocations) == false {
             Defaults.set(defaultLocations, forKey: .savedLocations)
         }
-
         let savedLocations = Defaults.get([Location].self, forKey: .savedLocations)!
-
         savedLocations.forEach { print("\($0.name) lat: \($0.latitude) long: \($0.longitude)") }
-
-        let weatherService = WeatherService()
-        weatherService.updateForecasts(for: savedLocations)
-        let pageViewControllerDataSource = LocationPageViewControllerDataSource(locations: savedLocations, weatherService: weatherService)
-        let homeViewController = HomeViewController(viewModel: homeViewModel,
-                                                    locationPageViewControllerDataSource: pageViewControllerDataSource,
-                                                    weatherService: weatherService)
-        navigationController.pushViewController(homeViewController, animated: true)
+        return savedLocations
     }
 }
 
-extension MainCoordinator: SearchViewControllerDelegate {
+extension HomeCoordinator: SearchViewControllerDelegate {
     func didTapClose() {
         navigationController.dismiss(animated: true, completion: nil)
     }
 }
 
-extension MainCoordinator: HomeViewModelDelegate {
+extension HomeCoordinator: HomeViewModelDelegate {
     func startSearchFlow(delegate: LocationSelectionDelegate?) {
         let suggestionsAPI = SuggestionsAPI()
         let suggestionsService = SuggestionsService(suggestionsAPI: suggestionsAPI)

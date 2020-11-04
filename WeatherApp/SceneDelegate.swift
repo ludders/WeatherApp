@@ -11,7 +11,7 @@ import UIKit
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     var window: UIWindow?
-    var mainCoordinator: MainCoordinator!
+    var mainCoordinator: HomeCoordinator!
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         // Use this method to optionally configure and attach the UIWindow `window` to the provided UIWindowScene `scene`.
@@ -24,7 +24,7 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let navigationController = UINavigationController()
         navigationController.setNavigationBarHidden(true, animated: true)
-        mainCoordinator = MainCoordinator(navigationController: navigationController)
+        mainCoordinator = HomeCoordinator(navigationController: navigationController)
         mainCoordinator.start()
         window?.rootViewController = navigationController
     }

@@ -31,7 +31,7 @@
 		9D186913249AC61000D8978B /* WeatherIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D186912249AC61000D8978B /* WeatherIconView.swift */; };
 		9D1D911024A5F84000AB3E46 /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1D910F24A5F84000AB3E46 /* Double+Extensions.swift */; };
 		9D24E42E250FB4C0003273CD /* LocationPageViewControllerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D24E42D250FB4C0003273CD /* LocationPageViewControllerDataSource.swift */; };
-		9D2BF7C0245B3F1500ED3207 /* MainCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2BF7BF245B3F1500ED3207 /* MainCoordinator.swift */; };
+		9D2BF7C0245B3F1500ED3207 /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2BF7BF245B3F1500ED3207 /* HomeCoordinator.swift */; };
 		9D3381B824E6E0FE00A44A52 /* LocationErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3381B724E6E0FE00A44A52 /* LocationErrorView.swift */; };
 		9D3E7E62248A8C8C00A4A248 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3E7E61248A8C8C00A4A248 /* Observable.swift */; };
 		9D3E7E64248AA97400A4A248 /* CLLocationCoordinate2D+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3E7E63248AA97400A4A248 /* CLLocationCoordinate2D+Extensions.swift */; };
@@ -122,7 +122,7 @@
 		9D186912249AC61000D8978B /* WeatherIconView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherIconView.swift; sourceTree = "<group>"; };
 		9D1D910F24A5F84000AB3E46 /* Double+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Double+Extensions.swift"; sourceTree = "<group>"; };
 		9D24E42D250FB4C0003273CD /* LocationPageViewControllerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationPageViewControllerDataSource.swift; sourceTree = "<group>"; };
-		9D2BF7BF245B3F1500ED3207 /* MainCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainCoordinator.swift; sourceTree = "<group>"; };
+		9D2BF7BF245B3F1500ED3207 /* HomeCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCoordinator.swift; sourceTree = "<group>"; };
 		9D3381B724E6E0FE00A44A52 /* LocationErrorView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationErrorView.swift; sourceTree = "<group>"; };
 		9D3E7E61248A8C8C00A4A248 /* Observable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Observable.swift; sourceTree = "<group>"; };
 		9D3E7E63248AA97400A4A248 /* CLLocationCoordinate2D+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CLLocationCoordinate2D+Extensions.swift"; sourceTree = "<group>"; };
@@ -275,7 +275,7 @@
 				9D0FCB29245318D70074D005 /* IntroViewController.swift */,
 				9D99F2FC24DC182A00C262A9 /* DeviceLocationProvider.swift */,
 				9D24E42D250FB4C0003273CD /* LocationPageViewControllerDataSource.swift */,
-				9D2BF7BF245B3F1500ED3207 /* MainCoordinator.swift */,
+				9D2BF7BF245B3F1500ED3207 /* HomeCoordinator.swift */,
 				9DC563F8245C734600A0C8CD /* HomeViewController.swift */,
 				9DB9A36C24F047F5008BC59B /* HomeViewModel.swift */,
 				9D1177E22476F478003949DB /* HeaderView.swift */,
@@ -524,7 +524,7 @@
 				9D0FCB2A245318D70074D005 /* IntroViewController.swift in Sources */,
 				9D3E7E64248AA97400A4A248 /* CLLocationCoordinate2D+Extensions.swift in Sources */,
 				9DF060FB24B76A3700E8EDDE /* SuggestionsRequestParameters.swift in Sources */,
-				9D2BF7C0245B3F1500ED3207 /* MainCoordinator.swift in Sources */,
+				9D2BF7C0245B3F1500ED3207 /* HomeCoordinator.swift in Sources */,
 				9D9C200224B505CE0013AD72 /* SuggestionsService.swift in Sources */,
 				9D0888BC249CF14000E619FD /* UIView+Extensions.swift in Sources */,
 				9D0FCF3C25096CD800334F84 /* Button.swift in Sources */,
