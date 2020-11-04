@@ -33,7 +33,8 @@ struct Weather: Codable {
 
 // MARK: - Daily
 struct DailyWeatherResponse: Codable {
-    let dt, sunrise, sunset: Date?
+    let dt: Date
+    let sunrise, sunset: Date?
     let temp: Temp?
     let feelsLike: FeelsLike?
     let pressure, humidity: Int?

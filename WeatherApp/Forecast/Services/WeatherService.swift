@@ -53,7 +53,7 @@ class WeatherService {
         weatherAPI.getForecastResponse(for: location.coordinate) { result in
             switch result {
             case .success(let response):
-                self.cache[location] = self.buildLocationForecast(using: response)
+                self.cache[location] = self.createLocationForecast(using: response)
                 onCompletion?(.success(self.cache[location]!))
             case .failure(let error):
                 onCompletion?(.failure(error))
@@ -61,52 +61,68 @@ class WeatherService {
         }
     }
 
-    fileprivate func buildLocationForecast(using response: WeatherResponse) -> LocationForecast {
-        
-        let dailyForecasts = response.daily?.map({ day -> DailyForecast in
-                let hourlyForecasts = response.hourly?.filter({ hour -> Bool in
-                    //Include hourly forecasts from 0600 each day, till 0500 the next day.
-                    guard let dayDate = day.dt,
-                        let hourDate = hour.dt else { return false }
+    fileprivate func createLocationForecast(using response: WeatherResponse) -> LocationForecast {
+        let dailyForecasts: [DailyForecast]? = response.daily?.map { dailyResponse -> DailyForecast in
 
-                    let calendar = Calendar.current
-                    let lowerLimitDate = calendar.date(bySettingHour: 6, minute: 0, second: 0, of: dayDate)
-                    var upperLimitDate = calendar.date(byAdding: .day, value: 1, to: dayDate)
-                    upperLimitDate = calendar.date(bySetting: .hour, value: 5, of: dayDate)
-
-                    guard let lower = lowerLimitDate, let upper = upperLimitDate else { return false }
-
-                    return hourDate >= lower && hourDate <= upper })
-                    .map({ hour -> HourlyForecast in
-                        return HourlyForecast(date: hour.dt ?? Date(timeIntervalSince1970: 0),
-                                              symbol: SymbolString.from(code: hour.weather?.first?.icon ?? ""),
-                                              temp: hour.temp,
-                                              windDeg: hour.windDeg,
-                                              windSpeed: hour.windSpeed,
-                                              description: hour.weather?.first?.description,
-                                              humidity: hour.humidity,
-                                              pressure: hour.pressure,
-                                              feelsLike: hour.feelsLike,
-                                              clouds: hour.clouds)
-                    })
-
-                return DailyForecast(time: day.dt ?? Date(timeIntervalSince1970: 0),
-                                     sunrise: day.sunrise,
-                                     sunset: day.sunset,
-                                     symbol: SymbolString.from(code: day.weather?.first?.icon ?? ""),
-                                     maxTemp: day.temp?.max,
-                                     minTemp: day.temp?.min,
-                                     windDeg: day.windDeg,
-                                     windSpeed: day.windSpeed,
-                                     description: day.weather?.first?.description,
-                                     humidity: day.humidity,
-                                     pressure: day.pressure,
-                                     feelsLike: day.feelsLike,
-                                     clouds: day.clouds,
-                                     hourlyForecasts: hourlyForecasts)
-            })
+            let hourlyForecasts = createHourlyForecasts(forDate: dailyResponse.dt, using: response.hourly)
+            return createDailyForecast(using: dailyResponse, hourlyForecasts: hourlyForecasts)
+        }
         return LocationForecast(dailyForecasts: dailyForecasts)
     }
+
+    fileprivate func createDailyForecast(using dailyResponse: DailyWeatherResponse, hourlyForecasts: [HourlyForecast]?) -> DailyForecast {
+        return DailyForecast(time: dailyResponse.dt,
+                             sunrise: dailyResponse.sunrise,
+                             sunset: dailyResponse.sunset,
+                             symbol: SymbolString.from(code: dailyResponse.weather?.first?.icon ?? ""),
+                             maxTemp: dailyResponse.temp?.max,
+                             minTemp: dailyResponse.temp?.min,
+                             windDeg: dailyResponse.windDeg,
+                             windSpeed: dailyResponse.windSpeed,
+                             description: dailyResponse.weather?.first?.description,
+                             humidity: dailyResponse.humidity,
+                             pressure: dailyResponse.pressure,
+                             feelsLike: dailyResponse.feelsLike,
+                             clouds: dailyResponse.clouds,
+                             hourlyForecasts: hourlyForecasts)
+    }
+
+    fileprivate func createHourlyForecasts(forDate date: Date, using hourlyResponses: [HourlyWeatherResponse]?) -> [HourlyForecast]? {
+        return hourlyResponses?.filter { hourlyResponse in
+            return shouldInclude(hourlyResponse, forDate: date)
+        }
+        .map { hourlyResponse in
+            createHourlyForecast(using: hourlyResponse)
+        }
+    }
+
+    fileprivate func shouldInclude(_ hourlyResponse: HourlyWeatherResponse, forDate date: Date) -> Bool {
+        //Include hourly forecasts from 0600 on the day, till 0500 the next day.
+        guard let hourlyResponseDate = hourlyResponse.dt else { return false }
+
+        let sixAM_currentDay = Calendar.current.date(bySettingHour: 6, minute: 0, second: 0, of: date)
+        var fiveAM_nextDay = Calendar.current.date(byAdding: .day, value: 1, to: date)
+        fiveAM_nextDay = Calendar.current.date(bySetting: .hour, value: 5, of: date)
+
+        guard let lowerBoundDate = sixAM_currentDay,
+              let upperBoundDate = fiveAM_nextDay else { return false }
+
+        return hourlyResponseDate >= lowerBoundDate && hourlyResponseDate <= upperBoundDate
+    }
+
+    fileprivate func createHourlyForecast(using hourlyResponse: HourlyWeatherResponse) -> HourlyForecast {
+        return HourlyForecast(date: hourlyResponse.dt ?? Date(timeIntervalSince1970: 0),
+                              symbol: SymbolString.from(code: hourlyResponse.weather?.first?.icon ?? ""),
+                              temp: hourlyResponse.temp,
+                              windDeg: hourlyResponse.windDeg,
+                              windSpeed: hourlyResponse.windSpeed,
+                              description: hourlyResponse.weather?.first?.description,
+                              humidity: hourlyResponse.humidity,
+                              pressure: hourlyResponse.pressure,
+                              feelsLike: hourlyResponse.feelsLike,
+                              clouds: hourlyResponse.clouds)
+    }
+
 
     func updateCache(using model: LocationModel) {
         if let index = cache.firstIndex(where: { $0.key == model.location }) {
