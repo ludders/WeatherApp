@@ -20,7 +20,7 @@ class LocationPageViewControllerDataSource: NSObject, UIPageViewControllerDataSo
         self.weatherService = weatherService
     }
 
-    func getFirstPageViewController(startIndex: Int = 0) -> LocationViewController? {
+    func getFirstPageViewController(startIndex: Int = 0) -> UIViewController? {
         //TODO: Return a 'no locations' view controller when this is nil
         currentPageIndex = startIndex
         return createViewControllerForLocation(atIndex: startIndex)

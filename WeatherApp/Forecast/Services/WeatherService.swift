@@ -127,7 +127,6 @@ class WeatherService {
     func updateCache(using model: LocationModel) {
         if let index = cache.firstIndex(where: { $0.key == model.location }) {
             let element = cache.remove(at: index)
-            print("removing Location: \(element.key.name) from dictionary")
         }
         cache[model.location] = model.forecast
     }

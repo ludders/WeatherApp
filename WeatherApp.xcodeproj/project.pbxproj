@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		9D00091E24D5FC1200EDC2D4 /* ReverseGeocodingAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D00091D24D5FC1200EDC2D4 /* ReverseGeocodingAPI.swift */; };
-		9D018D4A25079C2C00D99691 /* UIApplication+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D018D4925079C2C00D99691 /* UIApplication+Extensions.swift */; };
 		9D0871B2247BF24500DA520C /* LocationView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0871B1247BF24500DA520C /* LocationView.swift */; };
 		9D0888BC249CF14000E619FD /* UIView+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0888BB249CF13F00E619FD /* UIView+Extensions.swift */; };
 		9D0FCB26245318D70074D005 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D0FCB25245318D70074D005 /* AppDelegate.swift */; };
@@ -95,7 +94,6 @@
 
 /* Begin PBXFileReference section */
 		9D00091D24D5FC1200EDC2D4 /* ReverseGeocodingAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReverseGeocodingAPI.swift; sourceTree = "<group>"; };
-		9D018D4925079C2C00D99691 /* UIApplication+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIApplication+Extensions.swift"; sourceTree = "<group>"; };
 		9D0871B1247BF24500DA520C /* LocationView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationView.swift; sourceTree = "<group>"; };
 		9D0888BB249CF13F00E619FD /* UIView+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Extensions.swift"; sourceTree = "<group>"; };
 		9D0FCB22245318D70074D005 /* WeatherApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = WeatherApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -217,7 +215,7 @@
 				9D0FCB27245318D70074D005 /* SceneDelegate.swift */,
 				9D0FCF3A25096CC700334F84 /* Components */,
 				9D9C1FFF24B505110013AD72 /* Extensions */,
-				9D2BF7BE245B3EF300ED3207 /* Core */,
+				9D2BF7BE245B3EF300ED3207 /* Home */,
 				9D9C1FF724B502310013AD72 /* Forecast */,
 				9D9C1FFD24B504540013AD72 /* Search */,
 				9D00091C24D5FBE400EDC2D4 /* ReverseGeocoding */,
@@ -269,7 +267,7 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		9D2BF7BE245B3EF300ED3207 /* Core */ = {
+		9D2BF7BE245B3EF300ED3207 /* Home */ = {
 			isa = PBXGroup;
 			children = (
 				9D0FCB29245318D70074D005 /* IntroViewController.swift */,
@@ -280,7 +278,7 @@
 				9DB9A36C24F047F5008BC59B /* HomeViewModel.swift */,
 				9D1177E22476F478003949DB /* HeaderView.swift */,
 			);
-			path = Core;
+			path = Home;
 			sourceTree = "<group>";
 		};
 		9D7E10F5247328F800B06C1C /* Services */ = {
@@ -336,7 +334,6 @@
 				9D8CBB0C24C4BB2C0027C37E /* LocationModel.swift */,
 				9D13A90C248ECB9000613184 /* DailyForecast.swift */,
 				9D13A90E248EDA1C00613184 /* HourlyForecast.swift */,
-				9D53269F24B7AE06008B92B8 /* Suggestion.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -385,7 +382,6 @@
 				9D0888BB249CF13F00E619FD /* UIView+Extensions.swift */,
 				9D1D910F24A5F84000AB3E46 /* Double+Extensions.swift */,
 				9DDCDEC024D222F500DB814C /* Date+Extensions.swift */,
-				9D018D4925079C2C00D99691 /* UIApplication+Extensions.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -394,6 +390,7 @@
 			isa = PBXGroup;
 			children = (
 				9D9C200324B506330013AD72 /* SuggestionsAPI.swift */,
+				9D53269F24B7AE06008B92B8 /* Suggestion.swift */,
 				9D9C200124B505CE0013AD72 /* SuggestionsService.swift */,
 				9D9C200524B5082A0013AD72 /* SuggestionsResponse.swift */,
 				9DF060FA24B76A3700E8EDDE /* SuggestionsRequestParameters.swift */,
@@ -555,7 +552,6 @@
 				9DBE45D424C5FC9400E1CB11 /* PaddableTextField.swift in Sources */,
 				9D24E42E250FB4C0003273CD /* LocationPageViewControllerDataSource.swift in Sources */,
 				9D0FCF1724532ED10074D005 /* Theme.swift in Sources */,
-				9D018D4A25079C2C00D99691 /* UIApplication+Extensions.swift in Sources */,
 				9DC563F9245C734600A0C8CD /* HomeViewController.swift in Sources */,
 				9D9C200424B506330013AD72 /* SuggestionsAPI.swift in Sources */,
 				9D3381B824E6E0FE00A44A52 /* LocationErrorView.swift in Sources */,
