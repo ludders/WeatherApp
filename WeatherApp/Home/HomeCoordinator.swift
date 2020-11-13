@@ -19,19 +19,21 @@ class HomeCoordinator: Coordinator {
     var childCoordinators: [Coordinator]?
     var navigationController: UINavigationController
     var navigationControllerDelegate: UINavigationControllerDelegate?
+    var defaults: Defaults
 
-    init(navigationController: UINavigationController) {
+    init(navigationController: UINavigationController,
+         defaults: Defaults) {
         self.navigationController = navigationController
+        self.defaults = defaults
         navigationControllerDelegate = NavigationTransitionDelegate()
         navigationController.delegate = navigationControllerDelegate
     }
 
     func start() {
-        if let hasSeenIntro = Defaults.get(Bool.self, forKey: .hasSeenIntro),
-            hasSeenIntro {
+        if defaults.get(.hasSeenIntro) == true {
             showHomeScreen()
         } else {
-            Defaults.set(true, forKey: .hasSeenIntro)
+            defaults.set(true, forKey: .hasSeenIntro)
             startIntroFlow()
         }
     }
@@ -59,17 +61,18 @@ extension HomeCoordinator: IntroViewControllerDelegate {
         navigationController.pushViewController(homeViewController, animated: true)
     }
 
-    fileprivate func getSavedLocations() -> [Location] {
+    private func getSavedLocations() -> [Location] {
         let defaultLocations: [Location] = [
             Location(name: "South Woodham Ferrers", coordinates: CLLocationCoordinate2D(latitude: 51.6465, longitude: 0.6147), saved: true),
             Location(name: "Stratford", coordinates: CLLocationCoordinate2D(latitude: 51.5472, longitude: -0.0081), saved: true),
             Location(name: "Manchester", coordinates: CLLocationCoordinate2D(latitude: 53.4808, longitude: 2.2426), saved: true)
         ]
 
-        if Defaults.hasKey(.savedLocations) == false {
-            Defaults.set(defaultLocations, forKey: .savedLocations)
+        if defaults.hasKey(.savedLocations) == false {
+            defaults.set(defaultLocations, forKey: .savedLocations)
         }
-        let savedLocations = Defaults.get([Location].self, forKey: .savedLocations)!
+
+        let savedLocations: [Location] = defaults.get(.savedLocations)! 
         savedLocations.forEach { print("\($0.name) lat: \($0.latitude) long: \($0.longitude)") }
         return savedLocations
     }
@@ -93,34 +96,3 @@ extension HomeCoordinator: HomeViewModelDelegate {
     }
 }
 
-class NavigationTransitionDelegate: NSObject, UINavigationControllerDelegate {
-    func navigationController(_ navigationController: UINavigationController,
-                              animationControllerFor operation: UINavigationController.Operation,
-                              from fromVC: UIViewController,
-                              to toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return FadeInAnimationController()
-    }
-}
-
-class FadeInAnimationController: NSObject, UIViewControllerAnimatedTransitioning {
-    func transitionDuration(using transitionContext: UIViewControllerContextTransitioning?) -> TimeInterval {
-        0.5
-    }
-
-    func animateTransition(using transitionContext: UIViewControllerContextTransitioning) {
-
-        guard let toVC = transitionContext.viewController(forKey: .to)
-            else { return }
-
-        let containerView = transitionContext.containerView
-        containerView.addSubview(toVC.view)
-        toVC.view.alpha = 0.0
-
-        UIView.animate(withDuration: transitionDuration(using: transitionContext),
-                       animations: {
-                        toVC.view.alpha = 1.0
-        }) { hasFinished in
-            transitionContext.completeTransition(!transitionContext.transitionWasCancelled)
-        }
-    }
-}

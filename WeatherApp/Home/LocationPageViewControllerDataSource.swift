@@ -45,7 +45,10 @@ class LocationPageViewControllerDataSource: NSObject, UIPageViewControllerDataSo
             return nil
         }
         let model = LocationModel(location: locations[index])
-        let viewModel = LocationViewModel(model: model, weatherService: weatherService)
+        let defaults = Defaults()
+        let viewModel = LocationViewModel(model: model,
+                                          weatherService: weatherService,
+                                          defaults: defaults)
         viewModel.delegate = self
         let dayCollectionViewDataSource = DayCollectionViewDataSource(viewModel: viewModel)
         let forecastCollectionViewDataSource = ForecastCollectionViewDataSource(viewModel: viewModel)

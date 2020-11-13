@@ -24,7 +24,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         
         let navigationController = UINavigationController()
         navigationController.setNavigationBarHidden(true, animated: true)
-        mainCoordinator = HomeCoordinator(navigationController: navigationController)
+        mainCoordinator = HomeCoordinator(navigationController: navigationController,
+                                          defaults: Defaults())
         mainCoordinator.start()
         window?.rootViewController = navigationController
     }

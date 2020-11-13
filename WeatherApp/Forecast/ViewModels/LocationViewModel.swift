@@ -25,14 +25,17 @@ class LocationViewModel {
     private var model: LocationModel
     private var weatherService: WeatherService
     private(set) var locationViewStateObs: Observable<LocationViewState>
+    private var defaults: Defaults
     var selectedDayIndexObs = Observable<Int>(0)
     var selectedDayObs = Observable<DailyForecast?>(nil)
     weak var delegate: LocationViewModelDelegate?
 
     public init(model: LocationModel,
-                weatherService: WeatherService) {
+                weatherService: WeatherService,
+                defaults: Defaults) {
         self.model = model
         self.weatherService = weatherService
+        self.defaults = defaults
         self.locationViewStateObs = Observable<LocationViewState>(.loading)
         self.selectedDayIndexObs.bind { [weak self] index in
             self?.selectedDayObs.value = self?.dailyForecast(for: index)
@@ -100,7 +103,7 @@ class LocationViewModel {
 
     //TODO: This doesn't really belong here - refactor out
     fileprivate func updateDefaults() {
-        Defaults.set(weatherService.savedLocations, forKey: .savedLocations)
+        defaults.set(weatherService.savedLocations, forKey: .savedLocations)
     }
 }
 
