@@ -6,7 +6,6 @@
 //  Copyright © 2020 David Ludlow. All rights reserved.
 //
 
-import CoreLocation
 import Foundation
 import UIKit
 
@@ -19,12 +18,14 @@ class HomeCoordinator: Coordinator {
     var childCoordinators: [Coordinator]?
     var navigationController: UINavigationController
     var navigationControllerDelegate: UINavigationControllerDelegate?
-    var defaults: Defaults
 
-    init(navigationController: UINavigationController,
-         defaults: Defaults) {
+    private var defaults: Defaults
+    private var homeFactory: HomeFactory
+
+    init(navigationController: UINavigationController, defaults: Defaults, homeFactory: HomeFactory) {
         self.navigationController = navigationController
         self.defaults = defaults
+        self.homeFactory = homeFactory
         navigationControllerDelegate = NavigationTransitionDelegate()
         navigationController.delegate = navigationControllerDelegate
     }
@@ -46,35 +47,10 @@ class HomeCoordinator: Coordinator {
 }
 
 extension HomeCoordinator: IntroViewControllerDelegate {
+    
     func showHomeScreen() {
-        let locationManager = CLLocationManager()
-        let deviceLocationProvider = DeviceLocationProvider(locationManager: locationManager)
-        let homeViewModel = HomeViewModel(deviceLocationProvider: deviceLocationProvider)
-        homeViewModel.coordinatorDelegate = self
-        let weatherService = WeatherService()
-        let savedLocations = getSavedLocations()
-        weatherService.updateForecasts(for: savedLocations)
-        let pageViewControllerDataSource = LocationPageViewControllerDataSource(locations: savedLocations, weatherService: weatherService)
-        let homeViewController = HomeViewController(viewModel: homeViewModel,
-                                                    locationPageViewControllerDataSource: pageViewControllerDataSource,
-                                                    weatherService: weatherService)
+        let homeViewController = homeFactory.getHomeViewController(homeViewModelDelegate: self)
         navigationController.pushViewController(homeViewController, animated: true)
-    }
-
-    private func getSavedLocations() -> [Location] {
-        let defaultLocations: [Location] = [
-            Location(name: "South Woodham Ferrers", coordinates: CLLocationCoordinate2D(latitude: 51.6465, longitude: 0.6147), saved: true),
-            Location(name: "Stratford", coordinates: CLLocationCoordinate2D(latitude: 51.5472, longitude: -0.0081), saved: true),
-            Location(name: "Manchester", coordinates: CLLocationCoordinate2D(latitude: 53.4808, longitude: 2.2426), saved: true)
-        ]
-
-        if defaults.hasKey(.savedLocations) == false {
-            defaults.set(defaultLocations, forKey: .savedLocations)
-        }
-
-        let savedLocations: [Location] = defaults.get(.savedLocations)! 
-        savedLocations.forEach { print("\($0.name) lat: \($0.latitude) long: \($0.longitude)") }
-        return savedLocations
     }
 }
 
