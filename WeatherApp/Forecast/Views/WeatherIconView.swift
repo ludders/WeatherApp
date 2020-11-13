@@ -30,7 +30,7 @@ final class WindIconView: UIView {
         fatalError("init(coder:) has not been implemented")
     }
 
-    fileprivate func setupView() {
+    private func setupView() {
         iconView.backgroundColor = Theme.Colours.transparent
         addSubview(iconView)
 
@@ -50,7 +50,7 @@ final class WindIconView: UIView {
         setupConstraints()
     }
 
-    fileprivate func setupConstraints() {
+    private func setupConstraints() {
         self.setContentCompressionResistancePriority(.required, for: .horizontal)
         self.setContentCompressionResistancePriority(.required, for: .vertical)
 
@@ -73,14 +73,14 @@ final class WindIconView: UIView {
         }
     }
 
-    fileprivate func rotateIcon(by degrees: Int) {
+    private func rotateIcon(by degrees: Int) {
         DispatchQueue.main.async {
             self.iconView.transform = CGAffineTransform(rotationAngle: CGFloat(integerLiteral: degrees) * (CGFloat.pi / 180))
         }
     }
 }
 
-fileprivate class WindIconCircleView: UIView {
+private class WindIconCircleView: UIView {
     override func draw(_ rect: CGRect) {
         let path = UIBezierPath(arcCenter: CGPoint(x: frame.width/2, y: frame.height/2),
                                 radius: frame.width / 2,
@@ -92,7 +92,7 @@ fileprivate class WindIconCircleView: UIView {
     }
 }
 
-fileprivate class WindIconArrowView: UIView {
+private class WindIconArrowView: UIView {
     override func draw(_ rect: CGRect) {
         let path = UIBezierPath()
         let h = frame.height

@@ -49,7 +49,7 @@ class WeatherService {
         cacheUpdateDispatchGroup.notify(queue: DispatchQueue.global(qos: .default), work: getForecastWorkItem)
     }
 
-    fileprivate func updateForecast(for location: Location, onCompletion: LocationForecastCompletion? = nil) {
+    private func updateForecast(for location: Location, onCompletion: LocationForecastCompletion? = nil) {
         weatherAPI.getForecastResponse(for: location.coordinate) { result in
             switch result {
             case .success(let response):
@@ -61,7 +61,7 @@ class WeatherService {
         }
     }
 
-    fileprivate func createLocationForecast(using response: WeatherResponse) -> LocationForecast {
+    private func createLocationForecast(using response: WeatherResponse) -> LocationForecast {
         let dailyForecasts: [DailyForecast]? = response.daily?.map { dailyResponse -> DailyForecast in
 
             let hourlyForecasts = createHourlyForecasts(forDate: dailyResponse.dt, using: response.hourly)
@@ -70,7 +70,7 @@ class WeatherService {
         return LocationForecast(dailyForecasts: dailyForecasts)
     }
 
-    fileprivate func createDailyForecast(using dailyResponse: DailyWeatherResponse, hourlyForecasts: [HourlyForecast]?) -> DailyForecast {
+    private func createDailyForecast(using dailyResponse: DailyWeatherResponse, hourlyForecasts: [HourlyForecast]?) -> DailyForecast {
         return DailyForecast(time: dailyResponse.dt,
                              sunrise: dailyResponse.sunrise,
                              sunset: dailyResponse.sunset,
@@ -87,7 +87,7 @@ class WeatherService {
                              hourlyForecasts: hourlyForecasts)
     }
 
-    fileprivate func createHourlyForecasts(forDate date: Date, using hourlyResponses: [HourlyWeatherResponse]?) -> [HourlyForecast]? {
+    private func createHourlyForecasts(forDate date: Date, using hourlyResponses: [HourlyWeatherResponse]?) -> [HourlyForecast]? {
         return hourlyResponses?.filter { hourlyResponse in
             return shouldInclude(hourlyResponse, forDate: date)
         }
@@ -96,7 +96,7 @@ class WeatherService {
         }
     }
 
-    fileprivate func shouldInclude(_ hourlyResponse: HourlyWeatherResponse, forDate date: Date) -> Bool {
+    private func shouldInclude(_ hourlyResponse: HourlyWeatherResponse, forDate date: Date) -> Bool {
         //Include hourly forecasts from 0600 on the day, till 0500 the next day.
         guard let hourlyResponseDate = hourlyResponse.dt else { return false }
 
@@ -110,7 +110,7 @@ class WeatherService {
         return hourlyResponseDate >= lowerBoundDate && hourlyResponseDate <= upperBoundDate
     }
 
-    fileprivate func createHourlyForecast(using hourlyResponse: HourlyWeatherResponse) -> HourlyForecast {
+    private func createHourlyForecast(using hourlyResponse: HourlyWeatherResponse) -> HourlyForecast {
         return HourlyForecast(date: hourlyResponse.dt ?? Date(timeIntervalSince1970: 0),
                               symbol: SymbolString.from(code: hourlyResponse.weather?.first?.icon ?? ""),
                               temp: hourlyResponse.temp,

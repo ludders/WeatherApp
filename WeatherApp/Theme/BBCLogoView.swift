@@ -13,11 +13,11 @@ final class BBCLogoView: UIView {
 
     //TODO: Animate this as per original 90s BBC intro animation
 
-    fileprivate var letterBoxesLayer: CAShapeLayer!
-    fileprivate var lettersLayer: CAShapeLayer!
-    fileprivate var blueBarlayer: CAShapeLayer!
-    fileprivate var redBarLayer: CAShapeLayer!
-    fileprivate var greenBarLayer: CAShapeLayer!
+    private var letterBoxesLayer: CAShapeLayer!
+    private var lettersLayer: CAShapeLayer!
+    private var blueBarlayer: CAShapeLayer!
+    private var redBarLayer: CAShapeLayer!
+    private var greenBarLayer: CAShapeLayer!
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,7 +32,7 @@ final class BBCLogoView: UIView {
         return CGSize(width: 278.58, height: 85.31)
     }
 
-    fileprivate func addSubLayers() {
+    private func addSubLayers() {
         //Letter Boxes
         letterBoxesLayer = CAShapeLayer()
         letterBoxesLayer.fillColor = Theme.Colours.bbcGrey.cgColor
@@ -64,7 +64,7 @@ final class BBCLogoView: UIView {
         layer.addSublayer(greenBarLayer)
     }
 
-    fileprivate var b1_box_path: CGPath {
+    private var b1_box_path: CGPath {
         let path = CGMutablePath()
         path.move(to: CGPoint(x: 26.13, y: 0.25))
         path.addLine(to: CGPoint(x: 5.24, y: 68.59))
@@ -74,7 +74,7 @@ final class BBCLogoView: UIView {
         return path
     }
 
-    fileprivate var b2_box_path: CGPath {
+    private var b2_box_path: CGPath {
         let path = CGMutablePath()
         path.move(to: CGPoint(x: 117.41, y: 0.25))
         path.addLine(to: CGPoint(x: 96.52, y: 68.59))
@@ -84,7 +84,7 @@ final class BBCLogoView: UIView {
         return path
     }
 
-    fileprivate var c_box_path: CGPath {
+    private var c_box_path: CGPath {
         let path = CGMutablePath()
         path.move(to: CGPoint(x: 208.25, y: 0.25))
         path.addLine(to: CGPoint(x: 187.36, y: 68.59))
@@ -94,7 +94,7 @@ final class BBCLogoView: UIView {
         return path
     }
 
-    fileprivate var b1_letter_path: CGPath {
+    private var b1_letter_path: CGPath {
         let path = CGMutablePath()
         path.move(to: CGPoint(x: 63.41, y: 33.43))
         path.addCurve(to: CGPoint(x: 72.81, y: 26.35), control1: CGPoint(x: 65.88, y: 33.43), control2: CGPoint(x: 71.11, y: 31.91))
@@ -120,7 +120,7 @@ final class BBCLogoView: UIView {
         return path
     }
 
-    fileprivate var b2_letter_path: CGPath {
+    private var b2_letter_path: CGPath {
         let path = CGMutablePath()
         path.move(to: CGPoint(x: 154.65, y: 33.43))
         path.addCurve(to: CGPoint(x: 164.05, y: 26.35), control1: CGPoint(x: 157.11, y: 33.43), control2: CGPoint(x: 162.35, y: 31.91))
@@ -146,7 +146,7 @@ final class BBCLogoView: UIView {
         return path
     }
 
-    fileprivate var c_letter_path: CGPath {
+    private var c_letter_path: CGPath {
         let path = CGMutablePath()
         path.move(to: CGPoint(x: 239.18, y: 38.05))
         path.addLine(to: CGPoint(x: 253.06, y: 38.05))
@@ -163,7 +163,7 @@ final class BBCLogoView: UIView {
         return path
     }
 
-    fileprivate var blue_bar_path: CGPath {
+    private var blue_bar_path: CGPath {
         let path = CGMutablePath()
         path.move(to: CGPoint(x: 2.19, y: 78.56))
         path.addLine(to: CGPoint(x: 0.13, y: 85.31))
@@ -173,7 +173,7 @@ final class BBCLogoView: UIView {
         return path
     }
 
-    fileprivate var red_bar_path: CGPath {
+    private var red_bar_path: CGPath {
         let path = CGMutablePath()
         path.move(to: CGPoint(x: 93.47, y: 78.56))
         path.addLine(to: CGPoint(x: 91.41, y: 85.31))
@@ -183,7 +183,7 @@ final class BBCLogoView: UIView {
         return path
     }
 
-    fileprivate var green_bar_path: CGPath {
+    private var green_bar_path: CGPath {
         let path = CGMutablePath()
         path.move(to: CGPoint(x: 184.31, y: 78.56))
         path.addLine(to: CGPoint(x: 182.24, y: 85.31))
@@ -193,7 +193,7 @@ final class BBCLogoView: UIView {
         return path
     }
 
-    fileprivate var letter_boxes_path: CGPath {
+    private var letter_boxes_path: CGPath {
         let path = CGMutablePath()
         path.addPath(b1_box_path)
         path.addPath(b2_box_path)
@@ -201,7 +201,7 @@ final class BBCLogoView: UIView {
         return path
     }
 
-    fileprivate var letters_path: CGPath {
+    private var letters_path: CGPath {
         let path = CGMutablePath()
         path.addPath(b1_letter_path)
         path.addPath(b2_letter_path)

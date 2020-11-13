@@ -41,9 +41,9 @@ final class RGBLoadingView: UIView {
 
 final class RGBSpinnerView: UIView {
 
-    fileprivate var blueBarlayer: CAShapeLayer!
-    fileprivate var redBarLayer: CAShapeLayer!
-    fileprivate var greenBarLayer: CAShapeLayer!
+    private var blueBarlayer: CAShapeLayer!
+    private var redBarLayer: CAShapeLayer!
+    private var greenBarLayer: CAShapeLayer!
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -59,7 +59,7 @@ final class RGBSpinnerView: UIView {
 //        return CGSize(width: 37.724444444444, height: 1) minimum equivalent size?
     }
 
-    fileprivate func addSubLayers() {
+    private func addSubLayers() {
         blueBarlayer = CAShapeLayer()
         blueBarlayer.fillColor = Theme.Colours.bbcBlue.cgColor
         blueBarlayer.path = blue_bar_path
@@ -77,7 +77,7 @@ final class RGBSpinnerView: UIView {
         layer.addSublayer(greenBarLayer)
     }
 
-    fileprivate var blue_bar_path: CGPath {
+    private var blue_bar_path: CGPath {
         let path = CGMutablePath()
         path.move(to: CGPoint(x: 2.19, y: 0))
         path.addLine(to: CGPoint(x: 0.13, y: 6.75))
@@ -87,7 +87,7 @@ final class RGBSpinnerView: UIView {
         return path
     }
 
-    fileprivate var red_bar_path: CGPath {
+    private var red_bar_path: CGPath {
         let path = CGMutablePath()
         path.move(to: CGPoint(x: 93.47, y: 0))
         path.addLine(to: CGPoint(x: 91.41, y: 6.75))
@@ -97,7 +97,7 @@ final class RGBSpinnerView: UIView {
         return path
     }
 
-    fileprivate var green_bar_path: CGPath {
+    private var green_bar_path: CGPath {
         let path = CGMutablePath()
         path.move(to: CGPoint(x: 184.31, y: 0))
         path.addLine(to: CGPoint(x: 182.24, y: 6.75))

@@ -13,7 +13,7 @@ struct SymbolString {
 
     private init() {}
 
-    fileprivate static let symbolDict: [String: String] = [
+    private static let symbolDict: [String: String] = [
         "01d": "sun.max",
         "02d": "cloud.sun",
         "03d": "smoke",

@@ -102,7 +102,7 @@ final class HourlyForecastCollectionViewCell: UICollectionViewCell {
         setupConstraints()
     }
 
-    fileprivate func setupConstraints() {
+    private func setupConstraints() {
 
         contentView.layoutMargins = UIEdgeInsets(top: 0, left: 15, bottom: 15, right: 15)
 

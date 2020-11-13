@@ -94,7 +94,7 @@ class LocationViewModel {
         locationViewStateObs.value = .loaded(self.model)
     }
 
-    fileprivate func saveLocation() {
+    private func saveLocation() {
         model.location.saved = true
         weatherService.updateCache(using: model)
         updateDefaults()
@@ -102,7 +102,7 @@ class LocationViewModel {
     }
 
     //TODO: This doesn't really belong here - refactor out
-    fileprivate func updateDefaults() {
+    private func updateDefaults() {
         defaults.set(weatherService.savedLocations, forKey: .savedLocations)
     }
 }
