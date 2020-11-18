@@ -17,15 +17,13 @@ enum NetworkingError: Error {
 
 class WeatherService {
     private var weatherAPI: WeatherAPI
-    private var cache: [Location: LocationForecast] = [:]
+    private var locationRepository: LocationRepository
     private var cacheUpdateDispatchGroup: DispatchGroup = DispatchGroup()
-    public var savedLocations: [Location] {
-        return cache.map { $0.key }
-            .filter { $0.saved }
-    }
 
-    init(weatherAPI: WeatherAPI = WeatherAPI()) {
+    init(weatherAPI: WeatherAPI = WeatherAPI(),
+         locationRepository: LocationRepository) {
         self.weatherAPI = weatherAPI
+        self.locationRepository = locationRepository
     }
 
     func updateForecasts(for locations: [Location]) {
@@ -40,7 +38,7 @@ class WeatherService {
 
     func getForecast(for location: Location, onCompletion completion: @escaping LocationForecastCompletion) {
         let getForecastWorkItem = DispatchWorkItem {
-            if let cachedForecast = self.cache[location] {
+            if let cachedForecast = self.locationRepository.getCachedForecast(for: location) {
                 completion(.success(cachedForecast))
             } else {
                 self.updateForecast(for: location, onCompletion: completion)
@@ -53,8 +51,10 @@ class WeatherService {
         weatherAPI.getForecastResponse(for: location.coordinate) { result in
             switch result {
             case .success(let response):
-                self.cache[location] = self.createLocationForecast(using: response)
-                onCompletion?(.success(self.cache[location]!))
+                let forecast = self.createLocationForecast(using: response)
+                let model = LocationModel(location: location, forecast: forecast)
+                self.locationRepository.updateCache(using: model)
+                onCompletion?(.success(forecast))
             case .failure(let error):
                 onCompletion?(.failure(error))
             }
@@ -121,13 +121,5 @@ class WeatherService {
                               pressure: hourlyResponse.pressure,
                               feelsLike: hourlyResponse.feelsLike,
                               clouds: hourlyResponse.clouds)
-    }
-
-
-    func updateCache(using model: LocationModel) {
-        if let index = cache.firstIndex(where: { $0.key == model.location }) {
-            let element = cache.remove(at: index)
-        }
-        cache[model.location] = model.forecast
     }
 }

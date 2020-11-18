@@ -68,6 +68,7 @@
 		9DF1214624D47BBA001845BD /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF1214524D47BBA001845BD /* Defaults.swift */; };
 		9DF6984B248169FB00C9BEC8 /* LocationForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF6984A248169FB00C9BEC8 /* LocationForecast.swift */; };
 		9DF69C18248175C200C9BEC8 /* ExampleWeatherCall.json in Resources */ = {isa = PBXBuildFile; fileRef = 9DF69C17248175C200C9BEC8 /* ExampleWeatherCall.json */; };
+		9DFC2E9C2561D92900E1908D /* LocationRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DFC2E9B2561D92900E1908D /* LocationRepository.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -161,6 +162,7 @@
 		9DF6984A248169FB00C9BEC8 /* LocationForecast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationForecast.swift; sourceTree = "<group>"; };
 		9DF69C17248175C200C9BEC8 /* ExampleWeatherCall.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = ExampleWeatherCall.json; sourceTree = "<group>"; };
 		9DF8C17024A53F6100BCC7FC /* PromiseKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PromiseKit.framework; path = Carthage/Build/iOS/PromiseKit.framework; sourceTree = "<group>"; };
+		9DFC2E9B2561D92900E1908D /* LocationRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationRepository.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -275,9 +277,9 @@
 		9D2BF7BE245B3EF300ED3207 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				9D24E42D250FB4C0003273CD /* LocationPageViewControllerDataSource.swift */,
 				9D0FCB29245318D70074D005 /* IntroViewController.swift */,
 				9D99F2FC24DC182A00C262A9 /* DeviceLocationProvider.swift */,
-				9D24E42D250FB4C0003273CD /* LocationPageViewControllerDataSource.swift */,
 				9DB9A36C24F047F5008BC59B /* HomeViewModel.swift */,
 				9DC563F8245C734600A0C8CD /* HomeViewController.swift */,
 				9D962BBF255F16DA002BFCED /* HomeFactory.swift */,
@@ -340,6 +342,7 @@
 				9D8CBB0C24C4BB2C0027C37E /* LocationModel.swift */,
 				9D13A90C248ECB9000613184 /* DailyForecast.swift */,
 				9D13A90E248EDA1C00613184 /* HourlyForecast.swift */,
+				9DFC2E9B2561D92900E1908D /* LocationRepository.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -530,6 +533,7 @@
 				9D2BF7C0245B3F1500ED3207 /* HomeCoordinator.swift in Sources */,
 				9D9C200224B505CE0013AD72 /* SuggestionsService.swift in Sources */,
 				9D0888BC249CF14000E619FD /* UIView+Extensions.swift in Sources */,
+				9DFC2E9C2561D92900E1908D /* LocationRepository.swift in Sources */,
 				9D0FCF3C25096CD800334F84 /* Button.swift in Sources */,
 				9DF6984B248169FB00C9BEC8 /* LocationForecast.swift in Sources */,
 				9D76541124B8B443008B5A17 /* SearchViewModel.swift in Sources */,

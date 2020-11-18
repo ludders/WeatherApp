@@ -46,6 +46,7 @@ class LocationViewController: UIViewController {
     override func loadView() {
         locationView = LocationView(forecastFlowLayout: forecastFlowLayout, dayFlowLayout: dayFlowLayout)
         locationView.backgroundColor = Theme.Colours.black
+        locationView.titleTextField.text = viewModel.displayTitle
         view = locationView
     }
 
@@ -62,7 +63,6 @@ class LocationViewController: UIViewController {
     }
 
     private func setupBindings() {
-        locationView.titleTextField.text = viewModel.displayTitle
         viewModel.locationViewStateObs.bind { [weak self] state in
             self?.locationView.configure(for: state)
         }

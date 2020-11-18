@@ -24,6 +24,7 @@ protocol LocationViewModelDelegate: AnyObject {
 class LocationViewModel {
     private var model: LocationModel
     private var weatherService: WeatherService
+    private var locationRepository: LocationRepository
     private(set) var locationViewStateObs: Observable<LocationViewState>
     private var defaults: Defaults
     var selectedDayIndexObs = Observable<Int>(0)
@@ -32,9 +33,11 @@ class LocationViewModel {
 
     public init(model: LocationModel,
                 weatherService: WeatherService,
+                locationRepository: LocationRepository,
                 defaults: Defaults) {
         self.model = model
         self.weatherService = weatherService
+        self.locationRepository = locationRepository
         self.defaults = defaults
         self.locationViewStateObs = Observable<LocationViewState>(.loading)
         self.selectedDayIndexObs.bind { [weak self] index in
@@ -96,14 +99,8 @@ class LocationViewModel {
 
     private func saveLocation() {
         model.location.saved = true
-        weatherService.updateCache(using: model)
-        updateDefaults()
+        locationRepository.updateCache(using: model)
         delegate?.didSave(location: model.location)
-    }
-
-    //TODO: This doesn't really belong here - refactor out
-    private func updateDefaults() {
-        defaults.set(weatherService.savedLocations, forKey: .savedLocations)
     }
 }
 

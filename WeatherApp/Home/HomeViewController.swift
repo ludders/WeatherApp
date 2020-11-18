@@ -14,14 +14,11 @@ class HomeViewController: UIViewController {
     private var headerView: HeaderView!
     private let pageViewController: UIPageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
     private let viewModel: HomeViewModel
-    private var weatherService: WeatherService
     private var locationPageViewControllerDataSource: LocationPageViewControllerDataSource
 
     init(viewModel: HomeViewModel,
-         locationPageViewControllerDataSource: LocationPageViewControllerDataSource,
-         weatherService: WeatherService) {
+         locationPageViewControllerDataSource: LocationPageViewControllerDataSource) {
         self.viewModel = viewModel
-        self.weatherService = weatherService
         self.locationPageViewControllerDataSource = locationPageViewControllerDataSource
         super.init(nibName: nil, bundle: nil)
     }

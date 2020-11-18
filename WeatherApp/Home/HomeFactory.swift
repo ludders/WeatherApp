@@ -23,14 +23,16 @@ struct HomeFactory {
         let homeViewModel = HomeViewModel(deviceLocationProvider: deviceLocationProvider)
         homeViewModel.coordinatorDelegate = homeViewModelDelegate
 
-        let weatherService = WeatherService()
+        let locationRepository = LocationRepository(defaults: defaults)
+        let weatherService = WeatherService(locationRepository: locationRepository)
         let savedLocations = getSavedLocations()
         weatherService.updateForecasts(for: savedLocations)
 
-        let pageViewControllerDataSource = LocationPageViewControllerDataSource(locations: savedLocations, weatherService: weatherService)
+        let pageViewControllerDataSource = LocationPageViewControllerDataSource(locations: savedLocations,
+                                                                                weatherService: weatherService,
+                                                                                locationRepository: locationRepository)
         return HomeViewController(viewModel: homeViewModel,
-                                  locationPageViewControllerDataSource: pageViewControllerDataSource,
-                                  weatherService: weatherService)
+                                  locationPageViewControllerDataSource: pageViewControllerDataSource)
     }
 
     private func getSavedLocations() -> [Location] {

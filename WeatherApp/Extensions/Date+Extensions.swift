@@ -9,7 +9,6 @@
 import Foundation
 
 extension Date {
-
     var isAtMidnight: Bool {
         return self.isAtExactly(hour: 0)
     }
