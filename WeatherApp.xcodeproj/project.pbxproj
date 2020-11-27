@@ -29,7 +29,6 @@
 		9D13A90F248EDA1C00613184 /* HourlyForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D13A90E248EDA1C00613184 /* HourlyForecast.swift */; };
 		9D186913249AC61000D8978B /* WeatherIconView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D186912249AC61000D8978B /* WeatherIconView.swift */; };
 		9D1D911024A5F84000AB3E46 /* Double+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D1D910F24A5F84000AB3E46 /* Double+Extensions.swift */; };
-		9D24E42E250FB4C0003273CD /* LocationPageViewControllerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D24E42D250FB4C0003273CD /* LocationPageViewControllerDataSource.swift */; };
 		9D2BF7C0245B3F1500ED3207 /* HomeCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D2BF7BF245B3F1500ED3207 /* HomeCoordinator.swift */; };
 		9D3381B824E6E0FE00A44A52 /* LocationErrorView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3381B724E6E0FE00A44A52 /* LocationErrorView.swift */; };
 		9D3E7E62248A8C8C00A4A248 /* Observable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D3E7E61248A8C8C00A4A248 /* Observable.swift */; };
@@ -64,6 +63,7 @@
 		9DBE45D424C5FC9400E1CB11 /* PaddableTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DBE45D324C5FC9400E1CB11 /* PaddableTextField.swift */; };
 		9DC563F9245C734600A0C8CD /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DC563F8245C734600A0C8CD /* HomeViewController.swift */; };
 		9DDCDEC124D222F500DB814C /* Date+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DDCDEC024D222F500DB814C /* Date+Extensions.swift */; };
+		9DDE0BF4256D84AB0050166B /* LocationPageViewControllerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D24E42D250FB4C0003273CD /* LocationPageViewControllerDataSource.swift */; };
 		9DF060FB24B76A3700E8EDDE /* SuggestionsRequestParameters.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF060FA24B76A3700E8EDDE /* SuggestionsRequestParameters.swift */; };
 		9DF1214624D47BBA001845BD /* Defaults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF1214524D47BBA001845BD /* Defaults.swift */; };
 		9DF6984B248169FB00C9BEC8 /* LocationForecast.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9DF6984A248169FB00C9BEC8 /* LocationForecast.swift */; };
@@ -560,8 +560,8 @@
 				9D7E10F92473297100B06C1C /* API.swift in Sources */,
 				9D0FCB26245318D70074D005 /* AppDelegate.swift in Sources */,
 				9D00091E24D5FC1200EDC2D4 /* ReverseGeocodingAPI.swift in Sources */,
+				9DDE0BF4256D84AB0050166B /* LocationPageViewControllerDataSource.swift in Sources */,
 				9DBE45D424C5FC9400E1CB11 /* PaddableTextField.swift in Sources */,
-				9D24E42E250FB4C0003273CD /* LocationPageViewControllerDataSource.swift in Sources */,
 				9D0FCF1724532ED10074D005 /* Theme.swift in Sources */,
 				9DC563F9245C734600A0C8CD /* HomeViewController.swift in Sources */,
 				9D9C200424B506330013AD72 /* SuggestionsAPI.swift in Sources */,

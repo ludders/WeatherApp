@@ -100,14 +100,11 @@ class WeatherService {
         //Include hourly forecasts from 0600 on the day, till 0500 the next day.
         guard let hourlyResponseDate = hourlyResponse.dt else { return false }
 
-        let sixAM_currentDay = Calendar.current.date(bySettingHour: 6, minute: 0, second: 0, of: date)
-        var fiveAM_nextDay = Calendar.current.date(byAdding: .day, value: 1, to: date)
-        fiveAM_nextDay = Calendar.current.date(bySetting: .hour, value: 5, of: date)
+        let sixAM_currentDay = Calendar.current.date(bySettingHour: 6, minute: 0, second: 0, of: date)!
+        var fiveAM_nextDay = Calendar.current.date(byAdding: .day, value: 1, to: date)!
+        fiveAM_nextDay = Calendar.current.date(bySetting: .hour, value: 5, of: date)!
 
-        guard let lowerBoundDate = sixAM_currentDay,
-              let upperBoundDate = fiveAM_nextDay else { return false }
-
-        return hourlyResponseDate >= lowerBoundDate && hourlyResponseDate <= upperBoundDate
+        return hourlyResponseDate >= sixAM_currentDay && hourlyResponseDate <= fiveAM_nextDay
     }
 
     private func createHourlyForecast(using hourlyResponse: HourlyWeatherResponse) -> HourlyForecast {
