@@ -1,29 +1,39 @@
 //
-//  LocationRepository.swift
+//  LocationStore.swift
 //  WeatherApp
 //
 //  Created by dludlow7 on 15/11/2020.
 //  Copyright © 2020 David Ludlow. All rights reserved.
 //
-
-// Sort order:
-// Unsaved
-// Saved
-
 import Foundation
 
 class LocationStore {
-    private var cache: [Location: LocationForecast]
+    private var locationSet: NSMutableOrderedSet
+    private var cache: [Location: LocationForecast] = [:]
     private var defaults: Defaults
+
+    private var sortClosure: ((Location, Location) -> Bool) = { (location1, location2) in
+        // Unsaved appear before Saved, then sort by creation date.
+        if location1.saved == location2.saved {
+            return location1.dateCreated < location2.dateCreated
+        } else {
+            return location1.saved == false && location2.saved == true
+        }
+    }
+
+    public var sortedLocations: [Location] {
+        return locationSet.map { $0 as! Location }
+            .sorted(by: self.sortClosure)
+    }
 
     public var savedLocations: [Location] {
         return cache.map { $0.key }
             .filter { $0.saved }
     }
 
-    init(cache: [Location: LocationForecast] = [:],
+    init(locations: [Location],
          defaults: Defaults) {
-        self.cache = cache
+        self.locationSet = NSMutableOrderedSet(array: locations)
         self.defaults = defaults
     }
 
