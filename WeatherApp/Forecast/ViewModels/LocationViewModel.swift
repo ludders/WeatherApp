@@ -17,10 +17,6 @@ enum LocationViewState {
     case editing
 }
 
-protocol LocationViewModelDelegate: AnyObject {
-    func didSave(location: Location)
-}
-
 class LocationViewModel {
     private var model: LocationModel
     private var weatherService: WeatherService
@@ -29,7 +25,6 @@ class LocationViewModel {
     private var defaults: Defaults
     var selectedDayIndexObs = Observable<Int>(0)
     var selectedDayObs = Observable<DailyForecast?>(nil)
-    weak var delegate: LocationViewModelDelegate?
 
     public init(model: LocationModel,
                 weatherService: WeatherService,
@@ -99,8 +94,7 @@ class LocationViewModel {
 
     private func saveLocation() {
         model.location.saved = true
-        locationStore.updateCache(using: model)
-        delegate?.didSave(location: model.location)
+        locationStore.save(model.location)
     }
 }
 

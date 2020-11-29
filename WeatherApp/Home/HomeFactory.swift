@@ -25,14 +25,13 @@ struct HomeFactory {
 
         let savedLocations = getSavedLocations()
         let locationStore = LocationStore(locations: savedLocations, defaults: defaults)
-        print(locationStore.sortedLocations)
         let weatherService = WeatherService(locationStore: locationStore)
         weatherService.updateForecasts(for: savedLocations)
 
-        let pageViewControllerDataSource = LocationPageViewControllerDataSource(locations: savedLocations,
-                                                                                weatherService: weatherService,
+        let pageViewControllerDataSource = LocationPageViewControllerDataSource(weatherService: weatherService,
                                                                                 locationStore: locationStore)
         return HomeViewController(viewModel: homeViewModel,
+                                  locationStore: locationStore,
                                   locationPageViewControllerDataSource: pageViewControllerDataSource)
     }
 

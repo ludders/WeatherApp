@@ -53,7 +53,7 @@ class WeatherService {
             case .success(let response):
                 let forecast = self.createLocationForecast(using: response)
                 let model = LocationModel(location: location, forecast: forecast)
-                self.locationStore.updateCache(using: model)
+                self.locationStore.updateCachedForecast(for: location, with: forecast)
                 onCompletion?(.success(forecast))
             case .failure(let error):
                 onCompletion?(.failure(error))

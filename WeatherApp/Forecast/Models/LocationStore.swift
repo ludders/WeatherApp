@@ -12,22 +12,12 @@ class LocationStore {
     private var cache: [Location: LocationForecast] = [:]
     private var defaults: Defaults
 
-    private var sortClosure: ((Location, Location) -> Bool) = { (location1, location2) in
-        // Unsaved appear before Saved, then sort by creation date.
-        if location1.saved == location2.saved {
-            return location1.dateCreated < location2.dateCreated
-        } else {
-            return location1.saved == false && location2.saved == true
-        }
-    }
-
-    public var sortedLocations: [Location] {
+    public var locations: [Location] {
         return locationSet.map { $0 as! Location }
-            .sorted(by: self.sortClosure)
     }
 
     public var savedLocations: [Location] {
-        return cache.map { $0.key }
+        return locationSet.map { $0 as! Location }
             .filter { $0.saved }
     }
 
@@ -37,17 +27,25 @@ class LocationStore {
         self.defaults = defaults
     }
 
+    public func add(_ location: Location) {
+        locationSet.add(location)
+    }
+
+    public func save(_ location: Location) {
+        if let original = locationSet.map({ $0 as! Location }).first(where: { $0 == location }) {
+            locationSet.replaceObject(at: locationSet.index(of: original), with: location)
+            defaults.set(savedLocations, forKey: .savedLocations)
+        }
+    }
+
     public func getCachedForecast(for location: Location) -> LocationForecast? {
         return cache[location]
     }
 
-    func updateCache(using model: LocationModel) {
-        if let index = cache.firstIndex(where: { $0.key == model.location }) {
+    public func updateCachedForecast(for location: Location, with newForecast: LocationForecast) {
+        if let index = cache.firstIndex(where: { $0.key == location }) {
             cache.remove(at: index)
         }
-        cache[model.location] = model.forecast
-        //TODO: This is saving to UserDefaults all the time regardless of whether or not the saved locations have changed.
-        //Find a neater way (i.e. only doing this when necessary)
-        defaults.set(savedLocations, forKey: .savedLocations)
+        cache[location] = newForecast
     }
 }

@@ -14,11 +14,14 @@ class HomeViewController: UIViewController {
     private var headerView: HeaderView!
     private let pageViewController: UIPageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .vertical, options: nil)
     private let viewModel: HomeViewModel
+    private var locationStore: LocationStore
     private var locationPageViewControllerDataSource: LocationPageViewControllerDataSource
 
     init(viewModel: HomeViewModel,
+         locationStore: LocationStore,
          locationPageViewControllerDataSource: LocationPageViewControllerDataSource) {
         self.viewModel = viewModel
+        self.locationStore = locationStore
         self.locationPageViewControllerDataSource = locationPageViewControllerDataSource
         super.init(nibName: nil, bundle: nil)
     }
@@ -70,7 +73,8 @@ class HomeViewController: UIViewController {
         pageViewController.setViewControllers([locationViewController], direction: .forward, animated: false, completion: nil)
     }
 
-    private func addNewFirstPage(for location: Location) {
+    private func displayNewLocation(location: Location) {
+        locationStore.add(location)
         locationPageViewControllerDataSource.addNewPageAtTop(for: location)
         displayFirstPage()
     }
@@ -78,7 +82,7 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: LocationSelectionDelegate {
     func didSelect(_ location: Location) {
-        addNewFirstPage(for: location)
+        displayNewLocation(location: location)
     }
 }
 
@@ -89,7 +93,7 @@ extension HomeViewController: HeaderViewDelegate {
 
     func didTapLocation() {
         viewModel.didTapLocation { location in
-            self.addNewFirstPage(for: location)
+            self.displayNewLocation(location: location)
         } onDisabled: {
             self.showLocationDisabledAlert()
         } onError: { error in

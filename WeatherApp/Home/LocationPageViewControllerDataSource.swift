@@ -11,14 +11,23 @@ import UIKit
 
 class LocationPageViewControllerDataSource: NSObject, UIPageViewControllerDataSource {
     private var weatherService: WeatherService
-    private(set) var locations: [Location] //TODO: Remove this now that we have the locationRepository here?
     private var locationStore: LocationStore
+
+    private var sortedLocations: [Location] {
+        return locationStore.locations.sorted { (location1, location2) in
+            // Sort Unsaved above Saved, then sort by most recently created
+            if location1.saved == location2.saved {
+                return location1.dateCreated > location2.dateCreated
+            } else {
+                return location1.saved == false && location2.saved == true
+            }
+        }
+    }
+
     private(set) var currentPageIndex: Int = 0 //Only updated once the transition to another VC is completed
 
-    init(locations: [Location],
-         weatherService: WeatherService,
+    init(weatherService: WeatherService,
          locationStore: LocationStore) {
-        self.locations = locations
         self.weatherService = weatherService
         self.locationStore = locationStore
     }
@@ -38,22 +47,20 @@ class LocationPageViewControllerDataSource: NSObject, UIPageViewControllerDataSo
     }
 
     func addNewPageAtTop(for location: Location) {
-        locations.insert(location, at: 0)
         currentPageIndex += 1
     }
 
     //TODO: Loads of dependencies in here now - find a way to inject?
     private func createViewControllerForLocation(atIndex index: Int) -> LocationViewController? {
-        guard (0...locations.endIndex-1).contains(index) else {
+        guard (0...sortedLocations.endIndex-1).contains(index) else {
             return nil
         }
-        let model = LocationModel(location: locations[index])
+        let model = LocationModel(location: sortedLocations[index])
         let defaults = Defaults()
         let viewModel = LocationViewModel(model: model,
                                           weatherService: weatherService,
                                           locationStore: locationStore,
                                           defaults: defaults)
-        viewModel.delegate = self
         let dayCollectionViewDataSource = DayCollectionViewDataSource(viewModel: viewModel)
         let forecastCollectionViewDataSource = ForecastCollectionViewDataSource(viewModel: viewModel)
         let viewController = LocationViewController(viewModel: viewModel,
@@ -69,13 +76,5 @@ extension LocationPageViewControllerDataSource: UIPageViewControllerDelegate {
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         guard let newIndex = pageViewController.viewControllers?.first?.view.tag else { return }
         currentPageIndex = newIndex
-    }
-}
-
-extension LocationPageViewControllerDataSource: LocationViewModelDelegate {
-
-    func didSave(location: Location) {
-        guard let index = locations.firstIndex(where: { $0 == location }) else { return }
-        locations[index] = location
     }
 }
