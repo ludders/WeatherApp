@@ -18,6 +18,7 @@ struct Location: Codable, Equatable, Hashable {
     var name: String
     let latitude: Double
     let longitude: Double
+    let dateCreated: Date
     var saved: Bool
     var fromGPS: Bool
 
@@ -36,6 +37,15 @@ extension Location {
         self.init(name: name,
                   latitude: coordinates.latitude,
                   longitude: coordinates.longitude,
+                  dateCreated: Date(),
+                  saved: saved,
+                  fromGPS: fromGPS)
+    }
+    init(name: String, coordinates: CLLocationCoordinate2D, dateCreated: Date, saved: Bool = false, fromGPS: Bool = false) {
+        self.init(name: name,
+                  latitude: coordinates.latitude,
+                  longitude: coordinates.longitude,
+                  dateCreated: dateCreated,
                   saved: saved,
                   fromGPS: fromGPS)
     }

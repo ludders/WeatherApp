@@ -17,27 +17,22 @@ enum LocationViewState {
     case editing
 }
 
-protocol LocationViewModelDelegate: AnyObject {
-    func didSave(location: Location)
-}
-
 class LocationViewModel {
     private var model: LocationModel
     private var weatherService: WeatherService
-    private var locationRepository: LocationRepository
+    private var locationStore: LocationStore
     private(set) var locationViewStateObs: Observable<LocationViewState>
     private var defaults: Defaults
     var selectedDayIndexObs = Observable<Int>(0)
     var selectedDayObs = Observable<DailyForecast?>(nil)
-    weak var delegate: LocationViewModelDelegate?
 
     public init(model: LocationModel,
                 weatherService: WeatherService,
-                locationRepository: LocationRepository,
+                locationStore: LocationStore,
                 defaults: Defaults) {
         self.model = model
         self.weatherService = weatherService
-        self.locationRepository = locationRepository
+        self.locationStore = locationStore
         self.defaults = defaults
         self.locationViewStateObs = Observable<LocationViewState>(.loading)
         self.selectedDayIndexObs.bind { [weak self] index in
@@ -99,8 +94,7 @@ class LocationViewModel {
 
     private func saveLocation() {
         model.location.saved = true
-        locationRepository.updateCache(using: model)
-        delegate?.didSave(location: model.location)
+        locationStore.save(model.location)
     }
 }
 

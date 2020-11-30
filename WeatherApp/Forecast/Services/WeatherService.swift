@@ -17,13 +17,13 @@ enum NetworkingError: Error {
 
 class WeatherService {
     private var weatherAPI: WeatherAPI
-    private var locationRepository: LocationRepository
+    private var locationStore: LocationStore
     private var cacheUpdateDispatchGroup: DispatchGroup = DispatchGroup()
 
     init(weatherAPI: WeatherAPI = WeatherAPI(),
-         locationRepository: LocationRepository) {
+         locationStore: LocationStore) {
         self.weatherAPI = weatherAPI
-        self.locationRepository = locationRepository
+        self.locationStore = locationStore
     }
 
     func updateForecasts(for locations: [Location]) {
@@ -38,7 +38,7 @@ class WeatherService {
 
     func getForecast(for location: Location, onCompletion completion: @escaping LocationForecastCompletion) {
         let getForecastWorkItem = DispatchWorkItem {
-            if let cachedForecast = self.locationRepository.getCachedForecast(for: location) {
+            if let cachedForecast = self.locationStore.getCachedForecast(for: location) {
                 completion(.success(cachedForecast))
             } else {
                 self.updateForecast(for: location, onCompletion: completion)
@@ -53,7 +53,7 @@ class WeatherService {
             case .success(let response):
                 let forecast = self.createLocationForecast(using: response)
                 let model = LocationModel(location: location, forecast: forecast)
-                self.locationRepository.updateCache(using: model)
+                self.locationStore.updateCachedForecast(for: location, with: forecast)
                 onCompletion?(.success(forecast))
             case .failure(let error):
                 onCompletion?(.failure(error))

@@ -6,9 +6,13 @@
 //  Copyright © 2020 David Ludlow. All rights reserved.
 //
 
+// Sort order:
+// Unsaved
+// Saved
+
 import Foundation
 
-class LocationRepository {
+class LocationStore {
     private var cache: [Location: LocationForecast]
     private var defaults: Defaults
 
