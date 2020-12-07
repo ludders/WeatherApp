@@ -70,5 +70,10 @@ extension HomeCoordinator: HomeViewModelDelegate {
         searchViewController.coordinatorDelegate = self
         navigationController.present(searchViewController, animated: true)
     }
+
+    func startMenuFlow() {
+        let vc = MenuViewController()
+        navigationController.present(vc, animated: true, completion: nil)
+    }
 }
 

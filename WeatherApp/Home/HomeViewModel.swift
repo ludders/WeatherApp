@@ -11,6 +11,7 @@ import Foundation
 
 protocol HomeViewModelDelegate: AnyObject {
     func startSearchFlow(delegate: LocationSelectionDelegate?)
+    func startMenuFlow()
 }
 
 class HomeViewModel {
@@ -52,7 +53,7 @@ class HomeViewModel {
     }
 
     func didTapMenu() {
-        
+        coordinatorDelegate?.startMenuFlow()
     }
 
     func didTapImage() {
