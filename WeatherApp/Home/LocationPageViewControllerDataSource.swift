@@ -32,10 +32,13 @@ class LocationPageViewControllerDataSource: NSObject, UIPageViewControllerDataSo
         self.locationStore = locationStore
     }
 
-    func getFirstPageViewController(startIndex: Int = 0) -> UIViewController? {
+    func getFirstPageViewController() -> UIViewController? {
         //TODO: Return a 'no locations' view controller when this is nil
-        currentPageIndex = startIndex
-        return createViewControllerForLocation(atIndex: startIndex)
+        currentPageIndex = 0
+        if sortedLocations.isEmpty {
+            return NoLocationViewController()
+        }
+        return createViewControllerForLocation(atIndex: 0)
     }
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
@@ -52,7 +55,8 @@ class LocationPageViewControllerDataSource: NSObject, UIPageViewControllerDataSo
 
     //TODO: Loads of dependencies in here now - find a way to inject?
     private func createViewControllerForLocation(atIndex index: Int) -> LocationViewController? {
-        guard (0...sortedLocations.endIndex-1).contains(index) else {
+        guard !sortedLocations.isEmpty,
+              (0...sortedLocations.endIndex-1).contains(index) else {
             return nil
         }
         let model = LocationModel(location: sortedLocations[index])
