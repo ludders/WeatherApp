@@ -13,9 +13,8 @@ class MenuViewController: UIViewController {
     let label = UILabel()
 
     override func viewDidLoad() {
-        view = UIView()
         view.backgroundColor = Theme.Colours.bbcGrey
-        label.text = "Menu"
+        label.text = "Menu goes here"
         label.textColor = Theme.Colours.white
         view.addSubview(label)
 
@@ -24,5 +23,15 @@ class MenuViewController: UIViewController {
             make.height.equalTo(50)
             make.width.equalTo(200)
         }
+    }
+}
+
+extension MenuViewController: UIViewControllerTransitioningDelegate {
+    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return SlideRightMenuAnimationController()
+    }
+
+    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+        return SlideRightMenuAnimationController()
     }
 }

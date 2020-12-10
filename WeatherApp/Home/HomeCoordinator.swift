@@ -17,7 +17,9 @@ protocol Coordinator {
 class HomeCoordinator: Coordinator {
     var childCoordinators: [Coordinator]?
     var navigationController: UINavigationController
+
     var navigationControllerDelegate: UINavigationControllerDelegate?
+    var transitioningDelegate: UIViewControllerTransitioningDelegate?
 
     private var defaults: Defaults
     private var homeFactory: HomeFactory
@@ -26,8 +28,6 @@ class HomeCoordinator: Coordinator {
         self.navigationController = navigationController
         self.defaults = defaults
         self.homeFactory = homeFactory
-        navigationControllerDelegate = NavigationTransitionDelegate()
-        navigationController.delegate = navigationControllerDelegate
     }
 
     func start() {
@@ -49,8 +49,16 @@ class HomeCoordinator: Coordinator {
 extension HomeCoordinator: IntroViewControllerDelegate {
     
     func showHomeScreen() {
+        setupFadeInAnimation()
         let homeViewController = homeFactory.getHomeViewController(homeViewModelDelegate: self)
         navigationController.pushViewController(homeViewController, animated: true)
+    }
+
+    private func setupFadeInAnimation() {
+        let fadeAnimationController = FadeInAnimationController()
+        let customTransition = CustomTransition(using: fadeAnimationController)
+        navigationControllerDelegate = NavigationControllerDelegate(customTransitionProtocol: customTransition)
+        navigationController.delegate = navigationControllerDelegate
     }
 }
 
@@ -73,7 +81,10 @@ extension HomeCoordinator: HomeViewModelDelegate {
 
     func startMenuFlow() {
         let vc = MenuViewController()
-        navigationController.present(vc, animated: true, completion: nil)
+        vc.modalPresentationStyle = .custom
+        transitioningDelegate = vc
+        vc.transitioningDelegate = transitioningDelegate
+        navigationController.present(vc, animated: true)
     }
 }
 
