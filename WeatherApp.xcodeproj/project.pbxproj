@@ -44,6 +44,7 @@
 		9D7AD5A7250C1455001A80F7 /* ImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7AD5A6250C1455001A80F7 /* ImageView.swift */; };
 		9D7E10F72473291800B06C1C /* WeatherAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7E10F62473291800B06C1C /* WeatherAPI.swift */; };
 		9D7E10F92473297100B06C1C /* API.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7E10F82473297100B06C1C /* API.swift */; };
+		9D7F990D25AC9FD8009A62E8 /* SlidingMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D7F990C25AC9FD8009A62E8 /* SlidingMenuViewController.swift */; };
 		9D8CBB0D24C4BB2C0027C37E /* LocationModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D8CBB0C24C4BB2C0027C37E /* LocationModel.swift */; };
 		9D90936D2575AF5A00AFB494 /* NoLocationViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D90936C2575AF5A00AFB494 /* NoLocationViewController.swift */; };
 		9D962BBB255EED83002BFCED /* CustomTransition.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9D962BBA255EED83002BFCED /* CustomTransition.swift */; };
@@ -139,6 +140,7 @@
 		9D7AD5A6250C1455001A80F7 /* ImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageView.swift; sourceTree = "<group>"; };
 		9D7E10F62473291800B06C1C /* WeatherAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WeatherAPI.swift; sourceTree = "<group>"; };
 		9D7E10F82473297100B06C1C /* API.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = API.swift; sourceTree = "<group>"; };
+		9D7F990C25AC9FD8009A62E8 /* SlidingMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SlidingMenuViewController.swift; sourceTree = "<group>"; };
 		9D8CBB0C24C4BB2C0027C37E /* LocationModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LocationModel.swift; sourceTree = "<group>"; };
 		9D90936C2575AF5A00AFB494 /* NoLocationViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoLocationViewController.swift; sourceTree = "<group>"; };
 		9D962BBA255EED83002BFCED /* CustomTransition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTransition.swift; sourceTree = "<group>"; };
@@ -289,6 +291,7 @@
 				9DC563F8245C734600A0C8CD /* HomeViewController.swift */,
 				9D962BBF255F16DA002BFCED /* HomeFactory.swift */,
 				9D2BF7BF245B3F1500ED3207 /* HomeCoordinator.swift */,
+				9D7F990C25AC9FD8009A62E8 /* SlidingMenuViewController.swift */,
 				9D1177E22476F478003949DB /* HeaderView.swift */,
 			);
 			path = Home;
@@ -573,6 +576,7 @@
 				9D0FCF3C25096CD800334F84 /* Button.swift in Sources */,
 				9DF6984B248169FB00C9BEC8 /* LocationForecast.swift in Sources */,
 				9D76541124B8B443008B5A17 /* SearchViewModel.swift in Sources */,
+				9D7F990D25AC9FD8009A62E8 /* SlidingMenuViewController.swift in Sources */,
 				9D9C200624B5082A0013AD72 /* SuggestionsResponse.swift in Sources */,
 				9D1D911024A5F84000AB3E46 /* Double+Extensions.swift in Sources */,
 				9D657A5A24AA14CC0041D0A1 /* RGBLoadingView.swift in Sources */,

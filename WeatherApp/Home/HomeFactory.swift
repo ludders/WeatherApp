@@ -36,12 +36,6 @@ struct HomeFactory {
     }
 
     private func getSavedLocations() -> [Location] {
-//        let defaultLocations: [Location] = [
-//            Location(name: "South Woodham Ferrers", coordinates: CLLocationCoordinate2D(latitude: 51.6465, longitude: 0.6147), dateCreated: "1/1/2020".asDate!, saved: true),
-//            Location(name: "Stratford", coordinates: CLLocationCoordinate2D(latitude: 51.5472, longitude: -0.0081), dateCreated: "2/1/2020".asDate!, saved: true),
-//            Location(name: "Manchester", coordinates: CLLocationCoordinate2D(latitude: 53.4808, longitude: 2.2426), dateCreated: "3/1/2020".asDate!, saved: true)
-//        ]
-
         let defaultLocations: [Location] = []
 
         if defaults.hasKey(.savedLocations) == false {
@@ -49,7 +43,6 @@ struct HomeFactory {
         }
 
         let savedLocations: [Location] = defaults.get(.savedLocations)!
-//        savedLocations.forEach { print("\($0.name) lat: \($0.latitude) long: \($0.longitude) dateCreated: \($0.dateCreated)") }
         return savedLocations
     }
 }

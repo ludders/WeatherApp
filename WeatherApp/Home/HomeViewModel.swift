@@ -11,7 +11,6 @@ import Foundation
 
 protocol HomeViewModelDelegate: AnyObject {
     func startSearchFlow(delegate: LocationSelectionDelegate?)
-    func startMenuFlow()
 }
 
 class HomeViewModel {
@@ -50,10 +49,6 @@ class HomeViewModel {
         @unknown default:
             fatalError("Unhandled authorizationStatus")
         }
-    }
-
-    func didTapMenu() {
-        coordinatorDelegate?.startMenuFlow()
     }
 
     func didTapImage() {

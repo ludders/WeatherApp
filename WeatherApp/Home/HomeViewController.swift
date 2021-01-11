@@ -69,7 +69,6 @@ class HomeViewController: UIViewController {
     }
 
     private func displayFirstPage() {
-        //TODO: Show a different VC when no locations present
         guard let locationViewController = locationPageViewControllerDataSource.getFirstPageViewController() else { return }
         pageViewController.setViewControllers([locationViewController], direction: .forward, animated: false, completion: nil)
     }
@@ -100,10 +99,6 @@ extension HomeViewController: HeaderViewDelegate {
         } onError: { error in
             self.showErrorFetchingLocationAlert()
         }
-    }
-
-    func didTapMenu() {
-        viewModel.didTapMenu()
     }
 
     //For debugging only

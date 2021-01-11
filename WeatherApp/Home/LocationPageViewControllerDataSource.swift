@@ -33,7 +33,6 @@ class LocationPageViewControllerDataSource: NSObject, UIPageViewControllerDataSo
     }
 
     func getFirstPageViewController() -> UIViewController? {
-        //TODO: Return a 'no locations' view controller when this is nil
         currentPageIndex = 0
         if sortedLocations.isEmpty {
             return NoLocationViewController()

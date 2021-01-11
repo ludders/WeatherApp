@@ -48,10 +48,18 @@ class HomeCoordinator: Coordinator {
 
 extension HomeCoordinator: IntroViewControllerDelegate {
     
-    func showHomeScreen() {
+    func showHomeScreenV1() {
         setupFadeInAnimation()
         let homeViewController = homeFactory.getHomeViewController(homeViewModelDelegate: self)
         navigationController.pushViewController(homeViewController, animated: true)
+    }
+
+    func showHomeScreen() {
+        setupFadeInAnimation()
+        let menuViewController = MenuViewController()
+        let homeViewController = homeFactory.getHomeViewController(homeViewModelDelegate: self)
+        let containerViewController = SlidingMenuViewController(menuViewController: menuViewController, contentViewController: homeViewController)
+        navigationController.pushViewController(containerViewController, animated: true)
     }
 
     private func setupFadeInAnimation() {
