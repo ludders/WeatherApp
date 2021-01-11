@@ -15,11 +15,6 @@ class HeaderView: UIView {
 
     weak var delegate: HeaderViewDelegate?
 
-    private var menuButton: Button = {
-        let button = Button(type: .system)
-        button.setTitle(NSLocalizedString("Menu", comment: "Menu"), for: .normal)
-        return button
-    }()
     private var titleImage: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "bbcWeatherLogo")
@@ -47,8 +42,6 @@ class HeaderView: UIView {
 
     func setupView() {
         tintColor = Theme.Colours.white
-        menuButton.tintColor = tintColor
-        addSubview(menuButton)
         addSubview(titleImage)
         buttonsStackView.addArrangedSubview(searchButton)
         buttonsStackView.addArrangedSubview(locationButton)
@@ -76,10 +69,6 @@ class HeaderView: UIView {
             make.height.equalTo(50)
         }
 
-        menuButton.snp.makeConstraints { make in
-            make.leading.top.equalTo(layoutMarginsGuide)
-        }
-
         titleImage.snp.makeConstraints { make in
             make.top.centerX.equalToSuperview()
             make.height.equalTo(50)
@@ -87,8 +76,7 @@ class HeaderView: UIView {
         }
 
         buttonsStackView.snp.makeConstraints { make in
-            make.trailing.equalTo(layoutMarginsGuide)
-            make.top.equalTo(menuButton.titleLabel!.snp.top)
+            make.trailing.top.equalTo(layoutMarginsGuide)
         }
     }
 }

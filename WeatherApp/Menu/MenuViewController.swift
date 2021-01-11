@@ -25,13 +25,3 @@ class MenuViewController: UIViewController {
         }
     }
 }
-
-extension MenuViewController: UIViewControllerTransitioningDelegate {
-    func animationController(forPresented presented: UIViewController, presenting: UIViewController, source: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return SlideRightMenuAnimationController()
-    }
-
-    func animationController(forDismissed dismissed: UIViewController) -> UIViewControllerAnimatedTransitioning? {
-        return SlideRightMenuAnimationController()
-    }
-}
