@@ -18,8 +18,8 @@ class HomeCoordinator: Coordinator {
     var childCoordinators: [Coordinator]?
     var navigationController: UINavigationController
 
-    var navigationControllerDelegate: UINavigationControllerDelegate?
-    var transitioningDelegate: UIViewControllerTransitioningDelegate?
+    private var navigationControllerDelegate: UINavigationControllerDelegate?
+    private var transitioningDelegate: UIViewControllerTransitioningDelegate?
 
     private var defaults: Defaults
     private var homeFactory: HomeFactory
@@ -80,11 +80,10 @@ extension HomeCoordinator: HomeViewModelDelegate {
     }
 
     func startMenuFlow() {
-        let vc = MenuViewController()
-        vc.modalPresentationStyle = .custom
-        transitioningDelegate = vc
-        vc.transitioningDelegate = transitioningDelegate
-        navigationController.present(vc, animated: true)
+        let menuViewController = MenuViewController()
+        transitioningDelegate = menuViewController
+        menuViewController.modalPresentationStyle = .custom
+        menuViewController.transitioningDelegate = transitioningDelegate
+        navigationController.present(menuViewController, animated: true)
     }
 }
-
