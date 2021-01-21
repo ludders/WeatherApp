@@ -39,6 +39,8 @@ class SlidingMenuViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: View Controller Setup & Lifecycle
+
     override func viewDidLoad() {
         setupMenuView()
         setupContentView()
@@ -66,30 +68,59 @@ class SlidingMenuViewController: UIViewController {
         contentViewController.didMove(toParent: self)
     }
 
-    let halfScreenWidth = UIScreen.main.bounds.width/2
-    let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(didPanContentView))
-    let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(didTapContentView))
+    // MARK: Content View animation & interaction
 
-    //TODO: Drag/Tap to close animation is stuffed because there are multiple gesture recognizers on the same view
-    //...sort out!
+    private let halfScreenWidth = UIScreen.main.bounds.width/2
+
+    private func slideLeftAnimation() {
+        contentContainerView.transform = CGAffineTransform.identity
+        menuButton.transform = CGAffineTransform.identity
+    }
+
+    private lazy var panLeftAnimator = UIViewPropertyAnimator(duration: 0.2, curve: .easeOut, animations: slideLeftAnimation)
 
     private func didTapMenuButton() {
-        contentView.isUserInteractionEnabled = false
-        menuButton.isUserInteractionEnabled = false
         revealMenuView()
-        contentContainerView.addGestureRecognizer(panGestureRecognizer)
-        contentContainerView.addGestureRecognizer(tapGestureRecognizer)
+        contentContainerView.addGestureRecognizer({
+            let recognizer = UITapGestureRecognizer(target: self, action: #selector(didTapContentView))
+            recognizer.delegate = self
+            return recognizer
+        }())
+        contentContainerView.addGestureRecognizer({
+            let recognizer = UIPanGestureRecognizer(target: self, action: #selector(didPanContentView))
+            recognizer.delegate = self
+            return recognizer
+        }())
     }
 
     private func revealMenuView() {
+        menuIsOpen = true
         UIView.animate(withDuration: 0.2) { [self] in
             self.contentContainerView.transform = CGAffineTransform(translationX: halfScreenWidth, y: 0)
             self.menuButton.transform = CGAffineTransform(translationX: halfScreenWidth, y: 0)
-
         }
     }
 
-    var panAnimator: UIViewPropertyAnimator!
+    private var menuIsOpen: Bool = false {
+        didSet {
+            if menuIsOpen {
+                contentView.isUserInteractionEnabled = false
+                menuButton.isUserInteractionEnabled = false
+            } else {
+                contentView.isUserInteractionEnabled = true
+                menuButton.isUserInteractionEnabled = true
+            }
+        }
+    }
+
+    @objc
+    private func didTapContentView(_ sender: UIGestureRecognizer) {
+        guard let recognizer = sender as? UITapGestureRecognizer,
+              recognizer.state == .ended else { return }
+        panLeftAnimator.addAnimations(slideLeftAnimation)
+        panLeftAnimator.startAnimation()
+        panLeftAnimator.addCompletion(panEnded(_:))
+    }
 
     @objc
     private func didPanContentView(_ sender: UIGestureRecognizer) {
@@ -100,42 +131,51 @@ class SlidingMenuViewController: UIViewController {
         switch recognizer.state {
         case .began:
             if isPanningLeft {
-                panAnimator = UIViewPropertyAnimator(duration: 0.3, curve: .easeOut, animations: { [self] in
-                    contentContainerView.transform = CGAffineTransform.identity
-                    menuButton.transform = CGAffineTransform.identity
-                })
-                panAnimator.startAnimation()
-                panAnimator.pauseAnimation()
+                beginPanAnimation()
             }
         case .changed:
             let xPosition = recognizer.translation(in: view).x
-            panAnimator?.fractionComplete = 1-((halfScreenWidth + xPosition) / halfScreenWidth)
+            let fractionCompleted = 1-((halfScreenWidth + xPosition) / halfScreenWidth)
+            panLeftAnimator.fractionComplete = fractionCompleted
         case .ended:
-            if panAnimator.fractionComplete < 0.4 {
-                panAnimator.isReversed = true
-            }
-            panAnimator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
-            panAnimator.addCompletion(menuWasHidden(_:))
+            endPanAnimation()
         default:
             ()
         }
     }
 
-    private func menuWasHidden(_ position: UIViewAnimatingPosition) {
-        contentContainerView.removeGestureRecognizer(panGestureRecognizer)
-        contentContainerView.removeGestureRecognizer(tapGestureRecognizer)
-        contentView.isUserInteractionEnabled = true
+    private func beginPanAnimation() {
+        panLeftAnimator.addAnimations(slideLeftAnimation)
+        panLeftAnimator.startAnimation()
+        panLeftAnimator.pauseAnimation()
     }
 
-    @objc
-    private func didTapContentView(_ sender: UIGestureRecognizer) {
-        guard let recognizer = sender as? UITapGestureRecognizer,
-              recognizer.state == .ended else { return }
-        panAnimator = UIViewPropertyAnimator(duration: 0.3, curve: .easeOut, animations: { [self] in
-            contentContainerView.transform = CGAffineTransform.identity
-            menuButton.transform = CGAffineTransform.identity
-        })
-        panAnimator.startAnimation()
-        panAnimator.addCompletion(menuWasHidden(_:))
+    private func endPanAnimation() {
+        if panLeftAnimator.fractionComplete < 0.4 {
+            panLeftAnimator.isReversed = true
+        }
+        panLeftAnimator.addCompletion(panEnded(_:))
+        panLeftAnimator.continueAnimation(withTimingParameters: nil, durationFactor: 0)
+    }
+
+    private func panEnded(_ position: UIViewAnimatingPosition) {
+        if position == .end {
+            menuIsOpen = false
+            contentContainerView.gestureRecognizers?.forEach { recognizer in
+                contentContainerView.removeGestureRecognizer(recognizer)
+            }
+        } else {
+            menuIsOpen = true
+        }
+    }
+}
+
+extension SlidingMenuViewController: UIGestureRecognizerDelegate {
+    func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
+        if gestureRecognizer.view == contentContainerView && otherGestureRecognizer.view == contentContainerView {
+            return true
+        } else {
+            return false
+        }
     }
 }
