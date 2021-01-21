@@ -17,7 +17,9 @@ protocol Coordinator {
 class HomeCoordinator: Coordinator {
     var childCoordinators: [Coordinator]?
     var navigationController: UINavigationController
-    var navigationControllerDelegate: UINavigationControllerDelegate?
+
+    private var navigationControllerDelegate: UINavigationControllerDelegate?
+    private var transitioningDelegate: UIViewControllerTransitioningDelegate?
 
     private var defaults: Defaults
     private var homeFactory: HomeFactory
@@ -26,8 +28,6 @@ class HomeCoordinator: Coordinator {
         self.navigationController = navigationController
         self.defaults = defaults
         self.homeFactory = homeFactory
-        navigationControllerDelegate = NavigationTransitionDelegate()
-        navigationController.delegate = navigationControllerDelegate
     }
 
     func start() {
@@ -48,9 +48,25 @@ class HomeCoordinator: Coordinator {
 
 extension HomeCoordinator: IntroViewControllerDelegate {
     
-    func showHomeScreen() {
+    func showHomeScreenV1() {
+        setupFadeInAnimation()
         let homeViewController = homeFactory.getHomeViewController(homeViewModelDelegate: self)
         navigationController.pushViewController(homeViewController, animated: true)
+    }
+
+    func showHomeScreen() {
+        setupFadeInAnimation()
+        let menuViewController = MenuViewController()
+        let homeViewController = homeFactory.getHomeViewController(homeViewModelDelegate: self)
+        let containerViewController = SlidingMenuViewController(menuViewController: menuViewController, contentViewController: homeViewController)
+        navigationController.pushViewController(containerViewController, animated: true)
+    }
+
+    private func setupFadeInAnimation() {
+        let fadeAnimationController = FadeInAnimationController()
+        let customTransition = CustomTransition(using: fadeAnimationController)
+        navigationControllerDelegate = NavigationControllerDelegate(customTransitionProtocol: customTransition)
+        navigationController.delegate = navigationControllerDelegate
     }
 }
 
@@ -71,4 +87,3 @@ extension HomeCoordinator: HomeViewModelDelegate {
         navigationController.present(searchViewController, animated: true)
     }
 }
-

@@ -51,10 +51,6 @@ class HomeViewModel {
         }
     }
 
-    func didTapMenu() {
-        
-    }
-
     func didTapImage() {
         //For debugging stuff
     }
